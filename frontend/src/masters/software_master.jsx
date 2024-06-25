@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Home from '../components/Home/home';
-import SoftwareForm from '../components/software_form'
+import SoftwareForm from '../components/Master_Form/software_form'
 import SoftwareInfoPopup from '../components/Master_Info/software_info';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';

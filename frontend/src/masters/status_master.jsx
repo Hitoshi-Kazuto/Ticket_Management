@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Home from '../components/Home/home';
-import StatusForm from '../components/status_form';
+import StatusForm from '../components/Master_Form/status_form';
 import StatusInfoPopup from '../components/Master_Info/status_info';
 import axios from 'axios';
 

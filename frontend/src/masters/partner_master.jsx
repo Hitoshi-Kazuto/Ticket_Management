@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Home from '../components/Home/home';
-import PartnerForm from '../components/partner_form';
+import PartnerForm from '../components/Master_Form/partner_form';
 import PartnerInfoPopup from '../components/Master_Info/partner_info';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';

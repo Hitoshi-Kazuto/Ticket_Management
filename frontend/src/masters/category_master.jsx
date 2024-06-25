@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Home from '../components/Home/home';
-import CategoryForm from '../components/category_form';
+import CategoryForm from '../components/Master_Form/category_form';
 import CategoryInfoPopup from '../components/Master_Info/category_info';
 import axios from 'axios';
 

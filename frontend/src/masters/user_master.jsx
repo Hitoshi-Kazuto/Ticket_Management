@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Home from '../components/Home/home';
-import UserForm from '../components/user_form';
+import UserForm from '../components/Master_Form/user_form';
 import UserInfoPopup from '../components/Master_Info/user_info';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
