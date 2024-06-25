@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
+import jwt from "jsonwebtoken";
 import session from "express-session";
 import pool from "./config.js";
 
@@ -20,41 +21,40 @@ app.use(session({
     cookie: { secure: false } // Set secure to true if using HTTPS
 }));
 
+const jwtSecret = 'your_jwt_secret'; // Change this to a more secure secret in production
+
 app.post('/login', async (req, res) => {
-    const { username, password } = req.body; //get the credentials from request body
-    // console.log('Received login request:', username, password); // Debugging: log received credentials
+    const { username, password } = req.body;
 
     try {
-        const result = await pool.query('SELECT * FROM user_master WHERE username = $1', [username]); // run query to find the associated user
-        // console.log('Query result:', result.rows); // Debugging: log query result
-
-        if (result.rows.length > 0) { // as the array is returned from the query
-            const user = result.rows[0]; // get the first element and check if the passwords match
-            if (password === user.password) {
-                req.session.userId = user.id; // Create a session
-                res.json({ success: true });
-            } else if (password != user.password) {
-                res.json({ success: false, message: 'Incorrect password.' });
-            } else if (!user.active_status) {
-                return res.status(403).json({ success: false, message: 'User account is inactive' });
-            } else {
-                res.json({ success: false, message: 'User not found' });
-            }
+        const query = 'SELECT * FROM user_master WHERE username = $1';
+        const { rows } = await pool.query(query, [username]);
+        
+        if (rows.length === 0) {
+            return res.json({ success: false, message: 'User not found' });
         }
+
+        const user = rows[0];
+
+        if (!user.active_status) {
+            return res.json({ success: false, message: 'User is not active' });
+        }
+
+        const isMatch = (password === user.password);
+
+        if (!isMatch) {
+            return res.json({ success: false, message: 'Incorrect password' });
+        }
+
+        const token = jwt.sign({ id: user.user_id, username: user.username, role: user.role }, jwtSecret, { expiresIn: '1h' });
+
+        res.json({ success: true, token, user });
     } catch (error) {
-        console.error('Error during authentication', error);
+        console.error('Error logging in:', error);
         res.status(500).json({ success: false, error: 'Internal Server Error' });
     }
 });
-app.post('/logout', (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            return res.status(500).json({ success: false, error: 'Failed to log out' });
-        }
-        res.clearCookie('connect.sid'); // Clear the cookie
-        res.json({ success: true });
-    });
-});
+
 
 app.post('/user-form', async (req, res) => {
     const {
