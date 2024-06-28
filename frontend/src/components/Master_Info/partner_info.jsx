@@ -47,6 +47,8 @@ const PartnerInfoPopup = ({ isOpen, partner, onClose }) => {
         try {
             const response = await axios.put(`http://localhost:3000/partner/${partner.partner_id}`, formData);
             if (response.data.success) {
+
+                alert('Partner added successfully');
                 // Handle successful update (e.g., close the popup and refresh the data)
                 onClose();
             } else {
@@ -72,42 +74,42 @@ const PartnerInfoPopup = ({ isOpen, partner, onClose }) => {
                 </button>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label className="block text-gray-700">Partner Id:</label>
+                        <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner Id:</label>
                         <input
                             type="text"
                             name="Partner_Id"
                             value={formData.Partner_Id}
                             readOnly
-                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed"
+                            className="appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-gray-700">Partner Code:</label>
+                        <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner Code:</label>
                         <input
                             type="text"
                             name="Partner_Code"
                             value={formData.Partner_Code}
                             readOnly
-                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed"
+                            className="appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-gray-700">Partner Name:</label>
+                        <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner Name:</label>
                         <input
                             type="text"
                             name="Partner_Name"
                             value={formData.Partner_Name}
                             onChange={handleChange}
-                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                            className="appearance-none w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-gray-700">Remarks:</label>
+                        <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Remarks:</label>
                         <textarea
                             name="Remarks"
                             value={formData.Remarks}
                             onChange={handleChange}
-                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                            className="appearance-none w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                         />
                     </div>
                     <div className="mt-4 flex justify-end">

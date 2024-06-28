@@ -3,12 +3,13 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import jwt from "jsonwebtoken";
 import session from "express-session";
+import bcrypt from "bcrypt"
 import pool from "./config.js";
 
 const PORT = 3000;
 const app = express();
 app.use(bodyParser.json());
-app.use(cors({ 
+app.use(cors({
     origin: 'http://localhost:5173', // allow requests from react app
     credentials: true, // allow cookies to be sent
 }));
@@ -29,7 +30,7 @@ app.post('/login', async (req, res) => {
     try {
         const query = 'SELECT * FROM user_master WHERE username = $1';
         const { rows } = await pool.query(query, [username]);
-        
+
         if (rows.length === 0) {
             return res.json({ success: false, message: 'User not found' });
         }
@@ -40,7 +41,7 @@ app.post('/login', async (req, res) => {
             return res.json({ success: false, message: 'User is not active' });
         }
 
-        const isMatch = (password === user.password);
+        const isMatch = await bcrypt.compare(password, user.password);
 
         if (!isMatch) {
             return res.json({ success: false, message: 'Incorrect password' });
@@ -52,6 +53,40 @@ app.post('/login', async (req, res) => {
     } catch (error) {
         console.error('Error logging in:', error);
         res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+});
+
+app.post('/change-password', async (req, res) => {
+    const { username, currentPassword, newPassword } = req.body;
+
+    try {
+        // Fetch the current hashed password from the database
+        const userQuery = 'SELECT password FROM User_Master WHERE username = $1';
+        const userResult = await pool.query(userQuery, [username]);
+
+        if (userResult.rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        const currentHashedPassword = userResult.rows[0].password;
+
+        // Check if the current password matches
+        const isMatch = await bcrypt.compare(currentPassword, currentHashedPassword);
+        if (!isMatch) {
+            return res.status(401).json({ success: false, message: 'Current password is incorrect' });
+        }
+
+        // Hash the new password
+        const newHashedPassword = await bcrypt.hash(newPassword, 10);
+
+        // Update the password in the database
+        const updateQuery = 'UPDATE User_Master SET password = $1 WHERE username = $2';
+        await pool.query(updateQuery, [newHashedPassword, username]);
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error changing password:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
 });
 
@@ -72,15 +107,20 @@ app.post('/user-form', async (req, res) => {
     } = req.body;
 
     try {
+        if (password !== confirmPassword) {
+            return res.status(400).json({ success: false, error: 'Passwords do not match' });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
         const created_time = new Date();
         const active_status = true;
         const query = `
             INSERT INTO user_master
-            (user_id, name, username, password, confirm_password, email_address, mobile_number, role, partner_code, active_status, created_by, created_time, valid_from, valid_till) 
-            VALUES (uuid_generate_v4(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+            (user_id, name, username, password, email_address, mobile_number, role, partner_code, active_status, created_by, created_time, valid_from, valid_till) 
+            VALUES (uuid_generate_v4(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
             RETURNING *;
         `;
-        const values = [name, username, password, confirmPassword, email, mobile, role, partner_code, active_status, created_by, created_time, valid_from, valid_till];
+        const values = [name, username, hashedPassword, email, mobile, role, partner_code, active_status, created_by, created_time, valid_from, valid_till];
 
         const result = await pool.query(query, values);
 
@@ -105,13 +145,18 @@ app.put('/user/:user_id', async (req, res) => {
     const updated_time = new Date();
 
     try {
+        if (password !== confirm_password) {
+            return res.status(400).json({ success: false, error: 'Passwords do not match' });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
         const query = `
             UPDATE user_master
-            SET password = $2, confirm_password = $3, email_address = $4, mobile_number = $5, valid_till = $6, updated_by = $7, updated_time = $8
+            SET password = $2, email_address = $3, mobile_number = $4, valid_till = $5, updated_by = $6, updated_time = $7
             WHERE user_id = $1
             RETURNING *;
         `;
-        const values = [user_id, password, confirm_password, email_address, mobile_number, valid_till, updated_by, updated_time];
+        const values = [user_id, hashedPassword, email_address, mobile_number, valid_till, updated_by, updated_time];
 
         const result = await pool.query(query, values);
         if (result.rows.length > 0) {
@@ -190,38 +235,25 @@ app.post('/partner-form', async (req, res) => {
         `;
         const values = [Partner_Code, Partner_Name, Remarks, status, created_by, created_time];
 
-        await pool.query(query, values);
-
-        res.json({ success: true });
+        const { rows } = await pool.query(query, values);
+        res.json({ success: true, partner: rows[0] });
     } catch (error) {
-        console.error('Error inserting into Partner_Master:', error);
-        res.status(500).json({ success: false, error: 'Internal Server Error' });
+        if (error.code === '23505') {
+            res.status(409).json({ success: false, message: 'Partner with this name already exists' });
+        } else {
+            console.error('Error inserting into Partner_Master:', error);
+            res.status(500).json({ success: false, error: 'Internal Server Error' });
+        }
+        (async () => { await resetSequence('Partner_Master', 'partner_master_partner_id_seq', 'partner_id'); })();
     }
 });
 app.get('/partner', async (req, res) => {
-    const { search, status } = req.query;
-    let query = 'SELECT * FROM Partner_Master WHERE 1=1';
-    let values = [];
-    let paramIndex = 1; // Track parameter index for dynamic query
-
-    if (search) {
-        query += ` AND Partner_Name ILIKE $${paramIndex}`;
-        values.push(`%${search}%`);
-        paramIndex++;
-    }
-
-    if (status) {
-        query += ` AND Status = $${paramIndex}`;
-        values.push(status === 'active');
-        paramIndex++;
-    }
-
     try {
-        const result = await pool.query(query, values);
-        res.json(result.rows);
+        const partners = await pool.query('SELECT * FROM public.partner_master ORDER BY partner_id ASC');
+        res.json(partners.rows);
     } catch (error) {
-        console.error('Error fetching partners:', error);
-        res.status(500).json({ success: false, error: 'Internal Server Error' });
+        console.error('Error fetching status', error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 app.put('/partner/:partner_id', async (req, res) => {
@@ -313,37 +345,25 @@ app.post('/software-form', async (req, res) => {
         `;
         const values = [Software_Name, Remarks, status, created_by, created_time]
 
-        await pool.query(query, values);
-        res.json({ success: true });
+        const { rows } = await pool.query(query, values);
+        res.json({ success: true, partner: rows[0] });
     } catch (error) {
-        console.error('Error inserting into Software_Master:', error);
-        res.status(500).json({ success: false, error: 'Internal Server Error' });
+        if (error.code === '23505') {
+            res.status(409).json({ success: false, message: 'Software with this name already exists' });
+        } else {
+            console.error('Error inserting into Category_Master:', error);
+            res.status(500).json({ success: false, error: 'Internal Server Error' });
+        }
+        (async () => { await resetSequence('Software_Master', 'software_master_sw_id_seq', 'sw_id'); })();
     }
 });
 app.get('/software', async (req, res) => {
-    const { search, status } = req.query;
-    let query = 'SELECT * FROM Software_Master WHERE 1=1';
-    let values = [];
-    let paramIndex = 1; // Track parameter index for dynamic query
-
-    if (search) {
-        query += ` AND Software_Name ILIKE $${paramIndex}`;
-        values.push(`%${search}%`);
-        paramIndex++;
-    }
-
-    if (status) {
-        query += ` AND Status = $${paramIndex}`;
-        values.push(status === 'active');
-        paramIndex++;
-    }
-
     try {
-        const result = await pool.query(query, values);
-        res.json(result.rows);
+        const softwares = await pool.query('SELECT * FROM public.software_master ORDER BY sw_id ASC');
+        res.json(softwares.rows);
     } catch (error) {
-        console.error('Error fetching softwares:', error);
-        res.status(500).json({ success: false, error: 'Internal Server Error' });
+        console.error('Error fetching status', error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 app.put('/software/:sw_id', async (req, res) => {
@@ -435,37 +455,25 @@ app.post('/category-form', async (req, res) => {
         `;
         const values = [Category_Name, Remarks, status, created_by, created_time]
 
-        await pool.query(query, values);
-        res.json({ success: true });
+        const { rows } = await pool.query(query, values);
+        res.json({ success: true, partner: rows[0] });
     } catch (error) {
-        console.error('Error inserting into Category_Master:', error);
-        res.status(500).json({ success: false, error: 'Internal Server Error' });
+        if (error.code === '23505') {
+            res.status(409).json({ success: false, message: 'Category with this name already exists' });
+        } else {
+            console.error('Error inserting into Category_Master:', error);
+            res.status(500).json({ success: false, error: 'Internal Server Error' });
+        }
+        (async () => { await resetSequence('Category_Master', 'category_master_cat_id_seq', 'cat_id'); })();
     }
 });
 app.get('/category', async (req, res) => {
-    const { search, status } = req.query;
-    let query = 'SELECT * FROM Category_Master WHERE 1=1';
-    let values = [];
-    let paramIndex = 1; // Track parameter index for dynamic query
-
-    if (search) {
-        query += ` AND Category ILIKE $${paramIndex}`;
-        values.push(`%${search}%`);
-        paramIndex++;
-    }
-
-    if (status) {
-        query += ` AND Status = $${paramIndex}`;
-        values.push(status === 'active');
-        paramIndex++;
-    }
-
     try {
-        const result = await pool.query(query, values);
-        res.json(result.rows);
+        const categories = await pool.query('SELECT * FROM public.category_master ORDER BY cat_id ASC');
+        res.json(categories.rows);
     } catch (error) {
-        console.error('Error fetching Categories:', error);
-        res.status(500).json({ success: false, error: 'Internal Server Error' });
+        console.error('Error fetching status', error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 app.put('/category/:cat_id', async (req, res) => {
@@ -558,37 +566,25 @@ app.post('/status-form', async (req, res) => {
         `;
         const values = [Status_Name, Remarks, status, created_by, created_time]
 
-        await pool.query(query, values);
-        res.json({ success: true });
+        const { rows } = await pool.query(query, values);
+        res.json({ success: true, partner: rows[0] });
     } catch (error) {
-        console.error('Error inserting into Status_Master:', error);
-        res.status(500).json({ success: false, error: 'Internal Server Error' });
+        if (error.code === '23505') {
+            res.status(409).json({ success: false, message: 'Status with this name already exists' });
+        } else {
+            console.error('Error inserting into Status_Master:', error);
+            res.status(500).json({ success: false, error: 'Internal Server Error' });
+        }
+        (async () => { await resetSequence('Status_Master', 'status_master_status_id_seq', 'status_id'); })();
     }
 });
 app.get('/status', async (req, res) => {
-    const { search, status } = req.query;
-    let query = 'SELECT * FROM Status_Master WHERE 1=1';
-    let values = [];
-    let paramIndex = 1; // Track parameter index for dynamic query
-
-    if (search) {
-        query += ` AND status ILIKE $${paramIndex}`;
-        values.push(`%${search}%`);
-        paramIndex++;
-    }
-
-    if (status) {
-        query += ` AND Status_Activity = $${paramIndex}`;
-        values.push(status === 'active');
-        paramIndex++;
-    }
-
     try {
-        const result = await pool.query(query, values);
-        res.json(result.rows);
+        const statuses = await pool.query('SELECT * FROM public.status_master ORDER BY status_id ASC');
+        res.json(statuses.rows);
     } catch (error) {
-        console.error('Error fetching Categories:', error);
-        res.status(500).json({ success: false, error: 'Internal Server Error' });
+        console.error('Error fetching status', error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 app.put('/status/:status_id', async (req, res) => {
@@ -680,3 +676,32 @@ app.get('/partner-codes', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server has started on port ${PORT}`);
 });
+
+
+async function resetSequence(tableName, sequenceName, idColumn) {
+    const client = await pool.connect();
+
+    try {
+        // Start a transaction
+        await client.query('BEGIN');
+
+        // Get the current maximum id from the specified table and column
+        const { rows } = await client.query(`SELECT MAX(${idColumn}) AS max_id FROM ${tableName}`);
+        const maxId = rows[0].max_id || 0;
+
+        // Reset the sequence
+        await client.query(`ALTER SEQUENCE ${sequenceName} RESTART WITH ${maxId + 1}`);
+
+        // Commit the transaction
+        await client.query('COMMIT');
+
+        console.log(`Sequence ${sequenceName} reset successfully for table ${tableName}`);
+    } catch (err) {
+        // Rollback the transaction in case of an error
+        await client.query('ROLLBACK');
+        console.error('Error resetting sequence:', err);
+    } finally {
+        // Release the client back to the pool
+        client.release();
+    }
+}

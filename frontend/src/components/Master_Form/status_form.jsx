@@ -1,7 +1,7 @@
 // PopupForm.js
 import React, { useState } from 'react';
 
-const PopupForm = ({ isOpen, onClose, onSubmit }) => {
+const PopupForm = ({ isOpen, onClose, onSubmit, error }) => {
     const [formData, setFormData] = useState({
         Status_Name: '',
         Remarks: ''
@@ -18,7 +18,6 @@ const PopupForm = ({ isOpen, onClose, onSubmit }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmit(formData);
-        onClose();
     };
 
     if (!isOpen) {
@@ -36,7 +35,7 @@ const PopupForm = ({ isOpen, onClose, onSubmit }) => {
                 </button>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label className=" uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Status Name:</label>
+                        <label className=" uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Status Name<span className='text-red-700 font-bold text-sm'>*</span></label>
                         <input
                             type="text"
                             name="Status_Name"
@@ -47,7 +46,7 @@ const PopupForm = ({ isOpen, onClose, onSubmit }) => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Remarks:</label>
+                        <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Remarks</label>
                         <input
                             type="text"
                             name="Remarks"
@@ -63,6 +62,7 @@ const PopupForm = ({ isOpen, onClose, onSubmit }) => {
                         Submit
                     </button>
                 </form>
+                {error && <div className="text-red-700 font-bold mt-4">{error}</div>}
             </div>
         </div>
     );

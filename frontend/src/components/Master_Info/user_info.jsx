@@ -28,7 +28,7 @@ const userInfoPopup = ({ isOpen, user, onClose }) => {
                 name: user.name,
                 username: user.username,
                 password: user.password,
-                confirm_password: user.confirm_password,
+                confirm_password: user.password,
                 email_address: user.email_address,
                 mobile_number: user.mobile_number,
                 role: user.role,
@@ -111,7 +111,7 @@ const userInfoPopup = ({ isOpen, user, onClose }) => {
                                 name="password"
                                 value={formData.password}
                                 onChange={handleChange}
-                                className="appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                className="appearance-none w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 required
                             />
                         </div>
@@ -119,10 +119,10 @@ const userInfoPopup = ({ isOpen, user, onClose }) => {
                             <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Confirm Password</label>
                             <input
                                 type="password"
-                                name="confirmPassword"
+                                name="confirm_password"
                                 value={formData.confirm_password}
                                 onChange={handleChange}
-                                className="appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                className="appearance-none w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 required
                             />
                         </div>
@@ -132,10 +132,10 @@ const userInfoPopup = ({ isOpen, user, onClose }) => {
                             <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Email Address</label>
                             <input
                                 type="text"
-                                name="email"
+                                name="email_address"
                                 value={formData.email_address}
                                 onChange={handleChange}
-                                className="appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                className="appearance-none w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 required
                             />
                         </div>
@@ -143,10 +143,10 @@ const userInfoPopup = ({ isOpen, user, onClose }) => {
                             <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Mobile Number</label>
                             <input
                                 type="text"
-                                name="mobile"
+                                name="mobile_number"
                                 value={formData.mobile_number}
                                 onChange={handleChange}
-                                className="appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                className="appearance-none w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 required
                             />
                         </div>
@@ -199,7 +199,7 @@ const userInfoPopup = ({ isOpen, user, onClose }) => {
                                 name="valid_till"
                                 value={formData.valid_till}
                                 onChange={handleChange}
-                                className="appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                className="appearance-none w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 required
                             />
                         </div>

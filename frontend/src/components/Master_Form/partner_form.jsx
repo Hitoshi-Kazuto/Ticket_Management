@@ -1,12 +1,22 @@
 // PopupForm.js
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 
-const PopupForm = ({ isOpen, onClose, onSubmit }) => {
+const PopupForm = ({ isOpen, onClose, onSubmit , error}) => {
     const [formData, setFormData] = useState({
         Partner_Code: '',
         Partner_Name: '',
         Remarks: ''
     });
+
+    useEffect(() => {
+        if (!isOpen) {
+            setFormData({
+                Partner_Code: '',
+                Partner_Name: '',
+                Remarks: ''
+            });
+        }
+    }, [isOpen]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -19,7 +29,6 @@ const PopupForm = ({ isOpen, onClose, onSubmit }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmit(formData);
-        onClose();
     };
 
     if (!isOpen) {
@@ -37,7 +46,7 @@ const PopupForm = ({ isOpen, onClose, onSubmit }) => {
                 </button>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label className=" uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner Code:</label>
+                        <label className=" uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner Code<span className='text-red-700 font-bold text-sm'>*</span></label>
                         <input
                             type="text"
                             name="Partner_Code"
@@ -48,7 +57,7 @@ const PopupForm = ({ isOpen, onClose, onSubmit }) => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className=" uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner Name:</label>
+                        <label className=" uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner Name<span className='text-red-700 font-bold text-sm'>*</span></label>
                         <input
                             type="text"
                             name="Partner_Name"
@@ -59,7 +68,7 @@ const PopupForm = ({ isOpen, onClose, onSubmit }) => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Remarks:</label>
+                        <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Remarks</label>
                         <input
                             type="text"
                             name="Remarks"
@@ -75,6 +84,7 @@ const PopupForm = ({ isOpen, onClose, onSubmit }) => {
                         Submit
                     </button>
                 </form>
+                {error && <div className="text-red-700 font-bold mt-4">{error}</div>}
             </div>
         </div>
     );

@@ -4,9 +4,11 @@ import Sidebar from "./sidebar"
 
 const Home = () => {
   return (
-    <div>
-      <Header />
+    <div className="flex">
       <Sidebar />
+      <div className="flex flex-col w-full">
+        <Header />
+      </div>
     </div>
   );
 }

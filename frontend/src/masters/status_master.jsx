@@ -9,6 +9,7 @@ const StatusMaster = () => {
     const [Statuss, setStatuss] = useState([]);
     const [selectedStatus, setSelectedStatus] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
+    const [error, setError] = useState('');
     const [statusFilter, setStatusFilter] = useState('active');
     const username = localStorage.getItem('username'); // Get username from local storage
 
@@ -42,11 +43,16 @@ const StatusMaster = () => {
             if (response.data.success) {
                 fetchStatusData(); // Refetch data after successful submission
                 handleClosePopup(); // Close the popup
+                setError('');
             } else {
                 console.error('Form submission unsuccessful');
             }
         } catch (error) {
-            console.error('Error submitting form:', error);
+            if (error.response && error.response.status === 409) {
+                setError('Status with this name already exists');
+              } else {
+                setError('Error adding software');
+              }
         }
     };
 
@@ -142,7 +148,7 @@ const StatusMaster = () => {
                     className="p-2 mx-1.5 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-3.5 text-center"
                 >Add
                 </button>
-                <StatusForm isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleFormSubmit} />
+                <StatusForm isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleFormSubmit} error={error}/>
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
