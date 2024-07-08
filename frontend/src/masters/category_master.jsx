@@ -39,7 +39,7 @@ const categoryMaster = () => {
     const handleFormSubmit = async (formData) => {
         formData.created_by = username;
         try {
-            const response = await axios.post('http://localhost:3000/category-form', formData);
+            const response = await axios.post('http://localhost:3000/category/category-form', formData);
             if (response.data.success) {
                 fetchCategoryData(); // Refetch data after successful submission
                 handleClosePopup(); // Close the popup
@@ -63,6 +63,7 @@ const categoryMaster = () => {
 
     const handleCloseInfoPopup = () => {
         setSelectedCategory(null);
+        fetchCategoryData();
     };
 
     const handleDelete = async (cat_id) => {

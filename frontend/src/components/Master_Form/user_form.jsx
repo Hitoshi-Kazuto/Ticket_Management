@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const UserForm = ({ isOpen, onClose, onSubmit }) => {
+const UserForm = ({ isOpen, onClose, onSubmit, error }) => {
     const [formData, setFormData] = useState({
         name: '',
         username: '',
@@ -48,13 +48,8 @@ const UserForm = ({ isOpen, onClose, onSubmit }) => {
             return;
         }
 
-        try {
-            await axios.post('http://localhost:3000/user-form', formData);
-            onSubmit();
-            onClose();
-        } catch (error) {
-            console.error('Error submitting form:', error);
-        }
+
+        onSubmit(formData);
     };
 
     if (!isOpen) {
@@ -213,6 +208,7 @@ const UserForm = ({ isOpen, onClose, onSubmit }) => {
                         </div>
                     </div>
                 </form>
+                {error && <div className="text-red-700 font-bold mt-4">{error}</div>}
             </div>
         </div>
     );

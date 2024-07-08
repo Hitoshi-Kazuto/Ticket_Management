@@ -10,6 +10,7 @@ const UserMaster = () => {
     const [Users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
+    const [error, setError] = useState('');
     const [statusFilter, setStatusFilter] = useState('active');  
     const username = localStorage.getItem('username'); // Get username from local storage
 
@@ -39,15 +40,20 @@ const UserMaster = () => {
     const handleFormSubmit = async (formData) => {
         formData.created_by = username;
         try {
-            const response = await axios.post('http://localhost:3000/user-form', formData);
+            const response = await axios.post('http://localhost:3000/user/user-form', formData);
             if (response.data.success) {
                 fetchUserData(); // Refetch data after successful submission
                 handleClosePopup(); // Close the popup
+                setError('');
             } else {
                 console.error('Form submission unsuccessful');
             }
         } catch (error) {
-            console.error('Error submitting form:', error);
+            if (error.response && error.response.status === 409) {
+                setError(error.response.data.message);
+              } else {
+                setError('Error adding User');
+              }
         }
     };
 
@@ -58,6 +64,7 @@ const UserMaster = () => {
 
     const handleCloseInfoPopup = () => {
         setSelectedUser(null);
+        fetchUserData();
     };
 
     const handleDelete = async (user_id) => {
@@ -142,7 +149,7 @@ const UserMaster = () => {
                     className="p-2 mx-1.5 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-3.5 text-center"
                 >Add
                 </button>
-                <UserForm isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleFormSubmit} />
+                <UserForm isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleFormSubmit} error={error}/>
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>

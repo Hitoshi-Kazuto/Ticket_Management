@@ -47,8 +47,6 @@ const PartnerInfoPopup = ({ isOpen, partner, onClose }) => {
         try {
             const response = await axios.put(`http://localhost:3000/partner/${partner.partner_id}`, formData);
             if (response.data.success) {
-
-                alert('Partner added successfully');
                 // Handle successful update (e.g., close the popup and refresh the data)
                 onClose();
             } else {

@@ -41,7 +41,7 @@ const softwareMaster = () => {
     const handleFormSubmit = async (formData) => {
         formData.created_by = username;
         try {
-            const response = await axios.post('http://localhost:3000/software-form', formData);
+            const response = await axios.post('http://localhost:3000/software/software-form', formData);
             if (response.data.success) {
                 fetchSoftwareData(); // Refetch data after successful submission
                 handleClosePopup(); // Close the popup
@@ -65,6 +65,7 @@ const softwareMaster = () => {
 
     const handleCloseInfoPopup = () => {
         setSelectedSoftware(null);
+        fetchSoftwareData();
     };
 
     const handleDelete = async (sw_id) => {

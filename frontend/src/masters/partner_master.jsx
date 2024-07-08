@@ -41,7 +41,7 @@ const PartnerMaster = () => {
     const handleFormSubmit = async (formData) => {
         formData.created_by = username;
         try {
-            const response = await axios.post('http://localhost:3000/partner-form', formData);
+            const response = await axios.post('http://localhost:3000/partner/partner-form', formData);
             if (response.data.success) {
                 fetchPartnerData(); // Refetch data after successful submission
                 handleClosePopup(); // Close the popup
@@ -51,9 +51,9 @@ const PartnerMaster = () => {
             }
         } catch (error) {
             if (error.response && error.response.status === 409) {
-                setError('Partner with this name already exists');
+                setError(error.response.message);
               } else {
-                setError('Error adding software');
+                setError('Error adding partner');
               }
         }
     };
@@ -65,6 +65,7 @@ const PartnerMaster = () => {
 
     const handleCloseInfoPopup = () => {
         setSelectedPartner(null);
+        fetchPartnerData();
     };
 
     const handleDelete = async (partner_id) => {

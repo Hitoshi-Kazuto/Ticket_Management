@@ -88,7 +88,7 @@ const userInfoPopup = ({ isOpen, user, onClose }) => {
                                 value={formData.name}
                                 onChange={handleChange}
                                 className="appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                readOnly
+                                disabled
                             />
                         </div>
                         <div className="w-full md:w-1/2 px-3">
@@ -99,7 +99,7 @@ const userInfoPopup = ({ isOpen, user, onClose }) => {
                                 value={formData.username}
                                 onChange={handleChange}
                                 className="appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                readOnly
+                                disabled
                             />
                         </div>
                     </div>
@@ -159,7 +159,7 @@ const userInfoPopup = ({ isOpen, user, onClose }) => {
                                 value={formData.role}
                                 onChange={handleChange}
                                 className="appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                readOnly
+                                disabled
                             >
                                 <option value="">Select Role</option>
                                 <option value="Admin">Admin</option>
@@ -176,7 +176,7 @@ const userInfoPopup = ({ isOpen, user, onClose }) => {
                                 value={formData.partner_code}
                                 onChange={handleChange}
                                 className="appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                readOnly
+                                disabled
                             />
                         </div>
                     </div>
@@ -189,7 +189,7 @@ const userInfoPopup = ({ isOpen, user, onClose }) => {
                                 value={formData.valid_from}
                                 onChange={handleChange}
                                 className="appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                readOnly
+                                disabled
                             />
                         </div>
                         <div className="w-full md:w-1/2 px-3">

@@ -39,7 +39,7 @@ const StatusMaster = () => {
     const handleFormSubmit = async (formData) => {
         formData.created_by = username;
         try {
-            const response = await axios.post('http://localhost:3000/status-form', formData);
+            const response = await axios.post('http://localhost:3000/status/status-form', formData);
             if (response.data.success) {
                 fetchStatusData(); // Refetch data after successful submission
                 handleClosePopup(); // Close the popup
@@ -63,6 +63,7 @@ const StatusMaster = () => {
 
     const handleCloseInfoPopup = () => {
         setSelectedStatus(null);
+        fetchStatusData();
     };
 
     const handleDelete = async (status_id) => {

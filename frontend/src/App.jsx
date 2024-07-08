@@ -7,6 +7,7 @@ import Software from './masters/software_master'
 import Category from './masters/category_master'
 import Status from './masters/status_master'
 import User from './masters/user_master'
+import TicketMaster from './masters/ticket_master'
 import ProtectedRoute from './components/Hooks/protectedRoute'
 import useHistoryBlock from './components/Hooks/useHistory'
 import PrivateRoute from './components/Hooks/privateRoute'
@@ -27,7 +28,7 @@ function App() {
         <Route path="/software" element={<ProtectedRoute><Software /></ProtectedRoute>} />
         <Route path="/category" element={<ProtectedRoute><Category /></ProtectedRoute>} />
         <Route path="/status" element={<ProtectedRoute><Status /></ProtectedRoute>} />
-
+        <Route path="/ticket" element={<ProtectedRoute><TicketMaster /></ProtectedRoute>} />
       </Routes>
     </IdleTimeout>
   )
