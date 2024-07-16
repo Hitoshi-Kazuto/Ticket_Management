@@ -3,7 +3,6 @@ import Home from '../components/Home/home';
 import SoftwareForm from '../components/Master_Form/software_form'
 import SoftwareInfoPopup from '../components/Master_Info/software_info';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 const softwareMaster = () => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -12,7 +11,6 @@ const softwareMaster = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState('active');
     const [error, setError] = useState('');
-    const navigate = useNavigate();
     const username = localStorage.getItem('username'); // Get username from local storage
 
     useEffect(() => {
@@ -52,9 +50,9 @@ const softwareMaster = () => {
         } catch (error) {
             if (error.response && error.response.status === 409) {
                 setError('Software with this name already exists');
-              } else {
+            } else {
                 setError('Error adding software');
-              }
+            }
         }
     };
 
@@ -114,6 +112,7 @@ const softwareMaster = () => {
         <div>
             <Home />
             <div className="overflow-x-auto shadow-md absolute right-0 w-5/6">
+                <p className='shadow-md bg-gray-100 border-gray-200 p-3 m-0 dark:bg-gray-700 relative self-right text-xl font-semibold whitespace-nowrap dark:text-gray-400'>Software Master</p>
                 <input
                     type="text"
                     id="search"
@@ -167,7 +166,7 @@ const softwareMaster = () => {
                     className="p-2 mx-1.5 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-3.5 text-center"
                 >Add
                 </button>
-                <SoftwareForm isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleFormSubmit} error = {error}/>
+                <SoftwareForm isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleFormSubmit} error={error} />
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>

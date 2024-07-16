@@ -50,9 +50,9 @@ const categoryMaster = () => {
         } catch (error) {
             if (error.response && error.response.status === 409) {
                 setError('Category with this name already exists');
-              } else {
+            } else {
                 setError('Error adding software');
-              }
+            }
         }
     };
 
@@ -101,6 +101,7 @@ const categoryMaster = () => {
         <div>
             <Home />
             <div className="overflow-x-auto shadow-md absolute right-0 w-5/6">
+                <p className='shadow-md bg-gray-100 border-gray-200 p-3 m-0 dark:bg-gray-700 relative self-right text-xl font-semibold whitespace-nowrap dark:text-gray-400'>Category Master</p>
                 <input
                     type="text"
                     id="search"

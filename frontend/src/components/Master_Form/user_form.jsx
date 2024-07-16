@@ -34,10 +34,27 @@ const UserForm = ({ isOpen, onClose, onSubmit, error }) => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
+        let newFormData = {
             ...formData,
             [name]: value
-        });
+        };
+
+        if (name === 'role') {
+            switch (value) {
+                case 'Admin':
+                    newFormData.partner_code = 'ADMIN';
+                    break;
+                case 'Orbis':
+                    newFormData.partner_code = 'ORBIS';
+                    break;
+                case 'Helpdesk':
+                    newFormData.partner_code = 'HELPDESK';
+                    break;
+                default:
+                    newFormData.partner_code = '';
+            }
+        }
+        setFormData(newFormData);
     };
 
     const handleSubmit = async (e) => {
@@ -51,6 +68,9 @@ const UserForm = ({ isOpen, onClose, onSubmit, error }) => {
 
         onSubmit(formData);
     };
+
+    const isUserEditable = formData.role === 'Partner';
+
 
     if (!isOpen) {
         return null;
@@ -150,24 +170,25 @@ const UserForm = ({ isOpen, onClose, onSubmit, error }) => {
                             >
                                 <option value="">Select Role</option>
                                 <option value="Admin">Admin</option>
-                                <option value="Orbis">Orbis</option>
+                                <option value="Orbis">Orbis User</option>
                                 <option value="Helpdesk">Helpdesk</option>
-                                <option value="Partner">Partner</option>
+                                <option value="Partner">Partner User</option>
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner Code<span className='text-red-700 font-bold text-sm'>*</span></label>
+                            <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner Name<span className='text-red-700 font-bold text-sm'>*</span></label>
                             <select
                                 name="partner_code"
                                 value={formData.partner_code}
                                 onChange={handleChange}
                                 className="appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                required
+                                required={isUserEditable}
+                                disabled={!isUserEditable}
                             >
-                                <option value="">Select Partner Code</option>
+                                <option value="">Select Partner Name</option>
                                 {partnerCodes.map((code) => (
                                     <option key={code.partner_code} value={code.partner_code}>
-                                        {code.partner_code}
+                                        {code.partner_name}
                                     </option>
                                 ))}
                             </select>

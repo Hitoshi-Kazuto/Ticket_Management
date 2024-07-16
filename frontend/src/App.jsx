@@ -1,13 +1,16 @@
 import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import Login from './components/login'
-import Dashboard from './masters/dashboard'
+import Dashboard from './dashboard'
+import UserDashboard from './user_dashboard'
+
 import Partner from './masters/partner_master'
 import Software from './masters/software_master'
 import Category from './masters/category_master'
 import Status from './masters/status_master'
 import User from './masters/user_master'
 import TicketMaster from './masters/ticket_master'
+
 import ProtectedRoute from './components/Hooks/protectedRoute'
 import useHistoryBlock from './components/Hooks/useHistory'
 import PrivateRoute from './components/Hooks/privateRoute'
@@ -19,7 +22,6 @@ function App() {
   return (
     <IdleTimeout>
       <Routes>
-
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
@@ -29,6 +31,8 @@ function App() {
         <Route path="/category" element={<ProtectedRoute><Category /></ProtectedRoute>} />
         <Route path="/status" element={<ProtectedRoute><Status /></ProtectedRoute>} />
         <Route path="/ticket" element={<ProtectedRoute><TicketMaster /></ProtectedRoute>} />
+
+        <Route path="/user-dashboard" element={<ProtectedRoute><UserDashboard /></ProtectedRoute>} />
       </Routes>
     </IdleTimeout>
   )

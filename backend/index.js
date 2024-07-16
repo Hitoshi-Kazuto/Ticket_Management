@@ -1,31 +1,36 @@
+import dotenv from "dotenv";
+// Load environment variables
+dotenv.config();
+
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import session from "express-session";
 import pool from "./config.js";
-import login from "./routes/login_route.js";
-import ticket from "./routes/ticket_routes.js";
-import user from "./routes/user_routes.js";
-import partner from "./routes/partner_routes.js";
-import software from "./routes/software_routes.js";
-import category from "./routes/category_routes.js";
-import status from "./routes/status_routes.js";
+import passport from "passport";
+import authenticate from "./middlewares/authenticate.js";
+import authorize from "./middlewares/authorize.js";
 
-const PORT = 3000;
+import login from "./routes/login_route.js";
+import ticket from "./controllers/ticket_controller.js";
+import user from "./routes/user_route.js";
+import partner from "./routes/partner_route.js";
+import software from "./routes/software_route.js";
+import category from "./routes/category_route.js";
+import status from "./routes/status_route.js";
+
+
+const PORT = process.env.port || 3000;
 const app = express();
 app.use(bodyParser.json());
 app.use(cors({
     origin: 'http://localhost:5173', // allow requests from react app
     credentials: true, // allow cookies to be sent
 }));
+// Initialize passport
+app.use(passport.initialize());
 
-// Configure session middleware
-app.use(session({
-    secret: 'secret_key', // Replace with a strong secret key
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: false } // Set secure to true if using HTTPS
-}));
+
 
 app.use('/login', login);
 
@@ -33,7 +38,7 @@ app.use('/user', user);
 
 app.use('/partner', partner);
 
-app.use('/software',software);
+app.use('/software', software);
 
 app.use('/category', category);
 
@@ -77,7 +82,7 @@ app.post('/change-password', async (req, res) => {
 });
 app.get('/partner-codes', async (req, res) => {
     try {
-        const query = 'SELECT partner_code FROM Partner_Master WHERE status = true';
+        const query = 'SELECT * FROM Partner_Master WHERE status = true';
         const result = await pool.query(query);
         res.json(result.rows);
     } catch (error) {
@@ -91,11 +96,15 @@ app.get('/dropdown-values', async (req, res) => {
         const softwares = await pool.query("SELECT * FROM Software_Master WHERE status = 'True'");
         const categories = await pool.query("SELECT * FROM Category_Master WHERE status = 'True'");
         const statuses = await pool.query("SELECT * FROM Status_Master WHERE status_activity = 'True'");
+        const usernames = await pool.query("SELECT * FROM User_Master WHERE role = 'Orbis' OR role = 'Helpdesk' ");
+        const requested_by = await pool.query("SELECT * FROM User_Master")
         res.json({
             partners: partners.rows,
             softwares: softwares.rows,
             categories: categories.rows,
-            statuses: statuses.rows
+            statuses: statuses.rows,
+            usernames: usernames.rows,
+            requested_by: requested_by.rows,
         });
     } catch (error) {
         console.error('Error fetching dropdown values:', error);

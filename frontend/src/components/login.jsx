@@ -19,12 +19,13 @@ const Login = () => {
                 // Save the token to localStorage (or context/state)
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('username', response.data.user.username);
+                localStorage.setItem('role',response.data.user.role);
                 
                 // Redirect based on user role
                 if (response.data.user.role === 'Admin') {
                     navigate('/dashboard');
-                } else {
-                    navigate('/home');
+                } else if (response.data.user.role === 'Partner' || response.data.user.role === 'Orbis'){
+                    navigate('/user-dashboard');
                 }
             } else {
                 setError(response.data.message);

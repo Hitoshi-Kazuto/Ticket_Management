@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Home from '../components/Home/home';
-import TicketForm from '../components/Master_Form/ticket_form';
-import TicketInfoPopup from '../components/Master_Info/ticket_info';
+import AdminTicketForm, { UserTicketForm } from '../components/Master_Form/ticket_form';
+import TicketUpdatePopup, { UserTicketInfo } from '../components/Master_Info/ticket_info';
+import UpdateInfoPopup from '../components/Master_Info/update_info'
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 
 const TicketMaster = () => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -11,29 +12,72 @@ const TicketMaster = () => {
     const [selectedTicket, setSelectedTicket] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [error, setError] = useState('');
-    const [statusFilter, setStatusFilter] = useState('all');  
-    const username = localStorage.getItem('username'); // Get username from local storage
+    const [statusFilter, setStatusFilter] = useState('all');
+    const [showUpdatesPopup, setShowUpdatesPopup] = useState(false);
+    const [updates, setUpdates] = useState([]);
+    const [selectedTicketId, setSelectedTicketId] = useState(null);
     const [dropdownValues, setDropdownValues] = useState({
         partners: [],
         softwares: [],
         categories: [],
-        statuses: []
+        statuses: [],
+        usernames: [],
+        requested_by: [],
     });
 
     useEffect(() => {
         // Fetch Ticket data from backend when component mounts
-        fetchTicketData();
+        fetchDataBasedOnRoles();
     }, []);
 
-    const fetchTicketData = () => {
-        axios.get('http://localhost:3000/ticket') // Replace with your backend endpoint
+    const getUserRole = () => {
+        const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+        if (token) {
+            const decoded = jwtDecode(token); // Decode the token
+            return decoded.role; // Extract the role from the decoded token
+        }
+        return null;
+    };
+
+    const getUsername = () => {
+        const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+        if (token) {
+            const decoded = jwtDecode(token); // Decode the token
+            return decoded.username; // Extract the role from the decoded token
+        }
+        return null;
+    };
+
+    const fetchDataBasedOnRoles = async () => {
+        const role = getUserRole();
+        const username = getUsername();
+        let apiUrl;
+        switch (role) {
+            case 'Admin':
+                apiUrl = 'http://localhost:3000/ticket/admin-access';
+                break;
+            case 'Partner':
+                apiUrl = `http://localhost:3000/ticket/user-access/${username}`;
+                break;
+            case 'Orbis':
+                apiUrl = `http://localhost:3000/ticket/user-access/${username}`;
+                break;
+            case 'Helpdesk':
+                apiUrl = 'http://localhost:3000/ticket/helpdesk-access'
+
+        }
+        axios.get(apiUrl, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        }) // Include the token in headers) // Replace with your backend endpoint
             .then(response => {
                 setTickets(response.data);
             })
             .catch(error => {
                 console.error('Error fetching Tickets', error);
             });
-    };
+    }
 
     const handleAddClick = () => {
         setIsPopupOpen(true);
@@ -44,11 +88,34 @@ const TicketMaster = () => {
     };
 
     const handleFormSubmit = async (formData) => {
-        formData.created_by = username;
+        const role = getUserRole();
+        let apiUrl;
+
+        switch (role) {
+            case 'Admin':
+                apiUrl = 'http://localhost:3000/ticket/admin-access/ticket-form';
+                break;
+            case 'Partner':
+            case 'Orbis':
+                apiUrl = 'http://localhost:3000/ticket/user-access/ticket-form';
+                break;
+            case 'Helpdesk':
+                apiUrl = 'http://localhost:3000/ticket/helpdesk-access/ticket-form';
+                break;
+            default:
+                console.error('Role not recognized');
+                return;
+        }
+
         try {
-            const response = await axios.post('http://localhost:3000/ticket/ticket-form', formData);
+            const response = await axios.post(apiUrl, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
             if (response.data.success) {
-                fetchTicketData(); // Refetch data after successful submission
+                fetchDataBasedOnRoles(); // Refetch data after successful submission
                 handleClosePopup(); // Close the popup
                 setError('');
             } else {
@@ -57,47 +124,46 @@ const TicketMaster = () => {
         } catch (error) {
             if (error.response && error.response.status === 409) {
                 setError(error.response.data.message);
-              } else {
+            } else {
                 setError('Error adding Ticket');
-              }
+            }
         }
     };
 
 
-    const handleInfoClick = (ticket) => {
-        setSelectedTicket(ticket);
+    const handleUpdateClick = (Ticket) => {
+        setSelectedTicket(Ticket);
     };
 
-    const handleCloseInfoPopup = () => {
+    const handleCloseUpdatePopup = () => {
         setSelectedTicket(null);
-        fetchTicketData();
+        fetchDataBasedOnRoles();
     };
 
-    const handleClose = async (ticket_id) => {
+    const fetchUpdates = async (ticket_id) => {
         try {
-            const response = await axios.post('http://localhost:3000/ticket/close', { ticket_id });
-            if (response.data.success) {
-                fetchTicketData(); // Refresh data after successful deletion
+            const response = await fetch(`http://localhost:3000/ticket/admin-access/ticket-updates/${ticket_id}`);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            if (data.success) {
+                setUpdates(data.updates);
             } else {
-                console.error('Closing unsuccessful:', response.data.error);
+                console.error('Failed to fetch updates');
+                return [];
             }
         } catch (error) {
-            console.error('Error closing Ticket:', error);
+            console.error('Error fetching updates:', error);
+            return [];
         }
     };
 
-    const handleOpen = async (ticket_id) => {
-        try {
-            const response = await axios.post('http://localhost:3000/ticket/open', { ticket_id });
-            if (response.data.success) {
-                fetchTicketData(); // Refresh data after successful deletion
-            } else {
-                console.error('Opening unsuccessful:', response.data.error);
-            }
-        } catch (error) {
-            console.error('Error opening Ticket:', error);
-        }
-    }
+    const handleShowUpdates = (ticket_id) => {
+        setSelectedTicketId(ticket_id);
+        fetchUpdates(ticket_id);
+        setShowUpdatesPopup(true);
+    };
 
     useEffect(() => {
         const fetchDropdownValues = async () => {
@@ -113,13 +179,16 @@ const TicketMaster = () => {
 
     const filteredTickets = Tickets.filter(Ticket =>
         Ticket.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
-        (statusFilter === 'all' || (statusFilter === 'critical' && Ticket.priority === 'Critical') || (statusFilter === 'high' && Ticket.priority === 'High')  || (statusFilter === 'medium' && Ticket.priority === 'Medium')  || (statusFilter === 'low' && Ticket.priority === 'Low'))
+        (statusFilter === 'all' || (statusFilter === 'critical' && Ticket.priority === 'Critical') || (statusFilter === 'high' && Ticket.priority === 'High') || (statusFilter === 'medium' && Ticket.priority === 'Medium') || (statusFilter === 'low' && Ticket.priority === 'Low'))
     );
+
+    const role = getUserRole();
 
     return (
         <div>
             <Home />
             <div className="overflow-x-auto shadow-md absolute right-0 w-5/6">
+                <p className='shadow-md bg-gray-100 border-gray-200 p-3 m-0 dark:bg-gray-700 relative self-right text-xl font-semibold whitespace-nowrap dark:text-gray-400'>Ticket Management</p>
                 <input
                     type="text"
                     id="search"
@@ -187,68 +256,110 @@ const TicketMaster = () => {
                     className="p-2 mx-1.5 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-3.5 text-center"
                 >Add
                 </button>
-                <TicketForm isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleFormSubmit} error={error} dropdownValues={dropdownValues}/>
+                {role === 'Admin' && (
+                    <AdminTicketForm
+                        isOpen={isPopupOpen}
+                        onClose={handleClosePopup}
+                        onSubmit={handleFormSubmit}
+                        error={error}
+                        dropdownValues={dropdownValues}
+                    />
+                )}
+                {role === 'Partner' || role === 'Orbis' && (
+                    <UserTicketForm
+                        isOpen={isPopupOpen}
+                        onClose={handleClosePopup}
+                        onSubmit={handleFormSubmit}
+                        error={error}
+                        dropdownValues={dropdownValues}
+                    />
+                )}
+                {/* {role === 'Helpdesk' && (
+                    <HelpdeskForm 
+                        isOpen={isPopupOpen} 
+                        onClose={handleClosePopup} 
+                        onSubmit={handleFormSubmit} 
+                        error={error} 
+                        dropdownValues={dropdownValues} 
+                    />
+                )} */}
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" className="px-6 py-3">Title</th>
+                            <th scope="col" className="px-6 py-3">Requested By</th>
                             <th scope="col" className="px-6 py-3">Organization</th>
-                            <th scope="col" className="px-6 py-3">Partner Name</th>
                             <th scope="col" className="px-6 py-3">Priority</th>
                             <th scope="col" className="px-6 py-3">Status</th>
-                            <th scope="col" className="px-3 py-3"><span className="sr-only">Info</span></th>
+                            <th scope="col" className="px-3 py-3"><span className="sr-only">Update</span></th>
                             <th scope="col" className="pl-3 pr-6 py-3"><span className="sr-only">Edit</span></th>
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredTickets.map(ticket => (
-                            <tr key={ticket.ticket_id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {ticket.title}
+                        {filteredTickets.map(Ticket => (
+                            <tr key={Ticket.ticket_id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    {Ticket.title}
                                 </td>
                                 <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {ticket.organization}
+                                    {Ticket.requested_by}
+                                </td>
+                                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    {Ticket.organization}
                                 </td>
                                 <td className="px-6 py-4">
-                                    {ticket.partner_name}
+                                    {Ticket.priority}
                                 </td>
                                 <td className="px-6 py-4">
-                                    {ticket.priority}
-                                </td>
-                                <td className="px-6 py-4">
-                                    {ticket.status}
+                                    {Ticket.status}
                                 </td>
                                 <td className="px-2 py-4 text-right">
                                     <a
-                                        onClick={() => handleInfoClick(ticket)}
+                                        onClick={() => handleUpdateClick(Ticket)}
                                         className="text-white px-4 py-2 rounded-md bg-blue-700 hover:bg-blue-800"
-                                    >Info
+                                    >Ticket Info
                                     </a>
                                 </td>
                                 <td className="px-2 py-4 text-center">
-                                    {ticket.status ? <button
-                                        onClick={() => handleClose(ticket.ticket_id)}
-                                        className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700"
-                                    >Close
-                                    </button> :
-                                        <button
-                                            onClick={() => handleOpen(ticket.ticket_id)}
-                                            className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700"
-                                        >Open
-                                        </button>}
+                                    <a
+                                        onClick={() => handleShowUpdates(Ticket.ticket_id)}
+                                        className="text-white px-4 py-2 rounded-md bg-purple-500 hover:bg-purple-800"
+                                    >Update Info
+                                    </a>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
-                {selectedTicket && (
-                    <TicketInfoPopup
+                {role === 'Admin' && selectedTicket && (
+                    <TicketUpdatePopup
                         isOpen={true}
-                        Ticket={selectedTicket}
-                        onClose={handleCloseInfoPopup}
+                        ticket={selectedTicket}
+                        onClose={handleCloseUpdatePopup}
                         dropdownValues={dropdownValues}
                     />
                 )}
+                {role === 'Partner' && selectedTicket && (
+                    <UserTicketInfo
+                        isOpen={true}
+                        ticket={selectedTicket}
+                        onClose={handleCloseUpdatePopup}
+                        dropdownValues={dropdownValues}
+                    />
+                )}
+                {role === 'Orbis' && selectedTicket && (
+                    <UserTicketInfo
+                        isOpen={true}
+                        ticket={selectedTicket}
+                        onClose={handleCloseUpdatePopup}
+                        dropdownValues={dropdownValues}
+                    />
+                )}
+                <UpdateInfoPopup
+                    show={showUpdatesPopup}
+                    updates={updates}
+                    onClose={() => setShowUpdatesPopup(false)}
+                />
             </div>
         </div>
     );
