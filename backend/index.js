@@ -96,8 +96,8 @@ app.get('/dropdown-values', async (req, res) => {
         const softwares = await pool.query("SELECT * FROM Software_Master WHERE status = 'True'");
         const categories = await pool.query("SELECT * FROM Category_Master WHERE status = 'True'");
         const statuses = await pool.query("SELECT * FROM Status_Master WHERE status_activity = 'True'");
-        const usernames = await pool.query("SELECT * FROM User_Master WHERE role = 'Orbis' OR role = 'Helpdesk' ");
-        const requested_by = await pool.query("SELECT * FROM User_Master")
+        const usernames = await pool.query("SELECT * FROM User_Master WHERE role = 'Helpdesk' ");
+        const requested_by = await pool.query("SELECT * FROM User_Master WHERE role != 'Helpdesk' ")
         res.json({
             partners: partners.rows,
             softwares: softwares.rows,
@@ -128,6 +128,20 @@ app.get('/ticket-record/:ticket_id', async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+});
+app.get('/getUser/:requested_by', async (req, res) => {
+    const Requested_by = req.params.requested_by;
+    try {
+        const result = await pool.query('SELECT role, Partner_Code FROM user_master WHERE username = $1', [Requested_by]);
+        if (result.rows.length > 0) {
+            res.json({ role: result.rows[0].role, partner: result.rows[0].partner_code });
+        } else {
+            res.status(404).json({ message: 'User not found' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
     }
 });
 

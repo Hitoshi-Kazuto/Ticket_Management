@@ -14,10 +14,10 @@ const dashboard = () => {
     return (
         <div>
             <Home />
-            <div className='overflow-x-auto shadow-md absolute right-0 w-5/6 bg-gray-100 border-gray-200 p-3 m-0 dark:bg-gray-700 self-right text-xl font-semibold whitespace-nowrap dark:text-gray-400'>User Dashboard</div>
+            <div className='overflow-x-auto shadow-md absolute right-0 w-5/6 bg-gray-100 border-gray-200 p-3 m-0 dark:bg-gray-700 self-right text-xl font-semibold whitespace-nowrap dark:text-gray-400'>Helpdesk Dashboard</div>
 
         </div>
     )
 }
 
-export default dashboard
+export default dashboard;

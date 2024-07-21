@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Home from '../components/Home/home';
-import AdminTicketForm, { UserTicketForm, HelpdeskTicketForm } from '../components/Master_Form/ticket_form';
-import TicketUpdatePopup, { UserTicketInfo, HelpdeskTicketUpdatePopup } from '../components/Master_Info/ticket_info';
+import TicketUpdatePopup, { UserTicketInfo } from '../components/Master_Info/ticket_info';
 import UpdateInfoPopup from '../components/Master_Info/update_info'
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
@@ -54,16 +53,16 @@ const TicketMaster = () => {
         let apiUrl;
         switch (role) {
             case 'Admin':
-                apiUrl = 'http://localhost:3000/ticket/admin-access';
+                apiUrl = 'http://localhost:3000/ticket/closed-ticket/admin-access';
                 break;
             case 'Partner':
-                apiUrl = `http://localhost:3000/ticket/user-access/${username}`;
+                apiUrl = `http://localhost:3000/ticket/closed-ticket/user-access/${username}`;
                 break;
             case 'Orbis':
-                apiUrl = `http://localhost:3000/ticket/user-access/${username}`;
+                apiUrl = `http://localhost:3000/ticket/closed-ticket/user-access/${username}`;
                 break;
             case 'Helpdesk':
-                apiUrl = 'http://localhost:3000/ticket/helpdesk-access/all'
+                apiUrl = 'http://localhost:3000/ticket/closed-ticket/helpdesk-access'
 
         }
         axios.get(apiUrl, {
@@ -78,57 +77,6 @@ const TicketMaster = () => {
                 console.error('Error fetching Tickets', error);
             });
     }
-
-    const handleAddClick = () => {
-        setIsPopupOpen(true);
-    };
-
-    const handleClosePopup = () => {
-        setIsPopupOpen(false);
-    };
-
-    const handleFormSubmit = async (formData) => {
-        const role = getUserRole();
-        let apiUrl;
-
-        switch (role) {
-            case 'Admin':
-                apiUrl = 'http://localhost:3000/ticket/admin-access/ticket-form';
-                break;
-            case 'Partner':
-            case 'Orbis':
-                apiUrl = 'http://localhost:3000/ticket/user-access/ticket-form';
-                break;
-            case 'Helpdesk':
-                apiUrl = 'http://localhost:3000/ticket/helpdesk-access/ticket-form';
-                break;
-            default:
-                console.error('Role not recognized');
-                return;
-        }
-
-        try {
-            const response = await axios.post(apiUrl, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            if (response.data.success) {
-                fetchDataBasedOnRoles(); // Refetch data after successful submission
-                handleClosePopup(); // Close the popup
-                setError('');
-            } else {
-                console.error('Form submission unsuccessful');
-            }
-        } catch (error) {
-            if (error.response && error.response.status === 409) {
-                setError(error.response.data.message);
-            } else {
-                setError('Error adding Ticket');
-            }
-        }
-    };
 
 
     const handleUpdateClick = (Ticket) => {
@@ -188,7 +136,7 @@ const TicketMaster = () => {
         <div>
             <Home />
             <div className="overflow-x-auto shadow-md absolute right-0 w-5/6">
-                <p className='shadow-md bg-gray-100 border-gray-200 p-3 m-0 dark:bg-gray-700 relative self-right text-xl font-semibold whitespace-nowrap dark:text-gray-400'>Ticket Management</p>
+                <p className='shadow-md bg-gray-100 border-gray-200 p-3 m-0 dark:bg-gray-700 relative self-right text-xl font-semibold whitespace-nowrap dark:text-gray-400'>Closed Tickets</p>
                 <input
                     type="text"
                     id="search"
@@ -250,48 +198,6 @@ const TicketMaster = () => {
                     />
                     <label htmlFor="low" className="mr-3">Low</label>
                 </div>
-                <button
-                    onClick={handleAddClick}
-                    type="button"
-                    className="p-2 mx-1.5 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-3.5 text-center"
-                >Add
-                </button>
-                {role === 'Admin' && (
-                    <AdminTicketForm
-                        isOpen={isPopupOpen}
-                        onClose={handleClosePopup}
-                        onSubmit={handleFormSubmit}
-                        error={error}
-                        dropdownValues={dropdownValues}
-                    />
-                )}
-                {role === 'Partner' && (
-                    <UserTicketForm
-                        isOpen={isPopupOpen}
-                        onClose={handleClosePopup}
-                        onSubmit={handleFormSubmit}
-                        error={error}
-                        dropdownValues={dropdownValues}
-                    />
-                )}
-                {role === 'Orbis' && (
-                    <UserTicketForm
-                        isOpen={isPopupOpen}
-                        onClose={handleClosePopup}
-                        onSubmit={handleFormSubmit}
-                        error={error}
-                        dropdownValues={dropdownValues}
-                    />
-                )}
-                {role === 'Helpdesk' && (
-                    <HelpdeskTicketForm 
-                        isOpen={isPopupOpen} 
-                        onClose={handleClosePopup} 
-                        onSubmit={handleFormSubmit} 
-                        error={error} 
-                        dropdownValues={dropdownValues} 
-                    />
-                )}
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
@@ -358,14 +264,6 @@ const TicketMaster = () => {
                 )}
                 {role === 'Orbis' && selectedTicket && (
                     <UserTicketInfo
-                        isOpen={true}
-                        ticket={selectedTicket}
-                        onClose={handleCloseUpdatePopup}
-                        dropdownValues={dropdownValues}
-                    />
-                )}
-                {role === 'Helpdesk' && selectedTicket && (
-                    <HelpdeskTicketUpdatePopup
                         isOpen={true}
                         ticket={selectedTicket}
                         onClose={handleCloseUpdatePopup}

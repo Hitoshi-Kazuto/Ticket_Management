@@ -26,6 +26,8 @@ const Login = () => {
                     navigate('/dashboard');
                 } else if (response.data.user.role === 'Partner' || response.data.user.role === 'Orbis'){
                     navigate('/user-dashboard');
+                } else if (response.data.user.role === 'Helpdesk'){
+                    navigate('/helpdesk-dashboard');
                 }
             } else {
                 setError(response.data.message);
