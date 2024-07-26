@@ -13,7 +13,7 @@ export const createUser = async (req, res) => {
         email,
         mobile,
         role,
-        partner_code,
+        partner_name,
         created_by,
         valid_from,
         valid_till
@@ -29,11 +29,11 @@ export const createUser = async (req, res) => {
         const active_status = true;
         const query = `
             INSERT INTO user_master
-            (user_id, name, username, password, email_address, mobile_number, role, partner_code, active_status, created_by, created_time, valid_from, valid_till) 
+            (user_id, name, username, password, email_address, mobile_number, role, partner_name, active_status, created_by, created_time, valid_from, valid_till) 
             VALUES (uuid_generate_v4(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
             RETURNING *;
         `;
-        const values = [name, username, hashedPassword, email, mobile, role, partner_code, active_status, created_by, created_time, valid_from, valid_till];
+        const values = [name, username, hashedPassword, email, mobile, role, partner_name, active_status, created_by, created_time, valid_from, valid_till];
 
         const result = await pool.query(query, values);
 

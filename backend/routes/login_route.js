@@ -32,7 +32,7 @@ app.post('/', async (req, res) => {
             return res.json({ success: false, message: 'Incorrect password' });
         }
 
-        const token = jwt.sign({ id: user.user_id, username: user.username, role: user.role }, jwtSecret, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user.user_id, username: user.username, role: user.role, partner_name: user.partner_name }, jwtSecret, { expiresIn: '1h' });
 
         res.json({ success: true, token, user });
     } catch (error) {

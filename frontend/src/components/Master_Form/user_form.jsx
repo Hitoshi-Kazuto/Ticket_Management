@@ -1,7 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import validator from 'validator';
 
-const UserForm = ({ isOpen, onClose, onSubmit, error }) => {
+
+const setPartnerName = (role) => {
+    let partnerName = '';
+    switch (role) {
+        case 'Admin':
+            partnerName = 'Admin';
+            break;
+        case 'Orbis':
+            partnerName = 'Orbis User';
+            break;
+        case 'Helpdesk':
+            partnerName = 'Helpdesk';
+            break;
+        default:
+            partnerName = '';
+    }
+    return partnerName;
+};
+
+const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
     const [formData, setFormData] = useState({
         name: '',
         username: '',
@@ -10,27 +30,16 @@ const UserForm = ({ isOpen, onClose, onSubmit, error }) => {
         email: '',
         mobile: '',
         role: '',
-        partner_code: '',
+        partner_name: '',
         valid_from: '',
         valid_till: ''
     });
 
-    const [partnerCodes, setPartnerCodes] = useState([]);
-
-    useEffect(() => {
-        if (isOpen) {
-            fetchPartnerCodes();
-        }
-    }, [isOpen]);
-
-    const fetchPartnerCodes = async () => {
-        try {
-            const response = await axios.get('http://localhost:3000/partner-codes');
-            setPartnerCodes(response.data);
-        } catch (error) {
-            console.error('Error fetching partner codes:', error);
-        }
-    };
+    const [filteredPartners, setFilteredPartners] = useState(dropdownValues.partners);
+    const [emailError, setEmailError] = useState('');
+    const [emailValid, setEmailValid] = useState('');
+    const [phoneError, setPhoneError] = useState('');
+    const [phoneValid, setPhoneValid] = useState('');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -39,21 +48,41 @@ const UserForm = ({ isOpen, onClose, onSubmit, error }) => {
             [name]: value
         };
 
-        if (name === 'role') {
-            switch (value) {
-                case 'Admin':
-                    newFormData.partner_code = 'ADMIN';
-                    break;
-                case 'Orbis':
-                    newFormData.partner_code = 'ORBIS';
-                    break;
-                case 'Helpdesk':
-                    newFormData.partner_code = 'HELPDESK';
-                    break;
-                default:
-                    newFormData.partner_code = '';
+
+        if (name === 'email') {
+            if (validator.isEmail(value)) {
+                setEmailValid('')
+                setEmailError('')
+            } else {
+                setEmailValid('')
+                setEmailError('Enter valid Email!')
             }
         }
+
+        if (name === 'mobile') {
+            if (validator.isMobilePhone(value)) {
+                setPhoneValid("");
+                setPhoneError("");
+            } else {
+                setPhoneError('Enter valid Phone Number!');
+                setPhoneValid("");
+            }
+        }
+
+
+        if (name === 'role') {
+            newFormData.partner_name = setPartnerName(value);
+
+            // Filter partners only when organization is 'Partner'
+            if (value === 'Partner') {
+                setFilteredPartners(dropdownValues.partners.filter(partner =>
+                    partner.partner_name !== 'Admin' && partner.partner_name !== 'Orbis User' && partner.partner_name !== 'Helpdesk'
+                ));
+            } else {
+                setFilteredPartners(dropdownValues.partners);
+            }
+        }
+
         setFormData(newFormData);
     };
 
@@ -134,7 +163,7 @@ const UserForm = ({ isOpen, onClose, onSubmit, error }) => {
                             />
                         </div>
                     </div>
-                    <div className="flex flex-wrap -mx-3 mb-6">
+                    <div className="flex flex-wrap -mx-3 mb-3">
                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Email Address<span className='text-red-700 font-bold text-sm'>*</span></label>
                             <input
@@ -158,7 +187,20 @@ const UserForm = ({ isOpen, onClose, onSubmit, error }) => {
                             />
                         </div>
                     </div>
-                    <div className="flex flex-wrap -mx-3 mb-6">
+                    {
+                    <div className="flex flex-wrap -mx-3">
+                    <div className="w-full md:w-1/2 px-3">
+                            {emailError && <div className="text-red-700 ">{emailError}</div>}
+                            {emailValid && <div className="text-blue-700 ">{emailValid}</div>}
+                        </div>
+                        <div className="w-full md:w-1/2 px-3">
+                            {phoneError && <div className="text-red-700 ">{phoneError}</div>}
+                            {phoneValid && <div className="text-blue-700 ">{phoneValid}</div>}
+                        </div>
+                    </div>
+                    }
+
+                    <div className="flex flex-wrap -mx-3 mt-3 mb-6">
                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Role<span className='text-red-700 font-bold text-sm'>*</span></label>
                             <select
@@ -178,18 +220,16 @@ const UserForm = ({ isOpen, onClose, onSubmit, error }) => {
                         <div className="w-full md:w-1/2 px-3">
                             <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner Name<span className='text-red-700 font-bold text-sm'>*</span></label>
                             <select
-                                name="partner_code"
-                                value={formData.partner_code}
+                                name="partner_name"
+                                value={formData.partner_name}
                                 onChange={handleChange}
                                 className="appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 required={isUserEditable}
                                 disabled={!isUserEditable}
                             >
                                 <option value="">Select Partner Name</option>
-                                {partnerCodes.map((code) => (
-                                    <option key={code.partner_code} value={code.partner_code}>
-                                        {code.partner_name}
-                                    </option>
+                                {filteredPartners.map((partner) => (
+                                    <option key={partner.partner_id} value={partner.partner_name}>{partner.partner_name}</option>
                                 ))}
                             </select>
                         </div>

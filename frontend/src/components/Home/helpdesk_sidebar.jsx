@@ -9,11 +9,11 @@ const Sidebar = () => {
     };
 
     return (
-        <aside id="sidebar-multi-level-sidebar" className="fixed top-0 left-0 z-40 w-1/6 h-screen bg-gray-100 dark:bg-gray-800">
+        <aside id="sidebar-multi-level-sidebar" className="fixed top-0 left-0 z-40 w-1/6 h-screen bg-gray-300 dark:bg-gray-900">
             <div className="h-full px-3 py-4 overflow-y-auto">
                 <NavLink
                     to='/helpdesk-dashboard'
-                    className={`flex items-center w-full p-2 mt-14 mb-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700`}
+                    className={`flex items-center w-full p-2 mt-14 mb-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800`}
 
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier">
@@ -25,7 +25,7 @@ const Sidebar = () => {
                 <div className="relative">
                     <button
                         type="button"
-                        className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                        className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
                         aria-controls="dropdown-ticket-management"
                         onClick={toggleDropdown}
                     >
@@ -38,19 +38,19 @@ const Sidebar = () => {
                         <div id="dropdown-ticket-management" className="space-y-2 pl-8 mt-1">
                             <NavLink
                                 to='/assign-staff'
-                                className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                                className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
                             >
                                 Assign Staff
                             </NavLink>
                             <NavLink
                                 to='/ticket'
-                                className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                                className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
                             >
                                 View Tickets
                             </NavLink>
                             <NavLink
                                 to='/closed-ticket'
-                                className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                                className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
                             >
                                 Closed Tickets
                             </NavLink>

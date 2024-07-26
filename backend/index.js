@@ -84,7 +84,7 @@ app.get('/partner-codes', async (req, res) => {
     try {
         const query = 'SELECT * FROM Partner_Master WHERE status = true';
         const result = await pool.query(query);
-        res.json(result.rows);
+        res.json({partners: result.rows});
     } catch (error) {
         console.error('Error fetching partner codes:', error);
         res.status(500).json({ success: false, error: 'Internal Server Error' });
@@ -179,3 +179,6 @@ async function resetSequence(tableName, sequenceName, idColumn) {
         client.release();
     }
 }
+
+ 
+

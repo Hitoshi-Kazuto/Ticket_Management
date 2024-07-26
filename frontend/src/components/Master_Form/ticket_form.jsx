@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
+
+const token = localStorage.getItem('token');
+let username, role, partner_name;
+if (token) {
+    const decoded = jwtDecode(token); // Decode the token
+    username = decoded.username;
+    role = decoded.role; // Extract the role from the decoded token
+    partner_name = decoded.partner_name;
+}
 
 const setPartnerName = (organization) => {
     let partnerName = '';
@@ -7,8 +17,11 @@ const setPartnerName = (organization) => {
         case 'Admin':
             partnerName = 'Admin';
             break;
-        case 'Internal':
+        case 'Orbis':
             partnerName = 'Orbis User';
+            break;
+        case 'Partner':
+            partnerName = partner_name;
             break;
         default:
             partnerName = '';
@@ -16,15 +29,14 @@ const setPartnerName = (organization) => {
     return partnerName;
 };
 
-
-
 const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
     const username = localStorage.getItem('username');
     const role = localStorage.getItem('role');
+
     const [formData, setFormData] = useState({
-        Requested_by: username || '',
-        Organization: role || '',
-        Partner_Name: role ? setPartnerName(role) : '',
+        Requested_by: '',
+        Organization: '',
+        Partner_Name: '',
         Software_Name: '',
         Title: '',
         Description: '',
@@ -37,34 +49,25 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
 
     const [selectedFile, setSelectedFile] = useState(null);
     const [filteredPartners, setFilteredPartners] = useState(dropdownValues.partners);
-
-    const [userRole, setUserRole] = useState('');
-    const [PartnerName, setPartnerCode] = useState('');
-
-    const fetchUserRole = async (username) => {
-        if (username) {
-            try {
-                const response = await axios.get(`http://localhost:3000/getUser/${username}`);
-                const { role, partner_code } = response.data;
-                setUserRole(role);
-                setPartnerCode(partner_code);
-
-                setFormData(prevFormData => ({
-                    ...prevFormData,
-                    Organization: role,
-                    Partner_Name: partner_code
-                }));
-            } catch (error) {
-                console.error('Error fetching user role', error);
-            }
-        }
-    };
+    const [filteredUsers, setFilteredUsers] = useState(dropdownValues.requested_by);
 
     useEffect(() => {
-        if (formData.Requested_by) {
-            fetchUserRole(formData.Requested_by);
-        }
-    }, [formData.Requested_by]);
+        const filterUsersByOrganization = () => {
+            let filtered = dropdownValues.requested_by;
+
+            if (formData.Organization === 'Admin') {
+                filtered = dropdownValues.requested_by.filter(user => user.role === 'Admin');
+            } else if (formData.Organization === 'Orbis') {
+                filtered = dropdownValues.requested_by.filter(user => user.role === 'Orbis User');
+            } else if (formData.Organization === 'Partner') {
+                filtered = dropdownValues.requested_by.filter(user => user.partner_code === formData.Partner_Name);
+            }
+
+            setFilteredUsers(filtered);
+        };
+
+        filterUsersByOrganization();
+    }, [formData.Organization, formData.Partner_Name, dropdownValues.requested_by]);
 
     const handleChange = (e) => {
         const { name, value, type, files } = e.target;
@@ -76,11 +79,6 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
                 ...formData,
                 [name]: value
             };
-
-            if (name === 'Requested_by') {
-                newFormData.Requested_by = value;
-                fetchUserRole(value); // Fetch user role when Requested_by changes
-            }
 
             // If Organization field changes directly
             if (name === 'Organization') {
@@ -130,21 +128,6 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
                 </button>
                 <form onSubmit={handleSubmit}>
                     <div className="flex flex-wrap -mx-3 mb-4">
-                        <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Requested By</label>
-                            <select
-                                name="Requested_By"
-                                value={formData.Requested_by}
-                                onChange={handleChange}
-                                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                required
-                            >
-                                <option value="">---- Select User ----</option>
-                                {dropdownValues.requested_by.map((user) => (
-                                    <option key={user.user_id} value={user.username}>{user.name}</option>
-                                ))}
-                            </select>
-                        </div>
                         <div className="w-full md:w-1/2 px-3">
                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Organization</label>
                             <select
@@ -156,12 +139,10 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
                             >
                                 <option value="">---- Select Organization ----</option>
                                 <option value="Admin">Admin</option>
-                                <option value="Internal">Orbis</option>
+                                <option value="Orbis">Orbis</option>
                                 <option value="Partner">Partner</option>
                             </select>
                         </div>
-                    </div>
-                    <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner</label>
                             <select
@@ -175,6 +156,23 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
                                 <option value="">---- Select Partner ----</option>
                                 {filteredPartners.map((partner) => (
                                     <option key={partner.partner_id} value={partner.partner_name}>{partner.partner_name}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                    <div className="flex flex-wrap -mx-3 mb-4">
+                        <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
+                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Requested By</label>
+                            <select
+                                name="Requested_by" q
+                                value={formData.Requested_by}
+                                onChange={handleChange}
+                                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                required
+                            >
+                                <option value="">---- Select User ----</option>
+                                {filteredUsers.map((user) => (
+                                    <option key={user.user_id} value={user.username}>{user.username}</option>
                                 ))}
                             </select>
                         </div>
@@ -307,12 +305,18 @@ export default AdminTicketForm;
 
 
 const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
-    const username = localStorage.getItem('username');
-    const role = localStorage.getItem('role');
+    const token = localStorage.getItem('token');
+    let username, role, partner_name;
+    if (token) {
+        const decoded = jwtDecode(token); // Decode the token
+        username = decoded.username;
+        role = decoded.role; // Extract the role from the decoded token
+        partner_name = decoded.partner_name;
+    }
     const [formData, setFormData] = useState({
         Requested_by: username || '',
         Organization: role || '',
-        Partner_Name: role ? setPartnerName(role) : '',
+        Partner_Name: partner_name || '',
         Software_Name: '',
         Title: '',
         Description: '',
@@ -338,19 +342,7 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
                 [name]: value
             };
 
-            // If Organization field changes directly
-            if (name === 'Organization') {
-                newFormData.Partner_Name = setPartnerName(value);
 
-                // Filter partners only when organization is 'Partner'
-                if (value === 'Partner') {
-                    setFilteredPartners(dropdownValues.partners.filter(partner =>
-                        partner.partner_name !== 'Admin' && partner.partner_name !== 'Orbis User' && partner.partner_name !== 'Helpdesk'
-                    ));
-                } else {
-                    setFilteredPartners(dropdownValues.partners);
-                }
-            }
 
             setFormData(newFormData);
         }
@@ -368,7 +360,6 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
         onSubmit(formDataToSubmit);
     };
 
-    const isPartnerEditable = formData.Organization === 'Partner';
 
     if (!isOpen) {
         return null;
@@ -388,11 +379,11 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Requested By</label>
                             <select
-                                name="Requested_By"
+                                name="Requested_by"
                                 value={formData.Requested_by}
                                 onChange={handleChange}
                                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                required
+                                disabled
                             >
                                 <option value="">---- Select User ----</option>
                                 {dropdownValues.requested_by.map((user) => (
@@ -407,28 +398,27 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
                                 value={formData.Organization}
                                 onChange={handleChange}
                                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                required
+                                disabled
                             >
                                 <option value="">---- Select Organization ----</option>
                                 <option value="Admin">Admin</option>
-                                <option value="Internal">Internal</option>
+                                <option value="Orbis">Orbis</option>
                                 <option value="Partner">Partner</option>
                             </select>
                         </div>
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner Name</label>
                             <select
                                 name="Partner_Name"
                                 value={formData.Partner_Name}
                                 onChange={handleChange}
                                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                required={isPartnerEditable}
-                                disabled={!isPartnerEditable}
+                                disabled
                             >
-                                <option value="">---- Select Partner ----</option>
-                                {filteredPartners.map((partner) => (
+                                <option value=" ">---- Select Partner ----</option>
+                                {dropdownValues.partners.map((partner) => (
                                     <option key={partner.partner_id} value={partner.partner_name}>{partner.partner_name}</option>
                                 ))}
                             </select>
@@ -546,10 +536,11 @@ export { UserTicketForm };
 const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
     const username = localStorage.getItem('username');
     const role = localStorage.getItem('role');
+
     const [formData, setFormData] = useState({
-        Requested_by: username || '',
-        Organization: role || '',
-        Partner_Name: role ? setPartnerName(role) : '',
+        Requested_by: '',
+        Organization: '',
+        Partner_Name: '',
         Software_Name: '',
         Title: '',
         Description: '',
@@ -562,7 +553,25 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
 
     const [selectedFile, setSelectedFile] = useState(null);
     const [filteredPartners, setFilteredPartners] = useState(dropdownValues.partners);
+    const [filteredUsers, setFilteredUsers] = useState(dropdownValues.requested_by);
 
+    useEffect(() => {
+        const filterUsersByOrganization = () => {
+            let filtered = dropdownValues.requested_by;
+
+            if (formData.Organization === 'Admin') {
+                filtered = dropdownValues.requested_by.filter(user => user.role === 'Admin');
+            } else if (formData.Organization === 'Internal') {
+                filtered = dropdownValues.requested_by.filter(user => user.role === 'Orbis User');
+            } else if (formData.Organization === 'Partner') {
+                filtered = dropdownValues.requested_by.filter(user => user.partner_code === formData.Partner_Name);
+            }
+
+            setFilteredUsers(filtered);
+        };
+
+        filterUsersByOrganization();
+    }, [formData.Organization, formData.Partner_Name, dropdownValues.requested_by]);
 
     const handleChange = (e) => {
         const { name, value, type, files } = e.target;
@@ -611,6 +620,7 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
         return null;
     }
 
+
     return (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
             <div className="bg-white p-8 rounded-lg shadow-lg relative w-2/4">
@@ -622,7 +632,6 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
                 </button>
                 <form onSubmit={handleSubmit}>
                     <div className="flex flex-wrap -mx-3 mb-4">
-
                         <div className="w-full md:w-1/2 px-3">
                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Organization</label>
                             <select
@@ -634,7 +643,7 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
                             >
                                 <option value="">---- Select Organization ----</option>
                                 <option value="Admin">Admin</option>
-                                <option value="Internal">Internal</option>
+                                <option value="Orbis">Orbis</option>
                                 <option value="Partner">Partner</option>
                             </select>
                         </div>
@@ -650,7 +659,7 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
                             >
                                 <option value="">---- Select Partner ----</option>
                                 {filteredPartners.map((partner) => (
-                                    <option key={partner.partner_id} value={partner.partner_name}>{partner.partner_name}</option>
+                                    <option key={partner.partner_id} value={partner.partner_code}>{partner.partner_name}</option>
                                 ))}
                             </select>
                         </div>
@@ -659,15 +668,15 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Requested By</label>
                             <select
-                                name="Requested_By"
+                                name="Requested_by" q
                                 value={formData.Requested_by}
                                 onChange={handleChange}
                                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 required
                             >
                                 <option value="">---- Select User ----</option>
-                                {dropdownValues.requested_by.map((user) => (
-                                    <option key={user.user_id} value={user.username}>{user.name}</option>
+                                {filteredUsers.map((user) => (
+                                    <option key={user.user_id} value={user.username}>{user.username}</option>
                                 ))}
                             </select>
                         </div>

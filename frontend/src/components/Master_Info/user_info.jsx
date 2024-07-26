@@ -32,7 +32,7 @@ const userInfoPopup = ({ isOpen, user, onClose }) => {
                 email_address: user.email_address,
                 mobile_number: user.mobile_number,
                 role: user.role,
-                partner_code: user.partner_code,
+                partner_name: user.partner_name,
                 valid_from: user.valid_from ? user.valid_from.split('T')[0] : '',
                 valid_till: user.valid_till ? user.valid_till.split('T')[0] : '',
                 updated_by: user.updated_by,
@@ -169,11 +169,11 @@ const userInfoPopup = ({ isOpen, user, onClose }) => {
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner Code</label>
+                            <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner Name</label>
                             <input
                                 type="text"
-                                name="partner_code"
-                                value={formData.partner_code}
+                                name="partner_name"
+                                value={formData.partner_name}
                                 onChange={handleChange}
                                 className="appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 disabled

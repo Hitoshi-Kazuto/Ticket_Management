@@ -102,7 +102,7 @@ const StatusMaster = () => {
         <div>
             <Home />
             <div className="overflow-x-auto shadow-md absolute right-0 w-5/6">
-                <p className='shadow-md bg-gray-100 border-gray-200 p-3 m-0 dark:bg-gray-700 relative self-right text-xl font-semibold whitespace-nowrap dark:text-gray-400'>Status Master</p>
+                <p className=' bg-gray-200 border-gray-200 p-3 m-0 dark:bg-gray-800 relative self-right text-xl font-semibold whitespace-nowrap dark:text-gray-400'>Status Master</p>
                 <input
                     type="text"
                     id="search"
@@ -152,7 +152,7 @@ const StatusMaster = () => {
                 </button>
                 <StatusForm isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleFormSubmit} error={error} />
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <thead className="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-800 dark:text-gray-400">
                         <tr>
                             <th scope="col" className="px-6 py-3">Status Id</th>
                             <th scope="col" className="px-6 py-3">Status Name</th>
@@ -163,7 +163,7 @@ const StatusMaster = () => {
                     </thead>
                     <tbody>
                         {filteredStatuss.map(Status => (
-                            <tr key={Status.status_id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <tr key={Status.status_id} className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
                                 <td scope="row" className="px-6 py-4 ">
                                     {Status.status_id}
                                 </td>

@@ -93,6 +93,30 @@ const UserMaster = () => {
         }
     }
 
+    // const fetchPartnerCodes = async () => {
+    //     try {
+    //         const response = await axios.get('http://localhost:3000/partner-codes');
+    //         setFilteredPartners(response.data);
+    //     } catch (error) {
+    //         console.error('Error fetching partner codes:', error);
+    //     }
+    // };
+    const [dropdownValues, setDropdownValues] = useState({
+        partners: []
+    });
+
+    useEffect(() => {
+        const fetchDropdownValues = async () => {
+            try {
+                const response = await axios.get('http://localhost:3000/partner-codes');
+                setDropdownValues(response.data);
+            } catch (error) {
+                console.error('Error fetching dropdown values:', error);
+            }
+        };
+        fetchDropdownValues();
+    }, []);
+
     const filteredUsers = Users.filter(User =>
         User.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
         (statusFilter === 'all' || (statusFilter === 'active' && User.active_status) || (statusFilter === 'inactive' && !User.active_status))
@@ -102,7 +126,7 @@ const UserMaster = () => {
         <div>
             <Home />
             <div className="overflow-x-auto shadow-md absolute right-0 w-5/6">
-                <p className='shadow-md bg-gray-100 border-gray-200 p-3 m-0 dark:bg-gray-700 relative self-right text-xl font-semibold whitespace-nowrap dark:text-gray-400'>User Management</p>
+                <p className=' bg-gray-200 border-gray-200 p-3 m-0 dark:bg-gray-800 relative self-right text-xl font-semibold whitespace-nowrap dark:text-gray-400'>User Management</p>
                 <input
                     type="text"
                     id="search"
@@ -150,14 +174,14 @@ const UserMaster = () => {
                     className="p-2 mx-1.5 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-3.5 text-center"
                 >Add
                 </button>
-                <UserForm isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleFormSubmit} error={error}/>
+                <UserForm isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleFormSubmit} error={error} dropdownValues={dropdownValues}/>
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <thead className="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-800 dark:text-gray-400">
                         <tr>
                             <th scope="col" className="px-6 py-3">Username</th>
                             <th scope="col" className="px-6 py-3">Display Name</th>
                             <th scope="col" className="px-6 py-3">Role</th>
-                            <th scope="col" className="px-6 py-3">Partner Code</th>
+                            <th scope="col" className="px-6 py-3">Partner Name</th>
                             <th scope="col" className="px-6 py-3">Status</th>
                             <th scope="col" className="px-3 py-3"><span className="sr-only">Info</span></th>
                             <th scope="col" className="pl-3 pr-6 py-3"><span className="sr-only">Edit</span></th>
@@ -165,7 +189,7 @@ const UserMaster = () => {
                     </thead>
                     <tbody>
                         {filteredUsers.map(User => (
-                            <tr key={User.user_id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <tr key={User.user_id} className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
                             <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {User.username}
                                 </td>
@@ -176,7 +200,7 @@ const UserMaster = () => {
                                     {User.role}
                                 </td>
                                 <td className="px-6 py-4">
-                                    {User.partner_code}
+                                    {User.partner_name}
                                 </td>
                                 <td className="px-6 py-4">
                                     {User.active_status ? 'Active' : 'Inactive'}
