@@ -46,7 +46,7 @@ const Login = () => {
                 </div>
             </div>
             <div className="bg-white p-8 rounded-lg shadow-lg w-3/12">
-                <h2 className="text-2xl font-bold mb-6 text-gray-900 text-center">Login</h2>
+                <h2 className="text-2xl font-bold mb-6 text-gray-900 text-center">Ticket Management</h2>
                 {error && <p className="text-red-500 mb-4">{error}</p>}
                 <form onSubmit={handleLogin} className="space-y-6">
                     <div>

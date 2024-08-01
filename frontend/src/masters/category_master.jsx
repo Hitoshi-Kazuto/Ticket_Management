@@ -19,7 +19,7 @@ const categoryMaster = () => {
     }, []);
 
     const fetchCategoryData = () => {
-        axios.get('http://localhost:3000/category') // Replace with your backend endpoint
+        axios.get('http://13.51.193.200:3000/category') // Replace with your backend endpoint
             .then(response => {
                 setCategorys(response.data);
             })
@@ -39,7 +39,7 @@ const categoryMaster = () => {
     const handleFormSubmit = async (formData) => {
         formData.created_by = username;
         try {
-            const response = await axios.post('http://localhost:3000/category/category-form', formData);
+            const response = await axios.post('http://13.51.193.200:3000/category/category-form', formData);
             if (response.data.success) {
                 fetchCategoryData(); // Refetch data after successful submission
                 handleClosePopup(); // Close the popup

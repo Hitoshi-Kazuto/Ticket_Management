@@ -43,7 +43,7 @@ const StatusInfoPopup = ({ isOpen, Status, onClose }) => {
         e.preventDefault();
         formData.Updated_By = username;
         try {
-            const response = await axios.put(`http://localhost:3000/Status/${Status.status_id}`, formData);
+            const response = await axios.put(`http://13.51.193.200:3000/Status/${Status.status_id}`, formData);
             if (response.data.success) {
                 // Handle successful update (e.g., close the popup and refresh the data)
                 onClose();

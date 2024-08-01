@@ -46,7 +46,7 @@ const TicketMaster = () => {
 
     const fetchData = async () => {
 
-        let apiUrl = 'http://localhost:3000/ticket/assign-staff'
+        let apiUrl = 'http://13.51.193.200:3000/ticket/assign-staff'
         axios.get(apiUrl, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -73,7 +73,7 @@ const TicketMaster = () => {
     useEffect(() => {
         const fetchDropdownValues = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/dropdown-values');
+                const response = await axios.get('http://13.51.193.200:3000/dropdown-values');
                 setDropdownValues(response.data);
             } catch (error) {
                 console.error('Error fetching dropdown values:', error);

@@ -179,6 +179,3 @@ async function resetSequence(tableName, sequenceName, idColumn) {
         client.release();
     }
 }
-
- 
-

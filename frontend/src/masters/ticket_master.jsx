@@ -54,16 +54,16 @@ const TicketMaster = () => {
         let apiUrl;
         switch (role) {
             case 'Admin':
-                apiUrl = 'http://localhost:3000/ticket/admin-access';
+                apiUrl = 'http://13.51.193.200:3000/ticket/admin-access';
                 break;
             case 'Partner':
-                apiUrl = `http://localhost:3000/ticket/user-access/${username}`;
+                apiUrl = `http://13.51.193.200:3000/ticket/user-access/${username}`;
                 break;
             case 'Orbis':
-                apiUrl = `http://localhost:3000/ticket/user-access/${username}`;
+                apiUrl = `http://13.51.193.200:3000/ticket/user-access/${username}`;
                 break;
             case 'Helpdesk':
-                apiUrl = 'http://localhost:3000/ticket/helpdesk-access/all'
+                apiUrl = 'http://13.51.193.200:3000/ticket/helpdesk-access/all'
 
         }
         axios.get(apiUrl, {
@@ -93,14 +93,14 @@ const TicketMaster = () => {
 
         switch (role) {
             case 'Admin':
-                apiUrl = 'http://localhost:3000/ticket/admin-access/ticket-form';
+                apiUrl = 'http://13.51.193.200:3000/ticket/admin-access/ticket-form';
                 break;
             case 'Partner':
             case 'Orbis':
-                apiUrl = 'http://localhost:3000/ticket/user-access/ticket-form';
+                apiUrl = 'http://13.51.193.200:3000/ticket/user-access/ticket-form';
                 break;
             case 'Helpdesk':
-                apiUrl = 'http://localhost:3000/ticket/helpdesk-access/ticket-form';
+                apiUrl = 'http://13.51.193.200:3000/ticket/helpdesk-access/ticket-form';
                 break;
             default:
                 console.error('Role not recognized');
@@ -142,7 +142,7 @@ const TicketMaster = () => {
 
     const fetchUpdates = async (ticket_id) => {
         try {
-            const response = await fetch(`http://localhost:3000/ticket/admin-access/ticket-updates/${ticket_id}`);
+            const response = await fetch(`http://13.51.193.200:3000/ticket/admin-access/ticket-updates/${ticket_id}`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -168,7 +168,7 @@ const TicketMaster = () => {
     useEffect(() => {
         const fetchDropdownValues = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/dropdown-values');
+                const response = await axios.get('http://13.51.193.200:3000/dropdown-values');
                 setDropdownValues(response.data);
             } catch (error) {
                 console.error('Error fetching dropdown values:', error);
