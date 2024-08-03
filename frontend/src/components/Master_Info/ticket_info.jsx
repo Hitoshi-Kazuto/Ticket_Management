@@ -645,7 +645,7 @@ const HelpdeskTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) 
         e.preventDefault();
         formData.updated_by = username;
         try {
-            const response = await axios.put(`http://localhost:3000/ticket/admin-access/${ticket.ticket_id}`, formData);
+            const response = await axios.put(`http://localhost:3000/api/ticket/admin-access/${ticket.ticket_id}`, formData);
             if (response.data.success) {
                 // Handle successful update (e.g., close the popup and refresh the data)
                 onClose();

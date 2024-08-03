@@ -14,7 +14,7 @@ const Login = () => {
         setError('');
 
         try {
-            const response = await axios.post('http://localhost:3000/login', { username, password });
+            const response = await axios.post('http://localhost:3000/api/login', { username, password });
 
             if (response.data.success) {
                 // Save the token to localStorage (or context/state)

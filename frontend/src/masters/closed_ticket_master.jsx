@@ -53,16 +53,16 @@ const TicketMaster = () => {
         let apiUrl;
         switch (role) {
             case 'Admin':
-                apiUrl = 'http://localhost:3000/ticket/closed-ticket/admin-access';
+                apiUrl = 'http://localhost:3000/api/ticket/closed-ticket/admin-access';
                 break;
             case 'Partner':
-                apiUrl = `http://localhost:3000/ticket/closed-ticket/user-access/${username}`;
+                apiUrl = `http://localhost:3000/api/ticket/closed-ticket/user-access/${username}`;
                 break;
             case 'Orbis':
-                apiUrl = `http://localhost:3000/ticket/closed-ticket/user-access/${username}`;
+                apiUrl = `http://localhost:3000/api/ticket/closed-ticket/user-access/${username}`;
                 break;
             case 'Helpdesk':
-                apiUrl = 'http://localhost:3000/ticket/closed-ticket/helpdesk-access'
+                apiUrl = 'http://localhost:3000/api/ticket/closed-ticket/helpdesk-access'
 
         }
         axios.get(apiUrl, {
@@ -90,7 +90,7 @@ const TicketMaster = () => {
 
     const fetchUpdates = async (ticket_id) => {
         try {
-            const response = await fetch(`http://localhost:3000/ticket/admin-access/ticket-updates/${ticket_id}`);
+            const response = await fetch(`http://localhost:3000/api/ticket/admin-access/ticket-updates/${ticket_id}`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -116,7 +116,7 @@ const TicketMaster = () => {
     useEffect(() => {
         const fetchDropdownValues = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/dropdown-values');
+                const response = await axios.get('http://localhost:3000/api/dropdown-values');
                 setDropdownValues(response.data);
             } catch (error) {
                 console.error('Error fetching dropdown values:', error);

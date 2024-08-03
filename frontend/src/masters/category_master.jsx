@@ -19,7 +19,7 @@ const categoryMaster = () => {
     }, []);
 
     const fetchCategoryData = () => {
-        axios.get('http://localhost:3000/category') // Replace with your backend endpoint
+        axios.get('http://localhost:3000/api/category') // Replace with your backend endpoint
             .then(response => {
                 setCategorys(response.data);
             })
@@ -68,7 +68,7 @@ const categoryMaster = () => {
 
     const handleDelete = async (cat_id) => {
         try {
-            const response = await axios.post('http://localhost:3000/category/inactivate', { cat_id });
+            const response = await axios.post('http://localhost:3000/api/category/inactivate', { cat_id });
             if (response.data.success) {
                 fetchCategoryData(); // Refresh data after successful deletion
             } else {
@@ -81,7 +81,7 @@ const categoryMaster = () => {
 
     const handleActivate = async (cat_id) => {
         try {
-            const response = await axios.post('http://localhost:3000/category/activate', { cat_id });
+            const response = await axios.post('http://localhost:3000/api/category/activate', { cat_id });
             if (response.data.success) {
                 fetchCategoryData(); // Refresh data after successful deletion
             } else {

@@ -29,22 +29,22 @@ app.use(passport.initialize());
 
 
 
-app.use('/login', login);
+app.use('/api/login', login);
 
-app.use('/user', user);
+app.use('/api/user', user);
 
-app.use('/partner', partner);
+app.use('/api/partner', partner);
 
-app.use('/software', software);
+app.use('/api/software', software);
 
-app.use('/category', category);
+app.use('/api/category', category);
 
-app.use('/status', status);
+app.use('/api/status', status);
 
-app.use('/ticket', ticket);
+app.use('/api/ticket', ticket);
 
 
-app.post('/change-password', async (req, res) => {
+app.post('/api/change-password', async (req, res) => {
     const { username, currentPassword, newPassword } = req.body;
 
     try {
@@ -77,7 +77,7 @@ app.post('/change-password', async (req, res) => {
         res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
 });
-app.get('/partner-codes', async (req, res) => {
+app.get('/api/partner-codes', async (req, res) => {
     try {
         const query = 'SELECT * FROM Partner_Master WHERE status = true';
         const result = await pool.query(query);
@@ -87,7 +87,7 @@ app.get('/partner-codes', async (req, res) => {
         res.status(500).json({ success: false, error: 'Internal Server Error' });
     }
 });
-app.get('/dropdown-values', async (req, res) => {
+app.get('/api/dropdown-values', async (req, res) => {
     try {
         const partners = await pool.query("SELECT * FROM Partner_Master WHERE status = 'True'");
         const softwares = await pool.query("SELECT * FROM Software_Master WHERE status = 'True'");
@@ -108,7 +108,7 @@ app.get('/dropdown-values', async (req, res) => {
         res.status(500).json({ success: false, error: 'Internal Server Error' });
     }
 });
-app.get('/ticket-record/:ticket_id', async (req, res) => {
+app.get('/api/ticket-record/:ticket_id', async (req, res) => {
     const { ticket_id } = req.params;
 
     try {
@@ -127,7 +127,7 @@ app.get('/ticket-record/:ticket_id', async (req, res) => {
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
 });
-app.get('/getUser/:requested_by', async (req, res) => {
+app.get('/api/getUser/:requested_by', async (req, res) => {
     const Requested_by = req.params.requested_by;
     try {
         const result = await pool.query('SELECT role, Partner_Code FROM user_master WHERE username = $1', [Requested_by]);
