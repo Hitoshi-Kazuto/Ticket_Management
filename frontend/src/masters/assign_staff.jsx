@@ -46,7 +46,7 @@ const TicketMaster = () => {
 
     const fetchData = async () => {
 
-        let apiUrl = 'http://13.51.193.200:3000/ticket/assign-staff'
+        let apiUrl = 'http://localhost:3000/ticket/assign-staff'
         axios.get(apiUrl, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`

@@ -19,7 +19,7 @@ const categoryMaster = () => {
     }, []);
 
     const fetchCategoryData = () => {
-        axios.get('http://13.51.193.200:3000/category') // Replace with your backend endpoint
+        axios.get('http://localhost:3000/category') // Replace with your backend endpoint
             .then(response => {
                 setCategorys(response.data);
             })

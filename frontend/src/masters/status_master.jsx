@@ -19,7 +19,7 @@ const StatusMaster = () => {
     }, []);
 
     const fetchStatusData = () => {
-        axios.get('http://13.51.193.200:3000/status') // Replace with your backend endpoint
+        axios.get('http://localhost:3000/status') // Replace with your backend endpoint
             .then(response => {
                 setStatuss(response.data);
             })
@@ -39,7 +39,7 @@ const StatusMaster = () => {
     const handleFormSubmit = async (formData) => {
         formData.created_by = username;
         try {
-            const response = await axios.post('http://13.51.193.200:3000/status/status-form', formData);
+            const response = await axios.post('http://localhost:3000/status/status-form', formData);
             if (response.data.success) {
                 fetchStatusData(); // Refetch data after successful submission
                 handleClosePopup(); // Close the popup
@@ -68,7 +68,7 @@ const StatusMaster = () => {
 
     const handleDelete = async (status_id) => {
         try {
-            const response = await axios.post('http://13.51.193.200:3000/status/inactivate', { status_id });
+            const response = await axios.post('http://localhost:3000/status/inactivate', { status_id });
             if (response.data.success) {
                 fetchStatusData(); // Refresh data after successful deletion
             } else {
@@ -81,7 +81,7 @@ const StatusMaster = () => {
 
     const handleActivate = async (status_id) => {
         try {
-            const response = await axios.post('http://13.51.193.200:3000/status/activate', { status_id });
+            const response = await axios.post('http://localhost:3000/status/activate', { status_id });
             if (response.data.success) {
                 fetchStatusData(); // Refresh data after successful deletion
             } else {
