@@ -23,10 +23,7 @@ import status from "./routes/status_route.js";
 const PORT = process.env.port || 3000;
 const app = express();
 app.use(bodyParser.json());
-app.use(cors({
-    origin: 'http://localhost:5173', // allow requests from react app
-    credentials: true, // allow cookies to be sent
-}));
+app.use(cors());
 // Initialize passport
 app.use(passport.initialize());
 
