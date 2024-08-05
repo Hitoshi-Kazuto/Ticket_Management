@@ -23,7 +23,12 @@ import status from "./routes/status_route.js";
 const PORT = process.env.port || 3000;
 const app = express();
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({
+    origin: "https://ticket-management-frontend.vercel.app",
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    optionsSuccessStatus: 204
+}));
 // Initialize passport
 app.use(passport.initialize());
 
