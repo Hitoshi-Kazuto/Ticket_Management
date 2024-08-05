@@ -53,7 +53,7 @@ const userInfoPopup = ({ isOpen, user, onClose }) => {
         e.preventDefault();
         formData.updated_by = username;
         try {
-            const response = await axios.put(`${API_URL}/api/user/${user.user_id}`, formData);
+            const response = await axios.put(`${API_URL}api/user/${user.user_id}`, formData);
             if (response.data.success) {
                 // Handle successful update (e.g., close the popup and refresh the data)
                 onClose();
