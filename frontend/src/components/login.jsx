@@ -8,13 +8,14 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const API_URL = 'https://ticket-management-ten.vercel.app/';
 
     const handleLogin = async (e) => {
         e.preventDefault();
         setError('');
 
         try {
-            const response = await axios.post('http://localhost:3000/api/login', { username, password });
+            const response = await axios.post(`${API_URL}/api/login`, { username, password });
 
             if (response.data.success) {
                 // Save the token to localStorage (or context/state)

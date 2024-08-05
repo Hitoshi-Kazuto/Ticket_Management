@@ -4,7 +4,7 @@ import axios from 'axios';
 const userInfoPopup = ({ isOpen, user, onClose }) => {
 
     const username = localStorage.getItem('username');
-
+    const API_URL = 'https://ticket-management-ten.vercel.app/';
     const [formData, setFormData] = useState({
         user_id: '',
         name: '',
@@ -53,7 +53,7 @@ const userInfoPopup = ({ isOpen, user, onClose }) => {
         e.preventDefault();
         formData.updated_by = username;
         try {
-            const response = await axios.put(`http://localhost:3000/api/user/${user.user_id}`, formData);
+            const response = await axios.put(`${API_URL}/api/user/${user.user_id}`, formData);
             if (response.data.success) {
                 // Handle successful update (e.g., close the popup and refresh the data)
                 onClose();

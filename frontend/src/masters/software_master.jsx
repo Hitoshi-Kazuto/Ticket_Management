@@ -12,6 +12,7 @@ const softwareMaster = () => {
     const [statusFilter, setStatusFilter] = useState('active');
     const [error, setError] = useState('');
     const username = localStorage.getItem('username'); // Get username from local storage
+    const API_URL = 'https://ticket-management-ten.vercel.app/';
 
     useEffect(() => {
         // Fetch software data from backend when component mounts
@@ -19,7 +20,7 @@ const softwareMaster = () => {
     }, []);
 
     const fetchSoftwareData = () => {
-        axios.get('http://localhost:3000/api/software') // Replace with your backend endpoint
+        axios.get(`${API_URL}/api/software`) // Replace with your backend endpoint
             .then(response => {
                 setSoftwares(response.data);
             })
@@ -39,7 +40,7 @@ const softwareMaster = () => {
     const handleFormSubmit = async (formData) => {
         formData.created_by = username;
         try {
-            const response = await axios.post('http://localhost:3000/api/software/software-form', formData);
+            const response = await axios.post(`${API_URL}/api/software/software-form`, formData);
             if (response.data.success) {
                 fetchSoftwareData(); // Refetch data after successful submission
                 handleClosePopup(); // Close the popup
@@ -68,7 +69,7 @@ const softwareMaster = () => {
 
     const handleDelete = async (sw_id) => {
         try {
-            const response = await axios.post('http://localhost:3000/api/software/inactivate', { sw_id });
+            const response = await axios.post(`${API_URL}/api/software/inactivate`, { sw_id });
             if (response.data.success) {
                 fetchSoftwareData(); // Refresh data after successful deletion
             } else {
@@ -81,7 +82,7 @@ const softwareMaster = () => {
 
     const handleActivate = async (sw_id) => {
         try {
-            const response = await axios.post('http://localhost:3000/api/software/activate', { sw_id });
+            const response = await axios.post(`${API_URL}/api/software/activate`, { sw_id });
             if (response.data.success) {
                 fetchSoftwareData(); // Refresh data after successful deletion
             } else {
@@ -99,7 +100,7 @@ const softwareMaster = () => {
 
     // const handleSearch = () => {
     //     // Filter softwares based on search query and status filter
-    //     axios.get(`http://localhost:3000/api/software?search=${searchQuery}&status=${statusFilter}`)
+    //     axios.get(`${API_URL}/api/software?search=${searchQuery}&status=${statusFilter}`)
     //         .then(response => {
     //             setSoftwares(response.data);
     //         })

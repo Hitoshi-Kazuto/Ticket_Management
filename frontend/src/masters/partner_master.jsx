@@ -14,6 +14,7 @@ const PartnerMaster = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const username = localStorage.getItem('username'); // Get username from local storage
+    const API_URL = 'https://ticket-management-ten.vercel.app/';
 
     useEffect(() => {
         // Fetch partner data from backend when component mounts
@@ -21,7 +22,7 @@ const PartnerMaster = () => {
     }, []);
 
     const fetchPartnerData = () => {
-        axios.get('http://localhost:3000/api/partner') // Replace with your backend endpoint
+        axios.get(`${API_URL}/api/partner`) // Replace with your backend endpoint
             .then(response => {
                 setPartners(response.data);
             })
@@ -41,7 +42,7 @@ const PartnerMaster = () => {
     const handleFormSubmit = async (formData) => {
         formData.created_by = username;
         try {
-            const response = await axios.post('http://localhost:3000/api/partner/partner-form', formData);
+            const response = await axios.post(`${API_URL}/api/partner/partner-form`, formData);
             if (response.data.success) {
                 fetchPartnerData(); // Refetch data after successful submission
                 handleClosePopup(); // Close the popup
@@ -70,7 +71,7 @@ const PartnerMaster = () => {
 
     const handleDelete = async (partner_id) => {
         try {
-            const response = await axios.post('http://localhost:3000/api/partner/inactivate', { partner_id });
+            const response = await axios.post(`${API_URL}/api/partner/inactivate`, { partner_id });
             if (response.data.success) {
                 fetchPartnerData(); // Refresh data after successful deletion
             } else {
@@ -83,7 +84,7 @@ const PartnerMaster = () => {
 
     const handleActivate = async (partner_id) => {
         try {
-            const response = await axios.post('http://localhost:3000/api/partner/activate', { partner_id });
+            const response = await axios.post(`${API_URL}/api/partner/activate`, { partner_id });
             if (response.data.success) {
                 fetchPartnerData(); // Refresh data after successful deletion
             } else {
@@ -101,7 +102,7 @@ const PartnerMaster = () => {
 
     // const handleSearch = () => {
     //     // Filter partners based on search query and status filter
-    //     axios.get(`http://localhost:3000/api/partner?search=${searchQuery}&status=${statusFilter}`)
+    //     axios.get(`${API_URL}/api/partner?search=${searchQuery}&status=${statusFilter}`)
     //         .then(response => {
     //             setPartners(response.data);
     //         })

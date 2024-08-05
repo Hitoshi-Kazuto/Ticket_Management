@@ -20,6 +20,7 @@ const TicketMaster = () => {
         usernames: [],
         requested_by: [],
     });
+    const API_URL = 'https://ticket-management-ten.vercel.app/';
 
     useEffect(() => {
         // Fetch Ticket data from backend when component mounts
@@ -46,7 +47,7 @@ const TicketMaster = () => {
 
     const fetchData = async () => {
 
-        let apiUrl = 'http://localhost:3000/api/ticket/assign-staff'
+        let apiUrl = `${API_URL}/api/ticket/assign-staff`
         axios.get(apiUrl, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -73,7 +74,7 @@ const TicketMaster = () => {
     useEffect(() => {
         const fetchDropdownValues = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/dropdown-values');
+                const response = await axios.get(`${API_URL}/api/dropdown-values`);
                 setDropdownValues(response.data);
             } catch (error) {
                 console.error('Error fetching dropdown values:', error);

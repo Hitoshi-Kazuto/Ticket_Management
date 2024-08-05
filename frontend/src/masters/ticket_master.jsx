@@ -24,6 +24,7 @@ const TicketMaster = () => {
         usernames: [],
         requested_by: [],
     });
+    const API_URL = 'https://ticket-management-ten.vercel.app/';
 
     useEffect(() => {
         // Fetch Ticket data from backend when component mounts
@@ -54,16 +55,16 @@ const TicketMaster = () => {
         let apiUrl;
         switch (role) {
             case 'Admin':
-                apiUrl = 'http://localhost:3000/api/ticket/admin-access';
+                apiUrl = `${API_URL}/api/ticket/admin-access`;
                 break;
             case 'Partner':
-                apiUrl = `http://localhost:3000/api/ticket/user-access/${username}`;
+                apiUrl = `${API_URL}/api/ticket/user-access/${username}`;
                 break;
             case 'Orbis':
-                apiUrl = `http://localhost:3000/api/ticket/user-access/${username}`;
+                apiUrl = `${API_URL}/api/ticket/user-access/${username}`;
                 break;
             case 'Helpdesk':
-                apiUrl = 'http://localhost:3000/api/ticket/helpdesk-access/all'
+                apiUrl = `${API_URL}/api/ticket/helpdesk-access/all`
 
         }
         axios.get(apiUrl, {
@@ -93,14 +94,14 @@ const TicketMaster = () => {
 
         switch (role) {
             case 'Admin':
-                apiUrl = 'http://localhost:3000/api/ticket/admin-access/ticket-form';
+                apiUrl = `${API_URL}/api/ticket/admin-access/ticket-form`;
                 break;
             case 'Partner':
             case 'Orbis':
-                apiUrl = 'http://localhost:3000/api/ticket/user-access/ticket-form';
+                apiUrl = `${API_URL}/api/ticket/user-access/ticket-form`;
                 break;
             case 'Helpdesk':
-                apiUrl = 'http://localhost:3000/api/ticket/helpdesk-access/ticket-form';
+                apiUrl = `${API_URL}/api/ticket/helpdesk-access/ticket-form`;
                 break;
             default:
                 console.error('Role not recognized');
@@ -142,7 +143,7 @@ const TicketMaster = () => {
 
     const fetchUpdates = async (ticket_id) => {
         try {
-            const response = await fetch(`http://localhost:3000/api/ticket/admin-access/ticket-updates/${ticket_id}`);
+            const response = await fetch(`${API_URL}/api/ticket/admin-access/ticket-updates/${ticket_id}`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -168,7 +169,7 @@ const TicketMaster = () => {
     useEffect(() => {
         const fetchDropdownValues = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/dropdown-values');
+                const response = await axios.get(`${API_URL}/api/dropdown-values`);
                 setDropdownValues(response.data);
             } catch (error) {
                 console.error('Error fetching dropdown values:', error);

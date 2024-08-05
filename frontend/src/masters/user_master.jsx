@@ -13,6 +13,7 @@ const UserMaster = () => {
     const [error, setError] = useState('');
     const [statusFilter, setStatusFilter] = useState('active');  
     const username = localStorage.getItem('username'); // Get username from local storage
+    const API_URL = 'https://ticket-management-ten.vercel.app/';
 
     useEffect(() => {
         // Fetch User data from backend when component mounts
@@ -20,7 +21,7 @@ const UserMaster = () => {
     }, []);
 
     const fetchUserData = () => {
-        axios.get('http://localhost:3000/api/user') // Replace with your backend endpoint
+        axios.get(`${API_URL}/api/user`) // Replace with your backend endpoint
             .then(response => {
                 setUsers(response.data);
             })
@@ -40,7 +41,7 @@ const UserMaster = () => {
     const handleFormSubmit = async (formData) => {
         formData.created_by = username;
         try {
-            const response = await axios.post('http://localhost:3000/api/user/user-form', formData);
+            const response = await axios.post(`${API_URL}/api/user/user-form`, formData);
             if (response.data.success) {
                 fetchUserData(); // Refetch data after successful submission
                 handleClosePopup(); // Close the popup
@@ -69,7 +70,7 @@ const UserMaster = () => {
 
     const handleDelete = async (user_id) => {
         try {
-            const response = await axios.post('http://localhost:3000/api/user/inactivate', { user_id });
+            const response = await axios.post(`${API_URL}/api/user/inactivate`, { user_id });
             if (response.data.success) {
                 fetchUserData(); // Refresh data after successful deletion
             } else {
@@ -82,7 +83,7 @@ const UserMaster = () => {
 
     const handleActivate = async (user_id) => {
         try {
-            const response = await axios.post('http://localhost:3000/api/user/activate', { user_id });
+            const response = await axios.post(`${API_URL}/api/user/activate`, { user_id });
             if (response.data.success) {
                 fetchUserData(); // Refresh data after successful deletion
             } else {
@@ -95,7 +96,7 @@ const UserMaster = () => {
 
     // const fetchPartnerCodes = async () => {
     //     try {
-    //         const response = await axios.get('http://localhost:3000/api/partner-codes');
+    //         const response = await axios.get('${API_URL}/api/partner-codes');
     //         setFilteredPartners(response.data);
     //     } catch (error) {
     //         console.error('Error fetching partner codes:', error);
@@ -108,7 +109,7 @@ const UserMaster = () => {
     useEffect(() => {
         const fetchDropdownValues = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/partner-codes');
+                const response = await axios.get(`${API_URL}/api/partner-codes`);
                 setDropdownValues(response.data);
             } catch (error) {
                 console.error('Error fetching dropdown values:', error);

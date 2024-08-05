@@ -12,6 +12,7 @@ const categoryMaster = () => {
     const [error, setError] = useState('');
     const [statusFilter, setStatusFilter] = useState('active');
     const username = localStorage.getItem('username'); // Get username from local storage
+    const API_URL = 'https://ticket-management-ten.vercel.app/';
 
     useEffect(() => {
         // Fetch category data from backend when component mounts
@@ -19,7 +20,7 @@ const categoryMaster = () => {
     }, []);
 
     const fetchCategoryData = () => {
-        axios.get('http://localhost:3000/api/category') // Replace with your backend endpoint
+        axios.get(`${API_URL}/api/category`) // Replace with your backend endpoint
             .then(response => {
                 setCategorys(response.data);
             })
@@ -39,7 +40,7 @@ const categoryMaster = () => {
     const handleFormSubmit = async (formData) => {
         formData.created_by = username;
         try {
-            const response = await axios.post('http://13.51.193.200:3000/category/category-form', formData);
+            const response = await axios.post(`${API_URL}/category/category-form`, formData);
             if (response.data.success) {
                 fetchCategoryData(); // Refetch data after successful submission
                 handleClosePopup(); // Close the popup
@@ -68,7 +69,7 @@ const categoryMaster = () => {
 
     const handleDelete = async (cat_id) => {
         try {
-            const response = await axios.post('http://localhost:3000/api/category/inactivate', { cat_id });
+            const response = await axios.post(`${API_URL}/api/category/inactivate`, { cat_id });
             if (response.data.success) {
                 fetchCategoryData(); // Refresh data after successful deletion
             } else {
@@ -81,7 +82,7 @@ const categoryMaster = () => {
 
     const handleActivate = async (cat_id) => {
         try {
-            const response = await axios.post('http://localhost:3000/api/category/activate', { cat_id });
+            const response = await axios.post(`${API_URL}/api/category/activate`, { cat_id });
             if (response.data.success) {
                 fetchCategoryData(); // Refresh data after successful deletion
             } else {

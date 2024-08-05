@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const AssignStaffPopup = ({ isOpen, ticket, onClose, dropdownValues }) => {
     const username = localStorage.getItem('username');
-
+    const API_URL = 'https://ticket-management-ten.vercel.app/';
     const [formData, setFormData] = useState({
         Ticket_Id: '',
         Requested_by: '',
@@ -58,7 +58,7 @@ const AssignStaffPopup = ({ isOpen, ticket, onClose, dropdownValues }) => {
         e.preventDefault();
         formData.updated_by = username;
         try {
-            const response = await axios.put(`http://localhost:3000/api/ticket/helpdesk-access/assign-staff/${ticket.ticket_id}`, formData);
+            const response = await axios.put(`${API_URL}/api/ticket/helpdesk-access/assign-staff/${ticket.ticket_id}`, formData);
             if (response.data.success) {
                 // Handle successful update (e.g., close the popup and refresh the data)
                 onClose();
@@ -192,7 +192,7 @@ const AssignStaffPopup = ({ isOpen, ticket, onClose, dropdownValues }) => {
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full px-3">
                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">File Attachment</label>
-                            <a href={`http://localhost:3000/api/ticket/${ticket.file_path}`} target="_blank" rel="noopener noreferrer">
+                            <a href={`${API_URL}/api/ticket/${ticket.file_path}`} target="_blank" rel="noopener noreferrer">
                                 {formData.File_Path}
                             </a>
 
