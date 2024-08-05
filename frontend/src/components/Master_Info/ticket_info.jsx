@@ -775,7 +775,7 @@ const HelpdeskTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) 
 
                         </div>
                     </div>
-                    <div className="flex flex-wrap -mx-3 mb-4">
+                    {/* <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full px-3">
                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">File Attachment</label>
                             <a href={`${API_URL}api/ticket/${ticket.file_path}`} target="_blank" rel="noopener noreferrer">
@@ -783,7 +783,7 @@ const HelpdeskTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) 
                             </a>
 
                         </div>
-                    </div>
+                    </div> */}
 
                     <hr className='px-3 mb-4 my-4'></hr>
 
