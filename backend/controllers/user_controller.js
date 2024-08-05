@@ -24,7 +24,7 @@ export const createUser = async (req, res) => {
             return res.status(400).json({ success: false, error: 'Passwords do not match' });
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = bcrypt.hashSync(password, 10);
         const created_time = new Date();
         const active_status = true;
         const query = `

@@ -1,7 +1,7 @@
 import express from "express"
 import pool from "../config.js";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt"
+import bcrypt from "bcryptjs"
 
 
 const jwtSecret = 'your_jwt_secret'; // Change this to a more secure secret in production
@@ -26,7 +26,7 @@ app.post('/', async (req, res) => {
             return res.json({ success: false, message: 'User is not active' });
         }
 
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = bcrypt.compareSync(password, user.password);
 
         if (!isMatch) {
             return res.json({ success: false, message: 'Incorrect password' });
