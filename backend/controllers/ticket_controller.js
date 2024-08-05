@@ -6,12 +6,12 @@ import upload from "../middlewares/upload_middleware.js"
 const app = express();
 
 // Ensure uploads directory exists
-const __dirname = path.resolve();
-const uploadDir = 'tmp/uploads/tmp/';
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, {recursive: true});
-}
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// const __dirname = path.resolve();
+// const uploadDir = 'tmp/uploads/tmp/';
+// if (!fs.existsSync(uploadDir)) {
+//     fs.mkdirSync(uploadDir, {recursive: true});
+// }
+// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 app.post('/admin-access/ticket-form', upload.single('file'), async (req, res) => {
@@ -68,7 +68,7 @@ app.post('/admin-access/ticket-form', upload.single('file'), async (req, res) =>
 });
 app.post('/user-access/ticket-form', upload.single('file'), async (req, res) => {
     const { Requested_by, Organization, Partner_Name, Software_Name, Description, Priority, Category, Status, created_by, Title } = req.body;
-    const file = req.file;
+    // const file = req.file;
 
     try {
         const created_time = new Date();
@@ -83,32 +83,32 @@ app.post('/user-access/ticket-form', upload.single('file'), async (req, res) => 
 
         const { rows } = await pool.query(query, values);
         const ticket_id = rows[0].ticket_id;
-        if (file) {
-            // Move file from temporary storage to final location
-            const finalPath = path.join(`${file.path}`);
-            console.log(`Temporary File Path: ${file.path}`);
-            console.log(`Final File Path: ${finalPath}`);
-            fs.renameSync(file.path, finalPath);
+        // if (file) {
+        //     // Move file from temporary storage to final location
+        //     const finalPath = path.join(`${file.path}`);
+        //     console.log(`Temporary File Path: ${file.path}`);
+        //     console.log(`Final File Path: ${finalPath}`);
+        //     fs.renameSync(file.path, finalPath);
 
-            // Update the file path in the database
-            const updateQuery = `
-                UPDATE ticket
-                SET File_Path = $1
-                WHERE ticket_id = $2
-                RETURNING *;
-            `;
-            const updateValues = [finalPath, ticket_id];
-            const { rows: updatedRows } = await pool.query(updateQuery, updateValues);
+        //     // Update the file path in the database
+        //     const updateQuery = `
+        //         UPDATE ticket
+        //         SET File_Path = $1
+        //         WHERE ticket_id = $2
+        //         RETURNING *;
+        //     `;
+        //     const updateValues = [finalPath, ticket_id];
+        //     const { rows: updatedRows } = await pool.query(updateQuery, updateValues);
 
-            return res.json({ success: true, ticket: updatedRows[0] });
-        }
+        //     return res.json({ success: true, ticket: updatedRows[0] });
+        // }
 
         res.json({ success: true, ticket: rows[0] });
     } catch (error) {
-        if (file) {
-            // Clean up the uploaded file if the query fails
-            fs.unlinkSync(file.path);
-        }
+        // if (file) {
+        //     // Clean up the uploaded file if the query fails
+        //     fs.unlinkSync(file.path);
+        // }
 
         if (error.code === '23505') {
             res.status(409).json({ success: false, message: 'Ticket already exists' });
@@ -120,7 +120,7 @@ app.post('/user-access/ticket-form', upload.single('file'), async (req, res) => 
 });
 app.post('/helpdesk-access/ticket-form', upload.single('file'), async (req, res) => {
     const { Requested_by, Organization, Partner_Name, Software_Name, Description, Priority, Category, Status, created_by, Title, Assigned_Staff } = req.body;
-    const file = req.file;
+    // const file = req.file;
 
     try {
         const created_time = new Date();
@@ -135,32 +135,32 @@ app.post('/helpdesk-access/ticket-form', upload.single('file'), async (req, res)
 
         const { rows } = await pool.query(query, values);
         const ticket_id = rows[0].ticket_id;
-        if (file) {
-            // Move file from temporary storage to final location
-            const finalPath = path.join(`${file.path}`);
-            console.log(`Temporary File Path: ${file.path}`);
-            console.log(`Final File Path: ${finalPath}`);
-            fs.renameSync(file.path, finalPath);
+        // if (file) {
+        //     // Move file from temporary storage to final location
+        //     const finalPath = path.join(`${file.path}`);
+        //     console.log(`Temporary File Path: ${file.path}`);
+        //     console.log(`Final File Path: ${finalPath}`);
+        //     fs.renameSync(file.path, finalPath);
 
-            // Update the file path in the database
-            const updateQuery = `
-                UPDATE ticket
-                SET File_Path = $1
-                WHERE ticket_id = $2
-                RETURNING *;
-            `;
-            const updateValues = [finalPath, ticket_id];
-            const { rows: updatedRows } = await pool.query(updateQuery, updateValues);
+        //     // Update the file path in the database
+        //     const updateQuery = `
+        //         UPDATE ticket
+        //         SET File_Path = $1
+        //         WHERE ticket_id = $2
+        //         RETURNING *;
+        //     `;
+        //     const updateValues = [finalPath, ticket_id];
+        //     const { rows: updatedRows } = await pool.query(updateQuery, updateValues);
 
-            return res.json({ success: true, ticket: updatedRows[0] });
-        }
+        //     return res.json({ success: true, ticket: updatedRows[0] });
+        // }
 
         res.json({ success: true, ticket: rows[0] });
     } catch (error) {
-        if (file) {
-            // Clean up the uploaded file if the query fails
-            fs.unlinkSync(file.path);
-        }
+        // if (file) {
+        //     // Clean up the uploaded file if the query fails
+        //     fs.unlinkSync(file.path);
+        // }
 
         if (error.code === '23505') {
             res.status(409).json({ success: false, message: 'Ticket already exists' });
@@ -360,28 +360,28 @@ app.put('/helpdesk-access/:ticket_id', upload.single('file'), async (req, res) =
 });
 
 
-app.get('/admin-access/:File_Path', async (req, res) => {
-    const File_Path = req.params.File_Path;
-    console.log(File_Path);
-    try {
-        const query = `
-            SELECT * FROM ticket
-            WHERE file_path = $1;
-        `;
-        const values = [File_Path];
+// app.get('/admin-access/:File_Path', async (req, res) => {
+//     const File_Path = req.params.File_Path;
+//     console.log(File_Path);
+//     try {
+//         const query = `
+//             SELECT * FROM ticket
+//             WHERE file_path = $1;
+//         `;
+//         const values = [File_Path];
 
-        const { rows } = await pool.query(query, values);
+//         const { rows } = await pool.query(query, values);
 
-        if (rows.length === 0) {
-            return res.status(404).json({ success: false, message: 'Ticket not found' });
-        }
+//         if (rows.length === 0) {
+//             return res.status(404).json({ success: false, message: 'Ticket not found' });
+//         }
 
-        res.json({ success: true, ticket: rows[0] });
-    } catch (error) {
-        console.error('Error fetching ticket:', error);
-        res.status(500).json({ success: false, error: 'Internal Server Error' });
-    }
-});
+//         res.json({ success: true, ticket: rows[0] });
+//     } catch (error) {
+//         console.error('Error fetching ticket:', error);
+//         res.status(500).json({ success: false, error: 'Internal Server Error' });
+//     }
+// });
 
 app.get('/admin-access/ticket-updates/:ticket_id', async (req, res) => {
     const { ticket_id } = req.params;
