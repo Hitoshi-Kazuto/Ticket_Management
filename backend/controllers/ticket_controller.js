@@ -7,7 +7,7 @@ const app = express();
 
 // Ensure uploads directory exists
 const __dirname = path.resolve();
-const uploadDir = path.join(__dirname, 'uploads/tmp/');
+const uploadDir = 'tmp/uploads/tmp/';
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, {recursive: true});
 }
