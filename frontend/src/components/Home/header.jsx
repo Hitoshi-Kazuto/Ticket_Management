@@ -26,7 +26,7 @@ const Header = () => {
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('username');
-        window.location.href = '/login'; // Redirect to login page
+        window.location.href = '/'; // Redirect to login page
     };
 
     const toggleDropdown = () => {
