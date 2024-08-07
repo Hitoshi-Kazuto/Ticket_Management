@@ -10,6 +10,7 @@ const StatusMaster = () => {
     const [selectedStatus, setSelectedStatus] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(true);
     const [statusFilter, setStatusFilter] = useState('active');
     const username = localStorage.getItem('username'); // Get username from local storage
     const API_URL = 'https://ticket-management-ten.vercel.app/';
@@ -17,6 +18,7 @@ const StatusMaster = () => {
     useEffect(() => {
         // Fetch Status data from backend when component mounts
         fetchStatusData();
+        setLoading(false);
     }, []);
 
     const fetchStatusData = () => {
@@ -26,7 +28,7 @@ const StatusMaster = () => {
             })
             .catch(error => {
                 console.error('Error fetching Statuss', error);
-            });
+            }); 
     };
 
     const handleAddClick = () => {

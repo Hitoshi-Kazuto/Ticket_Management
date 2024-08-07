@@ -20,6 +20,7 @@ const UserMaster = () => {
     useEffect(() => {
         // Fetch User data from backend when component mounts
         fetchUserData();
+        setLoading(false);
     }, []);
 
     const fetchUserData = () => {
@@ -115,8 +116,6 @@ const UserMaster = () => {
                 setDropdownValues(response.data);
             } catch (error) {
                 console.error('Error fetching dropdown values:', error);
-            } finally {
-                setLoading(false);
             }
         };
         fetchDropdownValues();

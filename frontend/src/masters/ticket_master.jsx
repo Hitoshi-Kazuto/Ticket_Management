@@ -15,6 +15,7 @@ const TicketMaster = () => {
     const [statusFilter, setStatusFilter] = useState('all');
     const [showUpdatesPopup, setShowUpdatesPopup] = useState(false);
     const [updates, setUpdates] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [selectedTicketId, setSelectedTicketId] = useState(null);
     const [dropdownValues, setDropdownValues] = useState({
         partners: [],
@@ -29,6 +30,7 @@ const TicketMaster = () => {
     useEffect(() => {
         // Fetch Ticket data from backend when component mounts
         fetchDataBasedOnRoles();
+        setLoading(false);
     }, []);
 
     const getUserRole = () => {

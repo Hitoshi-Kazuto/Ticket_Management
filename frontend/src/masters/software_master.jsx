@@ -11,12 +11,14 @@ const softwareMaster = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState('active');
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(true);
     const username = localStorage.getItem('username'); // Get username from local storage
     const API_URL = 'https://ticket-management-ten.vercel.app/';
 
     useEffect(() => {
         // Fetch software data from backend when component mounts
         fetchSoftwareData();
+        setLoading(false);
     }, []);
 
     const fetchSoftwareData = () => {
