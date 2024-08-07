@@ -13,6 +13,7 @@ const UserMaster = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [error, setError] = useState('');
     const [statusFilter, setStatusFilter] = useState('active');
+    const [loading, setLoading] = useState(true);
     const username = localStorage.getItem('username'); // Get username from local storage
     const API_URL = 'https://ticket-management-ten.vercel.app/';
 
@@ -112,8 +113,10 @@ const UserMaster = () => {
             try {
                 const response = await axios.get(`${API_URL}api/partner-codes`);
                 setDropdownValues(response.data);
+                setLoading(false);
             } catch (error) {
                 console.error('Error fetching dropdown values:', error);
+                setLoading(false);
             }
         };
         fetchDropdownValues();
@@ -189,46 +192,47 @@ const UserMaster = () => {
                             <th scope="col" className="pl-3 pr-6 py-3"><span className="sr-only">Edit</span></th>
                         </tr>
                     </thead>
-                    {filteredUsers ? (<tbody>
-                        {filteredUsers.map(User => (
-                            <tr key={User.user_id} className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {User.username}
-                                </td>
-                                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {User.name}
-                                </td>
-                                <td className="px-6 py-4">
-                                    {User.role}
-                                </td>
-                                <td className="px-6 py-4">
-                                    {User.partner_name}
-                                </td>
-                                <td className="px-6 py-4">
-                                    {User.active_status ? 'Active' : 'Inactive'}
-                                </td>
-                                <td className="px-2 py-4 text-right">
-                                    <a
-                                        onClick={() => handleInfoClick(User)}
-                                        className="text-white px-4 py-2 rounded-md bg-blue-700 hover:bg-blue-800"
-                                    >Info
-                                    </a>
-                                </td>
-                                <td className="px-2 py-4 text-center">
-                                    {User.active_status ? <button
-                                        onClick={() => handleDelete(User.user_id)}
-                                        className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700"
-                                    >Delete
-                                    </button> :
-                                        <button
-                                            onClick={() => handleActivate(User.user_id)}
+                    {loading ? (<LoadingSpinner />) : (
+                        <tbody>
+                            {filteredUsers.map(User => (
+                                <tr key={User.user_id} className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        {User.username}
+                                    </td>
+                                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        {User.name}
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        {User.role}
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        {User.partner_name}
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        {User.active_status ? 'Active' : 'Inactive'}
+                                    </td>
+                                    <td className="px-2 py-4 text-right">
+                                        <a
+                                            onClick={() => handleInfoClick(User)}
+                                            className="text-white px-4 py-2 rounded-md bg-blue-700 hover:bg-blue-800"
+                                        >Info
+                                        </a>
+                                    </td>
+                                    <td className="px-2 py-4 text-center">
+                                        {User.active_status ? <button
+                                            onClick={() => handleDelete(User.user_id)}
                                             className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700"
-                                        >Activate
-                                        </button>}
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>) : (<LoadingSpinner />)}
+                                        >Delete
+                                        </button> :
+                                            <button
+                                                onClick={() => handleActivate(User.user_id)}
+                                                className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700"
+                                            >Activate
+                                            </button>}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>)}
                 </table>
                 {selectedUser && (
                     <UserInfoPopup
