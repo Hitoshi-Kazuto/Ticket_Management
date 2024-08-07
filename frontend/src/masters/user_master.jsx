@@ -4,6 +4,7 @@ import UserForm from '../components/Master_Form/user_form';
 import UserInfoPopup from '../components/Master_Info/user_info';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import LoadingSpinner from '../components/Hooks/spinnerComponent';
 
 const UserMaster = () => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -11,7 +12,7 @@ const UserMaster = () => {
     const [selectedUser, setSelectedUser] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [error, setError] = useState('');
-    const [statusFilter, setStatusFilter] = useState('active');  
+    const [statusFilter, setStatusFilter] = useState('active');
     const username = localStorage.getItem('username'); // Get username from local storage
     const API_URL = 'https://ticket-management-ten.vercel.app/';
 
@@ -52,9 +53,9 @@ const UserMaster = () => {
         } catch (error) {
             if (error.response && error.response.status === 409) {
                 setError(error.response.data.message);
-              } else {
+            } else {
                 setError('Error adding User');
-              }
+            }
         }
     };
 
@@ -175,7 +176,7 @@ const UserMaster = () => {
                     className="p-2 mx-1.5 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-3.5 text-center"
                 >Add
                 </button>
-                <UserForm isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleFormSubmit} error={error} dropdownValues={dropdownValues}/>
+                <UserForm isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleFormSubmit} error={error} dropdownValues={dropdownValues} />
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-800 dark:text-gray-400">
                         <tr>
@@ -188,10 +189,10 @@ const UserMaster = () => {
                             <th scope="col" className="pl-3 pr-6 py-3"><span className="sr-only">Edit</span></th>
                         </tr>
                     </thead>
-                    <tbody>
+                    {filteredUsers ? (<tbody>
                         {filteredUsers.map(User => (
                             <tr key={User.user_id} className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {User.username}
                                 </td>
                                 <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -227,7 +228,7 @@ const UserMaster = () => {
                                 </td>
                             </tr>
                         ))}
-                    </tbody>
+                    </tbody>) : (<LoadingSpinner />)}
                 </table>
                 {selectedUser && (
                     <UserInfoPopup
