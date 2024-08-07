@@ -18,7 +18,6 @@ const softwareMaster = () => {
     useEffect(() => {
         // Fetch software data from backend when component mounts
         fetchSoftwareData();
-        setLoading(false);
     }, []);
 
     const fetchSoftwareData = () => {

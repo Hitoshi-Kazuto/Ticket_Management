@@ -18,7 +18,6 @@ const StatusMaster = () => {
     useEffect(() => {
         // Fetch Status data from backend when component mounts
         fetchStatusData();
-        setLoading(false);
     }, []);
 
     const fetchStatusData = () => {

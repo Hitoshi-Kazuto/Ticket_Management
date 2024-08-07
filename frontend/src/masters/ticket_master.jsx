@@ -30,7 +30,6 @@ const TicketMaster = () => {
     useEffect(() => {
         // Fetch Ticket data from backend when component mounts
         fetchDataBasedOnRoles();
-        setLoading(false);
     }, []);
 
     const getUserRole = () => {

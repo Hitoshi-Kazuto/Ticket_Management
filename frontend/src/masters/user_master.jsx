@@ -20,7 +20,6 @@ const UserMaster = () => {
     useEffect(() => {
         // Fetch User data from backend when component mounts
         fetchUserData();
-        setLoading(false);
     }, []);
 
     const fetchUserData = () => {
