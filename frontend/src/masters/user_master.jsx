@@ -113,9 +113,9 @@ const UserMaster = () => {
             try {
                 const response = await axios.get(`${API_URL}api/partner-codes`);
                 setDropdownValues(response.data);
-                setLoading(false);
             } catch (error) {
                 console.error('Error fetching dropdown values:', error);
+            } finally {
                 setLoading(false);
             }
         };
