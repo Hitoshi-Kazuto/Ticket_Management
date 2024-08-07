@@ -94,7 +94,7 @@ const TicketMaster = () => {
         <div>
             <Home />
             <div className="overflow-x-auto shadow-md absolute right-0 w-5/6">
-                <p className=' bg-gray-200 border-gray-200 p-3 m-0 dark:bg-gray-800 relative self-right text-xl font-semibold whitespace-nowrap dark:text-gray-400'>Assign Ticket</p>
+                <p className=' bg-gray-100 border-gray-200 p-3 m-0 dark:bg-gray-800 relative self-right text-xl font-semibold whitespace-nowrap dark:text-gray-400'>Assign Ticket</p>
                 <input
                     type="text"
                     id="search"

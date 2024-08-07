@@ -9,7 +9,7 @@ const Sidebar = () => {
     };
 
     return (
-        <aside id="sidebar-multi-level-sidebar" className="fixed top-0 left-0 z-40 w-1/6 h-screen bg-gray-300 dark:bg-gray-900">
+        <aside id="sidebar-multi-level-sidebar" className="fixed top-0 left-0 z-40 w-1/6 h-screen bg-gray-200 dark:bg-gray-900">
             <div className="h-full px-3 py-4 overflow-y-auto">
                 <NavLink
                     to='/user-dashboard'
