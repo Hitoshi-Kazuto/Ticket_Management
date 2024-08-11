@@ -68,8 +68,8 @@ const Header = () => {
         <nav className="bg-gray-200 py-2.5 dark:bg-gray-900 relative my-0 z-50">
             <div className="flex justify-between items-center mx-4 my-0 max-w">
                 <a href="#" className="flex items-center">
-                    <img src="../../resourses/Helpdesk headset icon.png" className="mr-3 h-6 sm:h-9" alt="Logo" />
-                    <span className="self-right text-xl font-semibold whitespace-nowrap dark:text-white">Helpdesk Management</span>
+                    {/* <img src="../../resourses/Helpdesk headset icon.png" className="mr-3 h-6 sm:h-9" alt="Logo" /> */}
+                    <span className="self-right text-xl font-bold whitespace-nowrap dark:text-blue text-blue">Helpdesk Management</span>
                 </a>
                 <div className="relative" ref={dropdownRef}>
                     <button onClick={toggleDropdown} className="text-right text-gray-900 dark:text-white flex items-center mx-auto">

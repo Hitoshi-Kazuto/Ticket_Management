@@ -115,6 +115,8 @@ const UserMaster = () => {
                 setDropdownValues(response.data);
             } catch (error) {
                 console.error('Error fetching dropdown values:', error);
+            } finally {
+                setLoading(false);
             }
         };
         fetchDropdownValues();
