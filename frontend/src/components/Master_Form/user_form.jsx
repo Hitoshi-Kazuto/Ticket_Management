@@ -30,7 +30,7 @@ const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
         email: '',
         mobile: '',
         role: '',
-        partner_name: '',
+        partner_code: '',
         valid_from: '',
         valid_till: ''
     });
@@ -71,12 +71,12 @@ const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
 
 
         if (name === 'role') {
-            newFormData.partner_name = setPartnerName(value);
+            newFormData.partner_code = setPartnerName(value);
 
             // Filter partners only when organization is 'Partner'
             if (value === 'Partner') {
                 setFilteredPartners(dropdownValues.partners.filter(partner =>
-                    partner.partner_name !== 'Admin' && partner.partner_name !== 'Orbis User' && partner.partner_name !== 'Helpdesk'
+                    partner.partner_code !== 'ADMIN' && partner.partner_code !== 'ORBIS' && partner.partner_code !== 'HELPDESK'
                 ));
             } else {
                 setFilteredPartners(dropdownValues.partners);
@@ -220,8 +220,8 @@ const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
                         <div className="w-full md:w-1/2 px-3">
                             <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner Name<span className='text-red-700 font-bold text-sm'>*</span></label>
                             <select
-                                name="partner_name"
-                                value={formData.partner_name}
+                                name="partner_code"
+                                value={formData.partner_code}
                                 onChange={handleChange}
                                 className="appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 required={isUserEditable}
@@ -229,7 +229,7 @@ const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
                             >
                                 <option value="">Select Partner Name</option>
                                 {filteredPartners.map((partner) => (
-                                    <option key={partner.partner_id} value={partner.partner_name}>{partner.partner_name}</option>
+                                    <option key={partner.partner_id} value={partner.partner_code}>{partner.partner_name}</option>
                                 ))}
                             </select>
                         </div>

@@ -21,7 +21,7 @@ const StatusMaster = () => {
     }, []);
 
     const fetchStatusData = () => {
-        axios.get('${API_URL}api/status') // Replace with your backend endpoint
+        axios.get(`${API_URL}api/status`) // Replace with your backend endpoint
             .then(response => {
                 setStatuss(response.data);
             })
