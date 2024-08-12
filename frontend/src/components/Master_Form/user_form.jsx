@@ -7,13 +7,13 @@ const setPartnerName = (role) => {
     let partnerName = '';
     switch (role) {
         case 'Admin':
-            partnerName = 'Admin';
+            partnerName = 'ADMIN';
             break;
         case 'Orbis':
-            partnerName = 'Orbis User';
+            partnerName = 'ORBIS';
             break;
         case 'Helpdesk':
-            partnerName = 'Helpdesk';
+            partnerName = 'HELPDESK';
             break;
         default:
             partnerName = '';
