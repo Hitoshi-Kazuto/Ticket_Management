@@ -3,12 +3,12 @@ import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
 const token = localStorage.getItem('token');
-let username, role, partner_name;
+let username, role, partner_code;
 if (token) {
     const decoded = jwtDecode(token); // Decode the token
     username = decoded.username;
     role = decoded.role; // Extract the role from the decoded token
-    partner_name = decoded.partner_name;
+    partner_code = decoded.partner_code;
 }
 
 const setPartnerName = (organization) => {
@@ -21,7 +21,7 @@ const setPartnerName = (organization) => {
             partnerName = 'Orbis User';
             break;
         case 'Partner':
-            partnerName = partner_name;
+            partnerName = partner_code;
             break;
         default:
             partnerName = '';
@@ -36,7 +36,7 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
     const [formData, setFormData] = useState({
         Requested_by: '',
         Organization: '',
-        Partner_Name: '',
+        Partner_code: '',
         Software_Name: '',
         Title: '',
         Description: '',
@@ -60,14 +60,14 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
             } else if (formData.Organization === 'Orbis') {
                 filtered = dropdownValues.requested_by.filter(user => user.role === 'Orbis User');
             } else if (formData.Organization === 'Partner') {
-                filtered = dropdownValues.requested_by.filter(user => user.partner_code === formData.Partner_Name);
+                filtered = dropdownValues.requested_by.filter(user => user.partner_code === formData.Partner_code);
             }
 
             setFilteredUsers(filtered);
         };
 
         filterUsersByOrganization();
-    }, [formData.Organization, formData.Partner_Name, dropdownValues.requested_by]);
+    }, [formData.Organization, formData.Partner_code, dropdownValues.requested_by]);
 
     const handleChange = (e) => {
         const { name, value, type, files } = e.target;
@@ -82,12 +82,12 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
 
             // If Organization field changes directly
             if (name === 'Organization') {
-                newFormData.Partner_Name = setPartnerName(value);
+                newFormData.Partner_code = setPartnerName(value);
 
                 // Filter partners only when organization is 'Partner'
                 if (value === 'Partner') {
                     setFilteredPartners(dropdownValues.partners.filter(partner =>
-                        partner.partner_name !== 'Admin' && partner.partner_name !== 'Orbis User' && partner.partner_name !== 'Helpdesk'
+                        partner.partner_code !== 'ADMIN' && partner.partner_code !== 'ORBIS' && partner.partner_code !== 'HELPDESK'
                     ));
                 } else {
                     setFilteredPartners(dropdownValues.partners);
@@ -146,8 +146,8 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner</label>
                             <select
-                                name="Partner_Name"
-                                value={formData.Partner_Name}
+                                name="Partner_code"
+                                value={formData.Partner_code}
                                 onChange={handleChange}
                                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 required={isPartnerEditable}
@@ -155,7 +155,7 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
                             >
                                 <option value="">---- Select Partner ----</option>
                                 {filteredPartners.map((partner) => (
-                                    <option key={partner.partner_id} value={partner.partner_name}>{partner.partner_name}</option>
+                                    <option key={partner.partner_id} value={partner.partner_code}>{partner.partner_name}</option>
                                 ))}
                             </select>
                         </div>
@@ -305,17 +305,17 @@ export default AdminTicketForm;
 
 const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
     const token = localStorage.getItem('token');
-    let username, role, partner_name;
+    let username, role, partner_code;
     if (token) {
         const decoded = jwtDecode(token); // Decode the token
         username = decoded.username;
         role = decoded.role; // Extract the role from the decoded token
-        partner_name = decoded.partner_name;
+        partner_code = decoded.partner_code;
     }
     const [formData, setFormData] = useState({
         Requested_by: username || '',
         Organization: role || '',
-        Partner_Name: partner_name || '',
+        Partner_code: partner_code || '',
         Software_Name: '',
         Title: '',
         Description: '',
@@ -410,15 +410,15 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner Name</label>
                             <select
-                                name="Partner_Name"
-                                value={formData.Partner_Name}
+                                name="Partner_code"
+                                value={formData.Partner_code}
                                 onChange={handleChange}
                                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 disabled
                             >
                                 <option value=" ">---- Select Partner ----</option>
                                 {dropdownValues.partners.map((partner) => (
-                                    <option key={partner.partner_id} value={partner.partner_name}>{partner.partner_name}</option>
+                                    <option key={partner.partner_id} value={partner.partner_code}>{partner.partner_name}</option>
                                 ))}
                             </select>
                         </div>
@@ -538,7 +538,7 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
     const [formData, setFormData] = useState({
         Requested_by: '',
         Organization: '',
-        Partner_Name: '',
+        Partner_code: '',
         Software_Name: '',
         Title: '',
         Description: '',
@@ -562,14 +562,14 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
             } else if (formData.Organization === 'Internal') {
                 filtered = dropdownValues.requested_by.filter(user => user.role === 'Orbis User');
             } else if (formData.Organization === 'Partner') {
-                filtered = dropdownValues.requested_by.filter(user => user.partner_code === formData.Partner_Name);
+                filtered = dropdownValues.requested_by.filter(user => user.partner_code === formData.Partner_code);
             }
 
             setFilteredUsers(filtered);
         };
 
         filterUsersByOrganization();
-    }, [formData.Organization, formData.Partner_Name, dropdownValues.requested_by]);
+    }, [formData.Organization, formData.Partner_code, dropdownValues.requested_by]);
 
     const handleChange = (e) => {
         const { name, value, type, files } = e.target;
@@ -584,12 +584,12 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
 
             // If Organization field changes directly
             if (name === 'Organization') {
-                newFormData.Partner_Name = setPartnerName(value);
+                newFormData.Partner_code = setPartnerName(value);
 
                 // Filter partners only when organization is 'Partner'
                 if (value === 'Partner') {
                     setFilteredPartners(dropdownValues.partners.filter(partner =>
-                        partner.partner_name !== 'Admin' && partner.partner_name !== 'Orbis User' && partner.partner_name !== 'Helpdesk'
+                        partner.partner_code !== 'ADMIN' && partner.partner_code !== 'ORBIS' && partner.partner_code !== 'HELPDESK'
                     ));
                 } else {
                     setFilteredPartners(dropdownValues.partners);
@@ -648,8 +648,8 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner</label>
                             <select
-                                name="Partner_Name"
-                                value={formData.Partner_Name}
+                                name="Partner_code"
+                                value={formData.Partner_code}
                                 onChange={handleChange}
                                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 required={isPartnerEditable}

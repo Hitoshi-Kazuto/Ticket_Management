@@ -8,7 +8,7 @@ const AdminTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) => 
         Ticket_Id: '',
         Requested_by: '',
         Organization: '',
-        Partner_Name: '',
+        Partner_code: '',
         Software_Name: '',
         Title: '',
         Description: '',
@@ -31,7 +31,7 @@ const AdminTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) => 
                 Ticket_Id: ticket.ticket_id,
                 Requested_by: ticket.requested_by,
                 Organization: ticket.organization,
-                Partner_Name: ticket.partner_name,
+                Partner_code: ticket.partner_code,
                 Software_Name: ticket.software_name,
                 Title: ticket.title,
                 Description: ticket.description,
@@ -116,17 +116,17 @@ const AdminTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) => 
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label htmlFor='Partner_Name' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner</label>
+                            <label htmlFor='Partner_code' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner</label>
                             <select
-                                name="Partner_Name"
-                                value={formData.Partner_Name}
+                                name="Partner_code"
+                                value={formData.Partner_code}
                                 onChange={handleChange}
                                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 disabled
                             >
                                 <option value="">---- Select Partner ----</option>
                                 {dropdownValues.partners.map((partner) => (
-                                    <option key={partner.partner_id} value={partner.partner_name}>{partner.partner_name}</option>
+                                    <option key={partner.partner_id} value={partner.partner_code}>{partner.partner_name}</option>
                                 ))}
                             </select>
                         </div>
@@ -337,7 +337,7 @@ const UserTicketInfo = ({ isOpen, ticket, onClose, dropdownValues}) => {
         Ticket_Id: '',
         Requested_by: '',
         Organization: '',
-        Partner_Name: '',
+        Partner_code: '',
         Software_Name: '',
         Title: '',
         Description: '',
@@ -360,7 +360,7 @@ const UserTicketInfo = ({ isOpen, ticket, onClose, dropdownValues}) => {
                 Ticket_Id: ticket.ticket_id,
                 Requested_by: ticket.requested_by,
                 Organization: ticket.organization,
-                Partner_Name: ticket.partner_name,
+                Partner_code: ticket.partner_code,
                 Software_Name: ticket.software_name,
                 Title: ticket.title,
                 Description: ticket.description,
@@ -443,17 +443,17 @@ const UserTicketInfo = ({ isOpen, ticket, onClose, dropdownValues}) => {
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label htmlFor='Partner_Name' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner</label>
+                            <label htmlFor='Partner_code' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner</label>
                             <select
-                                name="Partner_Name"
-                                value={formData.Partner_Name}
+                                name="Partner_code"
+                                value={formData.Partner_code}
                                 onChange={handleChange}
                                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 disabled
                             >
                                 <option value="">Not Selected</option>
                                 {dropdownValues.partners.map((partner) => (
-                                    <option key={partner.partner_id} value={partner.partner_name}>{partner.partner_name}</option>
+                                    <option key={partner.partner_id} value={partner.partner_code}>{partner.partner_code}</option>
                                 ))}
                             </select>
                         </div>
@@ -594,7 +594,7 @@ const HelpdeskTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) 
         Ticket_Id: '',
         Requested_by: '',
         Organization: '',
-        Partner_Name: '',
+        Partner_code: '',
         Software_Name: '',
         Title: '',
         Description: '',
@@ -617,7 +617,7 @@ const HelpdeskTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) 
                 Ticket_Id: ticket.ticket_id,
                 Requested_by: ticket.requested_by,
                 Organization: ticket.organization,
-                Partner_Name: ticket.partner_name,
+                Partner_code: ticket.partner_code,
                 Software_Name: ticket.software_name,
                 Title: ticket.title,
                 Description: ticket.description,
@@ -702,17 +702,17 @@ const HelpdeskTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) 
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label htmlFor='Partner_Name' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner</label>
+                            <label htmlFor='Partner_code' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner</label>
                             <select
-                                name="Partner_Name"
-                                value={formData.Partner_Name}
+                                name="Partner_code"
+                                value={formData.Partner_code}
                                 onChange={handleChange}
                                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 disabled
                             >
                                 <option value="">---- Select Partner ----</option>
                                 {dropdownValues.partners.map((partner) => (
-                                    <option key={partner.partner_id} value={partner.partner_name}>{partner.partner_name}</option>
+                                    <option key={partner.partner_id} value={partner.partner_code}>{partner.partner_code}</option>
                                 ))}
                             </select>
                         </div>
