@@ -15,10 +15,10 @@ const setPartnerName = (organization) => {
     let partnerName = '';
     switch (organization) {
         case 'Admin':
-            partnerName = 'Admin';
+            partnerName = 'ADMIN';
             break;
         case 'Orbis':
-            partnerName = 'Orbis User';
+            partnerName = 'ORBIS';
             break;
         case 'Partner':
             partnerName = partner_code;
