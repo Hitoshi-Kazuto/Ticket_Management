@@ -15,7 +15,7 @@ const app = express();
 
 
 app.post('/admin-access/ticket-form', upload.single('file'), async (req, res) => {
-    const { Requested_by, Organization, Partner_Name, Software_Name, Description, Priority, Category, Status, created_by, Title, Assigned_Staff } = req.body;
+    const { Requested_by, Organization, Partner_Code, Software_Name, Description, Priority, Category, Status, created_by, Title, Assigned_Staff } = req.body;
     const file = req.file;
 
     try {
@@ -23,11 +23,11 @@ app.post('/admin-access/ticket-form', upload.single('file'), async (req, res) =>
 
         const query = `
             INSERT INTO ticket
-            (Requested_by, Organization, Partner_Name, Software_Name, Category, Status,  Title, Priority, Description, created_by, created_time, assigned_staff) 
+            (Requested_by, Organization, Partner_Code, Software_Name, Category, Status,  Title, Priority, Description, created_by, created_time, assigned_staff) 
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
             RETURNING *;
         `;
-        const values = [Requested_by, Organization, Partner_Name, Software_Name, Category, Status, Title, Priority, Description, created_by, created_time, Assigned_Staff];
+        const values = [Requested_by, Organization, Partner_Code, Software_Name, Category, Status, Title, Priority, Description, created_by, created_time, Assigned_Staff];
 
         const { rows } = await pool.query(query, values);
         const ticket_id = rows[0].ticket_id;
@@ -67,7 +67,7 @@ app.post('/admin-access/ticket-form', upload.single('file'), async (req, res) =>
     }
 });
 app.post('/user-access/ticket-form', upload.single('file'), async (req, res) => {
-    const { Requested_by, Organization, Partner_Name, Software_Name, Description, Priority, Category, Status, created_by, Title } = req.body;
+    const { Requested_by, Organization, Partner_Code, Software_Name, Description, Priority, Category, Status, created_by, Title } = req.body;
     // const file = req.file;
 
     try {
@@ -75,11 +75,11 @@ app.post('/user-access/ticket-form', upload.single('file'), async (req, res) => 
 
         const query = `
             INSERT INTO ticket
-            (Requested_by, Organization, Partner_Name, Software_Name, Category, Status,  Title, Priority, Description, created_by, created_time ) 
+            (Requested_by, Organization, Partner_Code, Software_Name, Category, Status,  Title, Priority, Description, created_by, created_time ) 
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
             RETURNING *;
         `;
-        const values = [Requested_by, Organization, Partner_Name, Software_Name, Category, Status, Title, Priority, Description, created_by, created_time ];
+        const values = [Requested_by, Organization, Partner_Code, Software_Name, Category, Status, Title, Priority, Description, created_by, created_time ];
 
         const { rows } = await pool.query(query, values);
         const ticket_id = rows[0].ticket_id;
@@ -119,7 +119,7 @@ app.post('/user-access/ticket-form', upload.single('file'), async (req, res) => 
     }
 });
 app.post('/helpdesk-access/ticket-form', upload.single('file'), async (req, res) => {
-    const { Requested_by, Organization, Partner_Name, Software_Name, Description, Priority, Category, Status, created_by, Title, Assigned_Staff } = req.body;
+    const { Requested_by, Organization, Partner_Code, Software_Name, Description, Priority, Category, Status, created_by, Title, Assigned_Staff } = req.body;
     // const file = req.file;
 
     try {
@@ -127,11 +127,11 @@ app.post('/helpdesk-access/ticket-form', upload.single('file'), async (req, res)
 
         const query = `
             INSERT INTO ticket
-            (Requested_by, Organization, Partner_Name, Software_Name, Category, Status,  Title, Priority, Description, created_by, created_time, assigned_staff) 
+            (Requested_by, Organization, Partner_Code, Software_Name, Category, Status,  Title, Priority, Description, created_by, created_time, assigned_staff) 
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
             RETURNING *;
         `;
-        const values = [Requested_by, Organization, Partner_Name, Software_Name, Category, Status, Title, Priority, Description, created_by, created_time, Assigned_Staff];
+        const values = [Requested_by, Organization, Partner_Code, Software_Name, Category, Status, Title, Priority, Description, created_by, created_time, Assigned_Staff];
 
         const { rows } = await pool.query(query, values);
         const ticket_id = rows[0].ticket_id;
