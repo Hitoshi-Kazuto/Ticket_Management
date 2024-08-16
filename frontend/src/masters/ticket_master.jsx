@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Home from '../components/Home/home';
 import AdminTicketForm, { UserTicketForm, HelpdeskTicketForm } from '../components/Master_Form/ticket_form';
 import TicketUpdatePopup, { UserTicketInfo, HelpdeskTicketUpdatePopup } from '../components/Master_Info/ticket_info';
-import UpdateInfoPopup from '../components/Master_Info/update_info'
+import UpdateInfoPopup, {UpdateInfoUserPopup} from '../components/Master_Info/update_info'
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
@@ -374,11 +374,34 @@ const TicketMaster = () => {
                         dropdownValues={dropdownValues}
                     />
                 )}
-                <UpdateInfoPopup
+                {role === 'Admin' && (
+                    <UpdateInfoPopup
                     show={showUpdatesPopup}
                     updates={updates}
                     onClose={() => setShowUpdatesPopup(false)}
                 />
+                )}
+                {role === 'Helpdesk' && (
+                    <UpdateInfoPopup
+                    show={showUpdatesPopup}
+                    updates={updates}
+                    onClose={() => setShowUpdatesPopup(false)}
+                />
+                )}
+                {role === 'Orbis' && (
+                    <UpdateInfoUserPopup
+                    show={showUpdatesPopup}
+                    updates={updates}
+                    onClose={() => setShowUpdatesPopup(false)}
+                />
+                )}
+                {role === 'Partner' && (
+                    <UpdateInfoUserPopup
+                    show={showUpdatesPopup}
+                    updates={updates}
+                    onClose={() => setShowUpdatesPopup(false)}
+                />
+                )}
             </div>
         </div>
     );

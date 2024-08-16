@@ -22,6 +22,8 @@ const setPartnerName = (role) => {
 };
 
 const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
+    const today = new Date().toISOString().split('T')[0];
+
     const [formData, setFormData] = useState({
         name: '',
         username: '',
@@ -31,7 +33,7 @@ const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
         mobile: '',
         role: '',
         partner_code: '',
-        valid_from: '',
+        valid_from: today,
         valid_till: ''
     });
 
@@ -40,6 +42,8 @@ const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
     const [emailValid, setEmailValid] = useState('');
     const [phoneError, setPhoneError] = useState('');
     const [phoneValid, setPhoneValid] = useState('');
+    const [validToError, setToError] = useState('');
+    const [validFromError, setFromError] = useState('');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -67,6 +71,13 @@ const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
                 setPhoneError('Enter valid Phone Number!');
                 setPhoneValid("");
             }
+        }
+        if (name === 'valid_from' && formData.valid_to && value > formData.valid_to) {
+            setToError('Valid From date cannot be later than Valid To date.');
+        } else if (name === 'valid_to' && formData.valid_from && value < formData.valid_from) {
+            setError('Valid To date cannot be earlier than Valid From date.');
+        } else {
+            setError('');
         }
 
 
