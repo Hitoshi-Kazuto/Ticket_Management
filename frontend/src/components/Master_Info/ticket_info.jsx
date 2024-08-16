@@ -58,7 +58,7 @@ const AdminTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) => 
         e.preventDefault();
         formData.updated_by = username;
         try {
-            const response = await axios.put(`${API_URL}/ticket/admin-access/${ticket.ticket_id}`, formData);
+            const response = await axios.put(`${API_URL}api/ticket/admin-access/${ticket.ticket_id}`, formData);
             if (response.data.success) {
                 // Handle successful update (e.g., close the popup and refresh the data)
                 onClose();
@@ -387,7 +387,7 @@ const UserTicketInfo = ({ isOpen, ticket, onClose, dropdownValues}) => {
         e.preventDefault();
         formData.updated_by = username;
         try {
-            const response = await axios.put(`${API_URL}/ticket/admin-access/${ticket.ticket_id}`, formData);
+            const response = await axios.put(`${API_URL}api/ticket/admin-access/${ticket.ticket_id}`, formData);
             if (response.data.success) {
                 // Handle successful update (e.g., close the popup and refresh the data)
                 onClose();
