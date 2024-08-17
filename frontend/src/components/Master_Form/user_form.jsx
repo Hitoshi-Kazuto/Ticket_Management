@@ -42,7 +42,7 @@ const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
     const [emailValid, setEmailValid] = useState('');
     const [phoneError, setPhoneError] = useState('');
     const [phoneValid, setPhoneValid] = useState('');
-    const [error, setError] = useState('');
+    const [dateError, setError] = useState('');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -271,10 +271,10 @@ const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
                     {
                     <div className="flex flex-wrap -mx-3">
                     <div className="w-full md:w-1/2 px-3">
-                            {error && <div className="text-red-700 ">{error}</div>}
+                            {dateError && <div className="text-red-700 ">{dateError}</div>}
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            {error && <div className="text-red-700 ">{error}</div>}
+                            {dateError && <div className="text-red-700 ">{dateError}</div>}
                         </div>
                     </div>
                     }
