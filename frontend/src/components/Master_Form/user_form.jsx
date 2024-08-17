@@ -42,8 +42,7 @@ const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
     const [emailValid, setEmailValid] = useState('');
     const [phoneError, setPhoneError] = useState('');
     const [phoneValid, setPhoneValid] = useState('');
-    const [validToError, setToError] = useState('');
-    const [validFromError, setFromError] = useState('');
+    const [error, setError] = useState('');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -73,7 +72,7 @@ const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
             }
         }
         if (name === 'valid_from' && formData.valid_to && value > formData.valid_to) {
-            setToError('Valid From date cannot be later than Valid To date.');
+            setError('Valid From date cannot be later than Valid To date.');
         } else if (name === 'valid_to' && formData.valid_from && value < formData.valid_from) {
             setError('Valid To date cannot be earlier than Valid From date.');
         } else {
@@ -269,6 +268,16 @@ const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
                             />
                         </div>
                     </div>
+                    {
+                    <div className="flex flex-wrap -mx-3">
+                    <div className="w-full md:w-1/2 px-3">
+                            {error && <div className="text-red-700 ">{error}</div>}
+                        </div>
+                        <div className="w-full md:w-1/2 px-3">
+                            {error && <div className="text-red-700 ">{error}</div>}
+                        </div>
+                    </div>
+                    }
                     <div className="flex flex-wrap -mx-3 mb-6">
                         <div className="w-full px-3">
                             <button
