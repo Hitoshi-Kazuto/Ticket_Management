@@ -526,7 +526,7 @@ const UserTicketInfo = ({ isOpen, ticket, onClose, dropdownValues}) => {
                         </div>
                     </div>
 
-                    <hr className='px-3 mb-4 my-4'></hr>
+                    {/* <hr className='px-3 mb-4 my-4'></hr>
 
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
@@ -577,7 +577,7 @@ const UserTicketInfo = ({ isOpen, ticket, onClose, dropdownValues}) => {
                                     <option key={status.status_id} value={status.status}>{status.status}</option>
                                 ))}
                             </select>
-                    </div>
+                    </div> */}
                 </form>
                 {/* {error && <div className="text-red-700 mt-4">{error}</div>} */}
             </div>
