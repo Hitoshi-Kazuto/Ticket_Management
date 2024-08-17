@@ -66,7 +66,7 @@ const Header = () => {
 
     return (
         <nav className="bg-gray-200 py-2.5 dark:bg-gray-900 relative my-0 z-50">
-            <div className="flex justify-between items-center fixed mx-4 my-0 max-w">
+            <div className="flex justify-between items-center mx-4 my-0 max-w">
                 <a href="#" className="flex items-center">
                     <img src="https://img.icons8.com/color/48/headset.png" className="mr-3 h-6 sm:h-9" alt="Logo" />
                     <span className="self-right text-xl font-bold whitespace-nowrap text-gray-700 dark:text-white">Helpdesk Management</span>
