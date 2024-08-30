@@ -14,6 +14,7 @@ const UserMaster = () => {
     const [error, setError] = useState('');
     const [statusFilter, setStatusFilter] = useState('active');
     const [loading, setLoading] = useState(true);
+    const token = localStorage.getItem('token');
     const username = localStorage.getItem('username'); // Get username from local storage
     const API_URL = 'https://ticket-management-ten.vercel.app/';
 
@@ -23,7 +24,11 @@ const UserMaster = () => {
     }, []);
 
     const fetchUserData = () => {
-        axios.get(`${API_URL}api/user`) // Replace with your backend endpoint
+        axios.get(`${API_URL}api/user`, {
+            headers: {
+                'Authorization': `Bearer ${token}` // Include the token in the header
+            }
+        }) // Replace with your backend endpoint
             .then(response => {
                 setUsers(response.data);
             })
@@ -43,7 +48,11 @@ const UserMaster = () => {
     const handleFormSubmit = async (formData) => {
         formData.created_by = username;
         try {
-            const response = await axios.post(`${API_URL}api/user/user-form`, formData);
+            const response = await axios.post(`${API_URL}api/user/user-form`, {
+                headers: {
+                    'Authorization': `Bearer ${token}` // Include the token in the header
+                }
+            }, formData);
             if (response.data.success) {
                 fetchUserData(); // Refetch data after successful submission
                 handleClosePopup(); // Close the popup
@@ -72,7 +81,11 @@ const UserMaster = () => {
 
     const handleDelete = async (user_id) => {
         try {
-            const response = await axios.post(`${API_URL}api/user/inactivate`, { user_id });
+            const response = await axios.post(`${API_URL}api/user/inactivate`, {
+                headers: {
+                    'Authorization': `Bearer ${token}` // Include the token in the header
+                }
+            }, { user_id });
             if (response.data.success) {
                 fetchUserData(); // Refresh data after successful deletion
             } else {
@@ -85,7 +98,11 @@ const UserMaster = () => {
 
     const handleActivate = async (user_id) => {
         try {
-            const response = await axios.post(`${API_URL}api/user/activate`, { user_id });
+            const response = await axios.post(`${API_URL}api/user/activate`, {
+                headers: {
+                    'Authorization': `Bearer ${token}` // Include the token in the header
+                }
+            }, { user_id });
             if (response.data.success) {
                 fetchUserData(); // Refresh data after successful deletion
             } else {
@@ -111,7 +128,11 @@ const UserMaster = () => {
     useEffect(() => {
         const fetchDropdownValues = async () => {
             try {
-                const response = await axios.get(`${API_URL}api/partner-codes`);
+                const response = await axios.get(`${API_URL}api/partner-codes`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}` // Include the token in the header
+                    }
+                });
                 setDropdownValues(response.data);
             } catch (error) {
                 console.error('Error fetching dropdown values:', error);

@@ -26,6 +26,7 @@ app.use(cors({
     origin: "https://ticket-management-frontend.vercel.app",
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
+    allowedHeaders: 'Authorization, Content-Type',
     optionsSuccessStatus: 204
 }));
 // Initialize passport
