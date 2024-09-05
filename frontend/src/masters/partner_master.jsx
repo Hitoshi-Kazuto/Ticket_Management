@@ -13,6 +13,7 @@ const PartnerMaster = () => {
     const [statusFilter, setStatusFilter] = useState('active');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
     const username = localStorage.getItem('username'); // Get username from local storage
     const API_URL = 'https://ticket-management-ten.vercel.app/';
 
@@ -25,6 +26,7 @@ const PartnerMaster = () => {
         axios.get(`${API_URL}api/partner`) // Replace with your backend endpoint
             .then(response => {
                 setPartners(response.data);
+                setLoading(false);
             })
             .catch(error => {
                 console.error('Error fetching partners', error);

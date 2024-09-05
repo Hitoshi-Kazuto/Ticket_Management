@@ -14,6 +14,7 @@ const TicketMaster = () => {
     const [statusFilter, setStatusFilter] = useState('all');
     const [showUpdatesPopup, setShowUpdatesPopup] = useState(false);
     const [updates, setUpdates] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [selectedTicketId, setSelectedTicketId] = useState(null);
     const [dropdownValues, setDropdownValues] = useState({
         partners: [],
@@ -73,6 +74,7 @@ const TicketMaster = () => {
         }) // Include the token in headers) // Replace with your backend endpoint
             .then(response => {
                 setTickets(response.data);
+                setLoading(false);
             })
             .catch(error => {
                 console.error('Error fetching Tickets', error);

@@ -10,6 +10,7 @@ const categoryMaster = () => {
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(true);
     const [statusFilter, setStatusFilter] = useState('active');
     const username = localStorage.getItem('username'); // Get username from local storage
     const API_URL = 'https://ticket-management-ten.vercel.app/';
@@ -23,10 +24,12 @@ const categoryMaster = () => {
         axios.get(`${API_URL}api/category`) // Replace with your backend endpoint
             .then(response => {
                 setCategorys(response.data);
+                setLoading(false);
             })
             .catch(error => {
                 console.error('Error fetching categorys', error);
-            });
+            })
+            
     };
 
     const handleAddClick = () => {

@@ -12,6 +12,7 @@ const TicketMaster = () => {
     const [error, setError] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
     const [Assign, setAssign] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [dropdownValues, setDropdownValues] = useState({
         partners: [],
         softwares: [],
@@ -78,6 +79,8 @@ const TicketMaster = () => {
                 setDropdownValues(response.data);
             } catch (error) {
                 console.error('Error fetching dropdown values:', error);
+            } finally {
+                setLoading(false);
             }
         };
         fetchDropdownValues();

@@ -24,6 +24,7 @@ const softwareMaster = () => {
         axios.get(`${API_URL}api/software`) // Replace with your backend endpoint
             .then(response => {
                 setSoftwares(response.data);
+                setLoading(false);
             })
             .catch(error => {
                 console.error('Error fetching softwares', error);

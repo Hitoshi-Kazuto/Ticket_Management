@@ -75,6 +75,7 @@ const TicketMaster = () => {
         }) // Include the token in headers) // Replace with your backend endpoint
             .then(response => {
                 setTickets(response.data);
+                setLoading(false);
             })
             .catch(error => {
                 console.error('Error fetching Tickets', error);
