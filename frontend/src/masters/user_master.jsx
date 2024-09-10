@@ -26,7 +26,7 @@ const UserMaster = () => {
     const fetchUserData = () => {
         axios.get(`${API_URL}api/user`, {
             headers: {
-                'Authorization': `Bearer ${token}` // Include the token in the header
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
         }) // Replace with your backend endpoint
             .then(response => {

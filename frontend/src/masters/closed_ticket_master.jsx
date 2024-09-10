@@ -93,7 +93,9 @@ const TicketMaster = () => {
 
     const fetchUpdates = async (ticket_id) => {
         try {
-            const response = await fetch(`${API_URL}api/ticket/admin-access/ticket-updates/${ticket_id}`);
+            const response = await fetch(`${API_URL}api/ticket/admin-access/ticket-updates/${ticket_id}`,{headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }});
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }

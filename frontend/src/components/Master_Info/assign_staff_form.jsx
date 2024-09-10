@@ -58,7 +58,9 @@ const AssignStaffPopup = ({ isOpen, ticket, onClose, dropdownValues }) => {
         e.preventDefault();
         formData.updated_by = username;
         try {
-            const response = await axios.put(`${API_URL}api/ticket/helpdesk-access/assign-staff/${ticket.ticket_id}`, formData);
+            const response = await axios.put(`${API_URL}api/ticket/helpdesk-access/assign-staff/${ticket.ticket_id}`,{headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }}, formData);
             if (response.data.success) {
                 // Handle successful update (e.g., close the popup and refresh the data)
                 onClose();

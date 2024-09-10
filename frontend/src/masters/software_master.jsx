@@ -42,7 +42,9 @@ const softwareMaster = () => {
     const handleFormSubmit = async (formData) => {
         formData.created_by = username;
         try {
-            const response = await axios.post(`${API_URL}api/software/software-form`, formData);
+            const response = await axios.post(`${API_URL}api/software/software-form`,{headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }}, formData);
             if (response.data.success) {
                 fetchSoftwareData(); // Refetch data after successful submission
                 handleClosePopup(); // Close the popup
@@ -71,7 +73,9 @@ const softwareMaster = () => {
 
     const handleDelete = async (sw_id) => {
         try {
-            const response = await axios.post(`${API_URL}api/software/inactivate`, { sw_id });
+            const response = await axios.post(`${API_URL}api/software/inactivate`,{headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }}, { sw_id });
             if (response.data.success) {
                 fetchSoftwareData(); // Refresh data after successful deletion
             } else {
@@ -84,7 +88,9 @@ const softwareMaster = () => {
 
     const handleActivate = async (sw_id) => {
         try {
-            const response = await axios.post(`${API_URL}api/software/activate`, { sw_id });
+            const response = await axios.post(`${API_URL}api/software/activate`,{headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }}, { sw_id });
             if (response.data.success) {
                 fetchSoftwareData(); // Refresh data after successful deletion
             } else {

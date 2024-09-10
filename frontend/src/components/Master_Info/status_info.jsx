@@ -43,7 +43,9 @@ const StatusInfoPopup = ({ isOpen, Status, onClose }) => {
         e.preventDefault();
         formData.Updated_By = username;
         try {
-            const response = await axios.put(`${API_URL}api/status/${Status.status_id}`, formData);
+            const response = await axios.put(`${API_URL}api/status/${Status.status_id}`,{headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }}, formData);
             if (response.data.success) {
                 // Handle successful update (e.g., close the popup and refresh the data)
                 onClose();

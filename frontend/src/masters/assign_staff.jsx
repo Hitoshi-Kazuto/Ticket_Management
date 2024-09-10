@@ -75,7 +75,9 @@ const TicketMaster = () => {
     useEffect(() => {
         const fetchDropdownValues = async () => {
             try {
-                const response = await axios.get(`${API_URL}api/dropdown-values`);
+                const response = await axios.get(`${API_URL}api/dropdown-values`,{headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }});
                 setDropdownValues(response.data);
             } catch (error) {
                 console.error('Error fetching dropdown values:', error);
