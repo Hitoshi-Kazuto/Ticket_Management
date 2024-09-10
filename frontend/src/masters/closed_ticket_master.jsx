@@ -232,18 +232,18 @@ const TicketMaster = () => {
                                     {Ticket.status}
                                 </td>
                                 <td className="px-2 py-4 text-right">
-                                    <a
+                                    <button
                                         onClick={() => handleUpdateClick(Ticket)}
                                         className="text-white px-4 py-2 rounded-md bg-blue-700 hover:bg-blue-800"
                                     >Ticket Info
-                                    </a>
+                                    </button>
                                 </td>
                                 <td className="px-2 py-4 text-center">
-                                    <a
+                                    <button
                                         onClick={() => handleShowUpdates(Ticket.ticket_id)}
                                         className="text-white px-4 py-2 rounded-md bg-purple-500 hover:bg-purple-800"
                                     >Update Info
-                                    </a>
+                                    </button>
                                 </td>
                             </tr>
                         ))}

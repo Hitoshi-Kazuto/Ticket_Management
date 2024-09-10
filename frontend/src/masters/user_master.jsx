@@ -233,11 +233,11 @@ const UserMaster = () => {
                                         {User.active_status ? 'Active' : 'Inactive'}
                                     </td>
                                     <td className="px-2 py-4 text-right">
-                                        <a
+                                        <button
                                             onClick={() => handleInfoClick(User)}
                                             className="text-white px-4 py-2 rounded-md bg-blue-700 hover:bg-blue-800"
                                         >Info
-                                        </a>
+                                        </button>
                                     </td>
                                     <td className="px-2 py-4 text-center">
                                         {User.active_status ? <button
