@@ -10,7 +10,7 @@ export const createStatus = async (req, res) => {
 
         const query = `
             INSERT INTO Status_Master 
-            (Status, Remarks, Status_Activity, Created_By, Created_Time) 
+            (status, remarks, status_activity, created_by, created_time) 
             VALUES ($1, $2, $3, $4, $5)
             RETURNING *;
         `;

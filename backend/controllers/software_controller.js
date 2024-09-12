@@ -10,7 +10,7 @@ export const createSoftware = async (req, res) => {
 
         const query = `
             INSERT INTO Software_Master 
-            (Software_Name, Remarks, Status, Created_By, Created_Time) 
+            (software_name, remarks, status, created_by, created_time) 
             VALUES ($1, $2, $3, $4, $5)
             RETURNING *;
         `;

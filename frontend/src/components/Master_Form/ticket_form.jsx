@@ -58,7 +58,7 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
             if (formData.Organization === 'Admin') {
                 filtered = dropdownValues.requested_by.filter(user => user.role === 'Admin');
             } else if (formData.Organization === 'Orbis') {
-                filtered = dropdownValues.requested_by.filter(user => user.role === 'Orbis User');
+                filtered = dropdownValues.requested_by.filter(user => user.role === 'Orbis');
             } else if (formData.Organization === 'Partner') {
                 filtered = dropdownValues.requested_by.filter(user => user.partner_code === formData.Partner_code);
             }
