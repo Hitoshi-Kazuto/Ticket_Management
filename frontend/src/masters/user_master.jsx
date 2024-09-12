@@ -136,8 +136,6 @@ const UserMaster = () => {
                 setDropdownValues(response.data);
             } catch (error) {
                 console.error('Error fetching dropdown values:', error);
-            } finally {
-                setLoading(false);
             }
         };
         fetchDropdownValues();
@@ -213,7 +211,7 @@ const UserMaster = () => {
                             <th scope="col" className="pl-3 pr-6 py-3"><span className="sr-only">Edit</span></th>
                         </tr>
                     </thead>
-                    {loading ? (<LoadingSpinner />) : (
+                    {(
                         <tbody>
                             {filteredUsers.map(User => (
                                 <tr key={User.user_id} className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
