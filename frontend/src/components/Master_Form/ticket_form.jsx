@@ -418,7 +418,7 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
                             >
                                 <option value=" ">---- Select Partner ----</option>
                                 {dropdownValues.partners.map((partner) => (
-                                    <option key={partner.partner_id} value={partner.partner_code}>{partner.partner_name}</option>
+                                    <option key={partner.partner_id} value={partner.partner_code}>{partner.partner_code}</option>
                                 ))}
                             </select>
                         </div>
