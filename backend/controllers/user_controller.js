@@ -59,12 +59,46 @@ export const createUser = async (req, res) => {
     }
 };
 
+// export const getUser = async (req, res) => {
+//     try {
+//         const users = await pool.query('SELECT * FROM public.User_master ORDER BY username ASC');
+//         res.json(users.rows);
+//     } catch (error) {
+//         console.error('Error fetching status', error);
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// };
+
 export const getUser = async (req, res) => {
     try {
+        // First, fetch all users from User_master
         const users = await pool.query('SELECT * FROM public.User_master ORDER BY username ASC');
-        res.json(users.rows);
+
+        // Fetch partner names separately for each user
+        const userRows = users.rows;
+        for (let i = 0; i < userRows.length; i++) {
+            const partner_code = userRows[i].partner_code;
+
+            // Fetch partner_name from Partner_master for each partner_code
+            if (partner_code) {
+                const partnerResult = await pool.query(
+                    'SELECT partner_name FROM public.Partner_master WHERE partner_code = $1', 
+                    [partner_code]
+                );
+
+                if (partnerResult.rows.length > 0) {
+                    userRows[i].partner_name = partnerResult.rows[0].partner_name;
+                } else {
+                    userRows[i].partner_name = null;  // If no matching partner is found
+                }
+            } else {
+                userRows[i].partner_name = null; // If no partner_code is present
+            }
+        }
+
+        res.json(userRows);
     } catch (error) {
-        console.error('Error fetching status', error);
+        console.error('Error fetching users and partner names', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
