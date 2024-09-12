@@ -49,7 +49,7 @@ app.use('/api/status', status);
 app.use('/api/ticket', ticket);
 
 
-app.post('/api/change-password', verifyToken, async (req, res) => {
+app.post('/api/change-password', async (req, res) => {
     const { username, currentPassword, newPassword } = req.body;
 
     try {
@@ -82,7 +82,7 @@ app.post('/api/change-password', verifyToken, async (req, res) => {
         res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
 });
-app.get('/api/partner-codes', verifyToken, async (req, res) => {
+app.get('/api/partner-codes', async (req, res) => {
     try {
         const query = 'SELECT * FROM Partner_Master WHERE status = true';
         const result = await pool.query(query);
@@ -92,7 +92,7 @@ app.get('/api/partner-codes', verifyToken, async (req, res) => {
         res.status(500).json({ success: false, error: 'Internal Server Error' });
     }
 });
-app.get('/api/dropdown-values', verifyToken, async (req, res) => {
+app.get('/api/dropdown-values', async (req, res) => {
     try {
         const partners = await pool.query("SELECT * FROM Partner_Master WHERE status = 'True'");
         const softwares = await pool.query("SELECT * FROM Software_Master WHERE status = 'True'");
@@ -113,7 +113,7 @@ app.get('/api/dropdown-values', verifyToken, async (req, res) => {
         res.status(500).json({ success: false, error: 'Internal Server Error' });
     }
 });
-app.get('/api/ticket-record/:ticket_id', verifyToken, async (req, res) => {
+app.get('/api/ticket-record/:ticket_id', async (req, res) => {
     const { ticket_id } = req.params;
 
     try {
@@ -132,7 +132,7 @@ app.get('/api/ticket-record/:ticket_id', verifyToken, async (req, res) => {
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
 });
-app.get('/api/getUser/:requested_by', verifyToken, async (req, res) => {
+app.get('/api/getUser/:requested_by', async (req, res) => {
     const Requested_by = req.params.requested_by;
     try {
         const result = await pool.query('SELECT role, Partner_Code FROM user_master WHERE username = $1', [Requested_by]);

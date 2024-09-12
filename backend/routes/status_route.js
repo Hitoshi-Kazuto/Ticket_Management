@@ -4,10 +4,10 @@ import { updateStatus, createStatus, getStatus, activateStatus, inactivateStatus
 
 const router = express.Router();
 
-router.put('/:status_id', verifyToken, updateStatus);
-router.get('/', verifyToken, getStatus);
-router.post('/status-form', verifyToken, createStatus);
-router.post('/inactivate', verifyToken, inactivateStatus);
-router.post('/activate', verifyToken, activateStatus);
+router.put('/:status_id', updateStatus);
+router.get('/', getStatus);
+router.post('/status-form', createStatus);
+router.post('/inactivate', inactivateStatus);
+router.post('/activate', activateStatus);
 
 export default router;

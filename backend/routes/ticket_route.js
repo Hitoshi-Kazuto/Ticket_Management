@@ -7,9 +7,9 @@ import verifyToken from '../middlewares/authenticate.js';
 const app = express();
 // const upload = multer({dest: 'uploads/'});
 
-app.put('/:ticket_id', verifyToken, upload.single('File_Path'), updateTicket);
-app.get('/', verifyToken, getTicket);
-app.post('/ticket-form', verifyToken, upload.single('File_Path'), createTicket);
+app.put('/:ticket_id', upload.single('File_Path'), updateTicket);
+app.get('/', getTicket);
+app.post('/ticket-form', upload.single('File_Path'), createTicket);
 
 
 export default app;

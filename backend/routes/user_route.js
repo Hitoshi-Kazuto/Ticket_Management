@@ -4,10 +4,10 @@ import verifyToken from '../middlewares/authenticate.js';
 
 const router = express.Router();
 
-router.put('/:user_id', verifyToken, updateUser);
-router.get('/', verifyToken, getUser);
-router.post('/user-form', verifyToken, createUser);
-router.post('/inactivate', verifyToken, inactivateUser);
-router.post('/activate', verifyToken, activateUser);
+router.put('/:user_id', updateUser);
+router.get('/', getUser);
+router.post('/user-form', createUser);
+router.post('/inactivate', inactivateUser);
+router.post('/activate', activateUser);
 
 export default router;
