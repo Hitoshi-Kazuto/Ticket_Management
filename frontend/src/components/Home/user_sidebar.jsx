@@ -13,7 +13,7 @@ const Sidebar = () => {
             <div className="h-full px-3 py-4 overflow-y-auto">
                 <NavLink
                     to='/user-dashboard'
-                    className={`flex items-center w-full p-2 mt-14 mb-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800`}
+                    className={`flex items-center w-full p-2 mt-14 mb-2 text-lg text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800`}
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"/>
                         <path d="M3 8.976C3 4.05476 4.05476 3 8.976 3H15.024C19.9452 3 21 4.05476 21 8.976V15.024C21 19.9452 19.9452 21 15.024 21H8.976C4.05476 21 3 19.9452 3 15.024V8.976Z" stroke="currentColor" strokeWidth="1.008"></path>
@@ -26,7 +26,7 @@ const Sidebar = () => {
                 <div className="relative">
                     <button
                         type="button"
-                        className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
+                        className="flex items-center w-full p-2 text-lg text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
                         aria-controls="dropdown-ticket-management"
                         onClick={toggleDropdown}
                     >
@@ -39,13 +39,13 @@ const Sidebar = () => {
                         <div id="dropdown-ticket-management" className="space-y-2 pl-8 mt-1">
                             <NavLink
                                 to='/ticket'
-                                className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
+                                className="flex items-center w-full p-2 text-lg text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
                             >
                                 View Tickets
                             </NavLink>
                             <NavLink
                                 to='/closed-ticket'
-                                className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
+                                className="flex items-center w-full p-2 text-lg text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
                             >
                                 Closed Tickets
                             </NavLink>
