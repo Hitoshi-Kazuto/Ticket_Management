@@ -83,7 +83,7 @@ const userInfoPopup = ({ isOpen, user, onClose }) => {
                 <form onSubmit={handleSubmit}>
                     <div className="flex flex-wrap -mx-3 mb-6">
                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Name</label>
+                            <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Name</label>
                             <input
                                 type="text"
                                 name="name"
@@ -94,7 +94,7 @@ const userInfoPopup = ({ isOpen, user, onClose }) => {
                             />
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Username</label>
+                            <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Username</label>
                             <input
                                 type="text"
                                 name="username"
@@ -107,7 +107,7 @@ const userInfoPopup = ({ isOpen, user, onClose }) => {
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-6">
                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Password</label>
+                            <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Password</label>
                             <input
                                 type="password"
                                 name="password"
@@ -118,7 +118,7 @@ const userInfoPopup = ({ isOpen, user, onClose }) => {
                             />
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Confirm Password</label>
+                            <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Confirm Password</label>
                             <input
                                 type="password"
                                 name="confirm_password"
@@ -131,7 +131,7 @@ const userInfoPopup = ({ isOpen, user, onClose }) => {
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-6">
                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Email Address</label>
+                            <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Email Address</label>
                             <input
                                 type="text"
                                 name="email_address"
@@ -142,7 +142,7 @@ const userInfoPopup = ({ isOpen, user, onClose }) => {
                             />
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Mobile Number</label>
+                            <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Mobile Number</label>
                             <input
                                 type="text"
                                 name="mobile_number"
@@ -155,7 +155,7 @@ const userInfoPopup = ({ isOpen, user, onClose }) => {
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-6">
                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Role</label>
+                            <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Role</label>
                             <select
                                 name="role"
                                 value={formData.role}
@@ -171,7 +171,7 @@ const userInfoPopup = ({ isOpen, user, onClose }) => {
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner Name</label>
+                            <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Partner Name</label>
                             <input
                                 type="text"
                                 name="partner_name"
@@ -184,7 +184,7 @@ const userInfoPopup = ({ isOpen, user, onClose }) => {
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-6">
                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Valid From</label>
+                            <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Valid From</label>
                             <input
                                 type="date"
                                 name="valid_from"
@@ -195,7 +195,7 @@ const userInfoPopup = ({ isOpen, user, onClose }) => {
                             />
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Valid Till</label>
+                            <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Valid Till</label>
                             <input
                                 type="date"
                                 name="valid_till"

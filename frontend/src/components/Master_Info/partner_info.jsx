@@ -74,7 +74,7 @@ const PartnerInfoPopup = ({ isOpen, partner, onClose }) => {
                 </button>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner Id:</label>
+                        <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Partner Id:</label>
                         <input
                             type="text"
                             name="Partner_Id"
@@ -84,7 +84,7 @@ const PartnerInfoPopup = ({ isOpen, partner, onClose }) => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner Code:</label>
+                        <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Partner Code:</label>
                         <input
                             type="text"
                             name="Partner_Code"
@@ -94,7 +94,7 @@ const PartnerInfoPopup = ({ isOpen, partner, onClose }) => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner Name:</label>
+                        <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Partner Name:</label>
                         <input
                             type="text"
                             name="Partner_Name"
@@ -104,7 +104,7 @@ const PartnerInfoPopup = ({ isOpen, partner, onClose }) => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Remarks:</label>
+                        <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Remarks:</label>
                         <textarea
                             name="Remarks"
                             value={formData.Remarks}

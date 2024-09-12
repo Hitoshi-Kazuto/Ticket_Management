@@ -30,13 +30,13 @@ const PopupForm = ({ isOpen, onClose, onSubmit, error }) => {
             <div className="bg-white p-8 rounded-lg shadow-lg relative">
                 <button
                     onClick={onClose}
-                    className="absolute top-0 right-0 mt-2 mr-2 uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 hover:text-gray-900"
+                    className="absolute top-0 right-0 mt-2 mr-2 uppercase tracking-wide text-gray-700 text-sm font-bold mb-2 hover:text-gray-900"
                 >
                     &times;
                 </button>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Category Name<span className='text-red-700 font-bold text-sm'>*</span></label>
+                        <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Category Name<span className='text-red-700 font-bold text-sm'>*</span></label>
                         <input
                             type="text"
                             name="Category_Name"
@@ -47,7 +47,7 @@ const PopupForm = ({ isOpen, onClose, onSubmit, error }) => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Remarks</label>
+                        <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Remarks</label>
                         <input
                             type="text"
                             name="Remarks"

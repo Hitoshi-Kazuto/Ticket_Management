@@ -122,14 +122,14 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
             <div className="bg-white p-8 rounded-lg shadow-lg relative w-2/4">
                 <button
                     onClick={onClose}
-                    className="absolute top-0 right-0 mt-2 mr-2 uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 hover:text-gray-900"
+                    className="absolute top-0 right-0 mt-2 mr-2 uppercase tracking-wide text-gray-700 text-sm font-bold mb-2 hover:text-gray-900"
                 >
                     &times;
                 </button>
                 <form onSubmit={handleSubmit}>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Organization</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Organization</label>
                             <select
                                 name="Organization"
                                 value={formData.Organization}
@@ -144,7 +144,7 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Partner</label>
                             <select
                                 name="Partner_code"
                                 value={formData.Partner_code}
@@ -162,7 +162,7 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Requested By</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Requested By</label>
                             <select
                                 name="Requested_by" q
                                 value={formData.Requested_by}
@@ -177,7 +177,7 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Software</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Software</label>
                             <select
                                 name="Software_Name"
                                 value={formData.Software_Name}
@@ -194,7 +194,7 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Priority</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Priority</label>
                             <select
                                 name="Priority"
                                 value={formData.Priority}
@@ -210,7 +210,7 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Title</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Title</label>
                             <input
                                 type="text"
                                 name="Title"
@@ -223,7 +223,7 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Description</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Description</label>
                             <textarea
                                 type="text-field"
                                 name="Description"
@@ -237,7 +237,7 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Upload File</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Upload File</label>
                             <input
                                 type="file"
                                 name="File_Path"
@@ -254,7 +254,7 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
 
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Category</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Category</label>
                             <select
                                 name="Category"
                                 value={formData.Category}
@@ -269,7 +269,7 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Assign To</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Assign To</label>
                             <select
                                 name="Assigned_Staff"
                                 value={formData.Assigned_Staff}
@@ -369,14 +369,14 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
             <div className="bg-white p-8 rounded-lg shadow-lg relative w-2/4">
                 <button
                     onClick={onClose}
-                    className="absolute top-0 right-0 mt-2 mr-2 uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 hover:text-gray-900"
+                    className="absolute top-0 right-0 mt-2 mr-2 uppercase tracking-wide text-gray-700 text-sm font-bold mb-2 hover:text-gray-900"
                 >
                     &times;
                 </button>
                 <form onSubmit={handleSubmit}>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Requested By</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Requested By</label>
                             <select
                                 name="Requested_by"
                                 value={formData.Requested_by}
@@ -391,7 +391,7 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Organization</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Organization</label>
                             <select
                                 name="Organization"
                                 value={formData.Organization}
@@ -408,7 +408,7 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner Name</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Partner Name</label>
                             <select
                                 name="Partner_code"
                                 value={formData.Partner_code}
@@ -418,12 +418,12 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
                             >
                                 <option value=" ">---- Select Partner ----</option>
                                 {dropdownValues.partners.map((partner) => (
-                                    <option key={partner.partner_id} value={partner.partner_code}>{partner.partner_code}</option>
+                                    <option key={partner.partner_id} value={partner.partner_code}>{partner.partner_name}</option>
                                 ))}
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Software</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Software</label>
                             <select
                                 name="Software_Name"
                                 value={formData.Software_Name}
@@ -440,7 +440,7 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Priority</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Priority</label>
                             <select
                                 name="Priority"
                                 value={formData.Priority}
@@ -456,7 +456,7 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Category</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Category</label>
                             <select
                                 name="Category"
                                 value={formData.Category}
@@ -472,7 +472,7 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
                         </div>
                     </div>
                     <div className="w-full md:w-1/2 px-3 -mx-3 mb-4">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Title</label>
+                        <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Title</label>
                         <input
                             type="text"
                             name="Title"
@@ -484,7 +484,7 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Description</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Description</label>
                             <textarea
                                 type="text-field"
                                 name="Description"
@@ -498,7 +498,7 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Upload File</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Upload File</label>
                             <input
                                 type="file"
                                 name="File_Path"
@@ -624,14 +624,14 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
             <div className="bg-white p-8 rounded-lg shadow-lg relative w-2/4">
                 <button
                     onClick={onClose}
-                    className="absolute top-0 right-0 mt-2 mr-2 uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 hover:text-gray-900"
+                    className="absolute top-0 right-0 mt-2 mr-2 uppercase tracking-wide text-gray-700 text-sm font-bold mb-2 hover:text-gray-900"
                 >
                     &times;
                 </button>
                 <form onSubmit={handleSubmit}>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Organization</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Organization</label>
                             <select
                                 name="Organization"
                                 value={formData.Organization}
@@ -646,7 +646,7 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Partner</label>
                             <select
                                 name="Partner_code"
                                 value={formData.Partner_code}
@@ -664,7 +664,7 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Requested By</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Requested By</label>
                             <select
                                 name="Requested_by" q
                                 value={formData.Requested_by}
@@ -679,7 +679,7 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Software</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Software</label>
                             <select
                                 name="Software_Name"
                                 value={formData.Software_Name}
@@ -696,7 +696,7 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Priority</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Priority</label>
                             <select
                                 name="Priority"
                                 value={formData.Priority}
@@ -712,7 +712,7 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Title</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Title</label>
                             <input
                                 type="text"
                                 name="Title"
@@ -725,7 +725,7 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Description</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Description</label>
                             <textarea
                                 type="text-field"
                                 name="Description"
@@ -739,7 +739,7 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Upload File</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Upload File</label>
                             <input
                                 type="file"
                                 name="File_Path"
@@ -756,7 +756,7 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
 
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Category</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Category</label>
                             <select
                                 name="Category"
                                 value={formData.Category}
@@ -771,7 +771,7 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Assign To</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Assign To</label>
                             <select
                                 name="Assigned_Staff"
                                 value={formData.Assigned_Staff}

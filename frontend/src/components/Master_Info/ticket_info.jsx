@@ -83,14 +83,14 @@ const AdminTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) => 
             <div className="bg-white p-8 rounded-lg shadow-lg relative w-2/4 max-h-3/4 overflow-y-auto">
                 <button
                     onClick={onClose}
-                    className="absolute top-0 right-0 mt-2 mr-2 uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 hover:text-gray-900"
+                    className="absolute top-0 right-0 mt-2 mr-2 uppercase tracking-wide text-gray-700 text-sm font-bold mb-2 hover:text-gray-900"
                 >
                     &times;
                 </button>
                 <form onSubmit={handleSubmit}>
                     <div className="flex flex-wrap -mx-3 mb-4 overflow-y-auto max-h-64">
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label htmlFor='Requested_By' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Requested By</label>
+                            <label htmlFor='Requested_By' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Requested By</label>
                             <input
                                 type="text"
                                 name="Requested_by"
@@ -101,7 +101,7 @@ const AdminTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) => 
                             />
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label htmlFor='Organization' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Organization</label>
+                            <label htmlFor='Organization' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Organization</label>
                             <select
                                 name="Organization"
                                 value={formData.Organization}
@@ -118,7 +118,7 @@ const AdminTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) => 
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label htmlFor='Partner_code' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner</label>
+                            <label htmlFor='Partner_code' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Partner</label>
                             <select
                                 name="Partner_code"
                                 value={formData.Partner_code}
@@ -133,7 +133,7 @@ const AdminTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) => 
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label htmlFor='Software_Name' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Software</label>
+                            <label htmlFor='Software_Name' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Software</label>
                             <select
                                 name="Software_Name"
                                 value={formData.Software_Name}
@@ -150,7 +150,7 @@ const AdminTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) => 
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3">
-                            <label htmlFor='Priority' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Priority</label>
+                            <label htmlFor='Priority' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Priority</label>
                             <select
                                 name="Priority"
                                 value={formData.Priority}
@@ -166,7 +166,7 @@ const AdminTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) => 
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label htmlFor='Title' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Title</label>
+                            <label htmlFor='Title' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Title</label>
                             <input
                                 type="text"
                                 name="Title"
@@ -179,7 +179,7 @@ const AdminTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) => 
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full px-3">
-                            <label htmlFor='description' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Description</label>
+                            <label htmlFor='description' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Description</label>
                             <textarea
                                 type="text-field"
                                 name="Description"
@@ -193,7 +193,7 @@ const AdminTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) => 
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">File Attachment</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">File Attachment</label>
                             <a href={`${API_URL}api/ticket/${ticket.file_path}`} target="_blank" rel="noopener noreferrer">
                                 {formData.File_Path}
                             </a>
@@ -205,7 +205,7 @@ const AdminTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) => 
 
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label htmlFor='Category' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Category</label>
+                            <label htmlFor='Category' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Category</label>
                             <select
                                 name="Category"
                                 value={formData.Category}
@@ -220,7 +220,7 @@ const AdminTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) => 
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label htmlFor='Assigned_Staff' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Assign To</label>
+                            <label htmlFor='Assigned_Staff' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Assign To</label>
                             <select
                                 name="Assigned_Staff"
                                 value={formData.Assigned_Staff}
@@ -240,7 +240,7 @@ const AdminTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) => 
                     <hr className='px-3 mb-4 my-4'></hr>
                     
                     <div className="w-full md:w-1/2 flex flex-wrap px-3 -mx-3 mb-4">
-                            <label htmlFor='Status' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Status</label>
+                            <label htmlFor='Status' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Status</label>
                             <select
                                 name="Status"
                                 value={formData.Status}
@@ -256,7 +256,7 @@ const AdminTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) => 
 
                     <div className="flex flex-wrap -mx-3">
                         <div className="w-full px-3">
-                            <label htmlFor='Update_Description' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Update Description</label>
+                            <label htmlFor='Update_Description' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Update Description</label>
                             <textarea
                                 name="Update_Description"
                                 value={formData.Update_Description}
@@ -269,7 +269,7 @@ const AdminTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) => 
 
                     <div className="flex flex-wrap -mx-3">
                         <div className="w-full px-3">
-                            <label htmlFor='Technical_Description' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Technical Description</label>
+                            <label htmlFor='Technical_Description' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Technical Description</label>
                             <textarea
                                 name="Technical_Description"
                                 value={formData.Technical_Description}
@@ -290,14 +290,14 @@ const AdminTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) => 
                                 onChange={handleChange}
                                 className="mr-2"
                             />
-                            <label htmlFor='escalate' className="block uppercase tracking-wide text-gray-700 text-xs font-bold my-4">Escalate</label>
+                            <label htmlFor='escalate' className="block uppercase tracking-wide text-gray-700 text-sm font-bold my-4">Escalate</label>
                         </div>
                     </div>
                     {formData.escalate && (
                         <>
                             <div className="flex flex-wrap -mx-3 mb-4">
                                 <div className="w-full px-3 mb-4">
-                                    <label htmlFor='escalate_to' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Escalate To</label>
+                                    <label htmlFor='escalate_to' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Escalate To</label>
                                     <select
                                         name="escalate_to"
                                         value={formData.escalate_to}
@@ -410,14 +410,14 @@ const UserTicketInfo = ({ isOpen, ticket, onClose, dropdownValues}) => {
             <div className="bg-white p-8 rounded-lg shadow-lg relative w-2/4 max-h-3/4 overflow-y-auto">
                 <button
                     onClick={onClose}
-                    className="absolute top-0 right-0 mt-2 mr-2 uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 hover:text-gray-900"
+                    className="absolute top-0 right-0 mt-2 mr-2 uppercase tracking-wide text-gray-700 text-sm font-bold mb-2 hover:text-gray-900"
                 >
                     &times;
                 </button>
                 <form onSubmit={handleSubmit}>
                     <div className="flex flex-wrap -mx-3 mb-4 overflow-y-auto max-h-64">
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label htmlFor='Requested_By' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Requested By</label>
+                            <label htmlFor='Requested_By' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Requested By</label>
                             <input
                                 type="text"
                                 name="Requested_by"
@@ -428,7 +428,7 @@ const UserTicketInfo = ({ isOpen, ticket, onClose, dropdownValues}) => {
                             />
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label htmlFor='Organization' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Organization</label>
+                            <label htmlFor='Organization' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Organization</label>
                             <select
                                 name="Organization"
                                 value={formData.Organization}
@@ -445,7 +445,7 @@ const UserTicketInfo = ({ isOpen, ticket, onClose, dropdownValues}) => {
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label htmlFor='Partner_code' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner</label>
+                            <label htmlFor='Partner_code' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Partner</label>
                             <select
                                 name="Partner_code"
                                 value={formData.Partner_code}
@@ -460,7 +460,7 @@ const UserTicketInfo = ({ isOpen, ticket, onClose, dropdownValues}) => {
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label htmlFor='Software_Name' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Software</label>
+                            <label htmlFor='Software_Name' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Software</label>
                             <select
                                 name="Software_Name"
                                 value={formData.Software_Name}
@@ -477,7 +477,7 @@ const UserTicketInfo = ({ isOpen, ticket, onClose, dropdownValues}) => {
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3">
-                            <label htmlFor='Priority' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Priority</label>
+                            <label htmlFor='Priority' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Priority</label>
                             <select
                                 name="Priority"
                                 value={formData.Priority}
@@ -493,7 +493,7 @@ const UserTicketInfo = ({ isOpen, ticket, onClose, dropdownValues}) => {
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label htmlFor='Title' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Title</label>
+                            <label htmlFor='Title' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Title</label>
                             <input
                                 type="text"
                                 name="Title"
@@ -506,7 +506,7 @@ const UserTicketInfo = ({ isOpen, ticket, onClose, dropdownValues}) => {
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full px-3">
-                            <label htmlFor='description' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Description</label>
+                            <label htmlFor='description' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Description</label>
                             <textarea
                                 type="text-field"
                                 name="Description"
@@ -520,7 +520,7 @@ const UserTicketInfo = ({ isOpen, ticket, onClose, dropdownValues}) => {
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">File Attachment</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">File Attachment</label>
                             {ticket.file_path === "" ? <a></a> : <a href={`${API_URL}api/ticket/${ticket.file_path}`} target="_blank" rel="noopener noreferrer">
                                 {formData.File_Path}
                             </a>}
@@ -532,7 +532,7 @@ const UserTicketInfo = ({ isOpen, ticket, onClose, dropdownValues}) => {
 
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label htmlFor='Category' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Category</label>
+                            <label htmlFor='Category' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Category</label>
                             <select
                                 name="Category"
                                 value={formData.Category}
@@ -547,7 +547,7 @@ const UserTicketInfo = ({ isOpen, ticket, onClose, dropdownValues}) => {
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label htmlFor='Assigned_Staff' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Assign To</label>
+                            <label htmlFor='Assigned_Staff' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Assign To</label>
                             <select
                                 name="Assigned_Staff"
                                 value={formData.Assigned_Staff}
@@ -566,7 +566,7 @@ const UserTicketInfo = ({ isOpen, ticket, onClose, dropdownValues}) => {
                     <hr className='px-3 mb-4 my-4'></hr>
                     
                     <div className="w-full md:w-1/2 flex flex-wrap px-3 -mx-3 mb-4">
-                            <label htmlFor='Status' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Status</label>
+                            <label htmlFor='Status' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Status</label>
                             <select
                                 name="Status"
                                 value={formData.Status}
@@ -669,14 +669,14 @@ const HelpdeskTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) 
             <div className="bg-white p-8 rounded-lg shadow-lg relative w-2/4 max-h-3/4 overflow-y-auto">
                 <button
                     onClick={onClose}
-                    className="absolute top-0 right-0 mt-2 mr-2 uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 hover:text-gray-900"
+                    className="absolute top-0 right-0 mt-2 mr-2 uppercase tracking-wide text-gray-700 text-sm font-bold mb-2 hover:text-gray-900"
                 >
                     &times;
                 </button>
                 <form onSubmit={handleSubmit}>
                     <div className="flex flex-wrap -mx-3 mb-4 overflow-y-auto max-h-64">
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label htmlFor='Requested_By' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Requested By</label>
+                            <label htmlFor='Requested_By' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Requested By</label>
                             <input
                                 type="text"
                                 name="Requested_by"
@@ -687,7 +687,7 @@ const HelpdeskTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) 
                             />
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label htmlFor='Organization' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Organization</label>
+                            <label htmlFor='Organization' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Organization</label>
                             <select
                                 name="Organization"
                                 value={formData.Organization}
@@ -704,7 +704,7 @@ const HelpdeskTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) 
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label htmlFor='Partner_code' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner</label>
+                            <label htmlFor='Partner_code' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Partner</label>
                             <select
                                 name="Partner_code"
                                 value={formData.Partner_code}
@@ -719,7 +719,7 @@ const HelpdeskTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) 
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label htmlFor='Software_Name' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Software</label>
+                            <label htmlFor='Software_Name' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Software</label>
                             <select
                                 name="Software_Name"
                                 value={formData.Software_Name}
@@ -736,7 +736,7 @@ const HelpdeskTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) 
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3">
-                            <label htmlFor='Priority' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Priority</label>
+                            <label htmlFor='Priority' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Priority</label>
                             <select
                                 name="Priority"
                                 value={formData.Priority}
@@ -752,7 +752,7 @@ const HelpdeskTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) 
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label htmlFor='Title' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Title</label>
+                            <label htmlFor='Title' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Title</label>
                             <input
                                 type="text"
                                 name="Title"
@@ -765,7 +765,7 @@ const HelpdeskTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) 
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full px-3">
-                            <label htmlFor='description' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Description</label>
+                            <label htmlFor='description' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Description</label>
                             <textarea
                                 type="text-field"
                                 name="Description"
@@ -779,7 +779,7 @@ const HelpdeskTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) 
                     </div>
                     {/* <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">File Attachment</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">File Attachment</label>
                             <a href={`${API_URL}api/ticket/${ticket.file_path}`} target="_blank" rel="noopener noreferrer">
                                 {formData.File_Path}
                             </a>
@@ -791,7 +791,7 @@ const HelpdeskTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) 
 
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label htmlFor='Category' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Category</label>
+                            <label htmlFor='Category' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Category</label>
                             <select
                                 name="Category"
                                 value={formData.Category}
@@ -806,7 +806,7 @@ const HelpdeskTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) 
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label htmlFor='Assigned_Staff' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Assign To</label>
+                            <label htmlFor='Assigned_Staff' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Assign To</label>
                             <select
                                 name="Assigned_Staff"
                                 value={formData.Assigned_Staff}
@@ -826,7 +826,7 @@ const HelpdeskTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) 
                     <hr className='px-3 mb-4 my-4'></hr>
                     
                     <div className="w-full md:w-1/2 flex flex-wrap px-3 -mx-3 mb-4">
-                            <label htmlFor='Status' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Status</label>
+                            <label htmlFor='Status' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Status</label>
                             <select
                                 name="Status"
                                 value={formData.Status}
@@ -842,7 +842,7 @@ const HelpdeskTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) 
 
                     <div className="flex flex-wrap -mx-3">
                         <div className="w-full px-3">
-                            <label htmlFor='Update_Description' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Update Description</label>
+                            <label htmlFor='Update_Description' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Update Description</label>
                             <textarea
                                 name="Update_Description"
                                 value={formData.Update_Description}
@@ -855,7 +855,7 @@ const HelpdeskTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) 
 
                     <div className="flex flex-wrap -mx-3">
                         <div className="w-full px-3">
-                            <label htmlFor='Technical_Description' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Technical Description</label>
+                            <label htmlFor='Technical_Description' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Technical Description</label>
                             <textarea
                                 name="Technical_Description"
                                 value={formData.Technical_Description}
@@ -876,14 +876,14 @@ const HelpdeskTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) 
                                 onChange={handleChange}
                                 className="mr-2"
                             />
-                            <label htmlFor='escalate' className="block uppercase tracking-wide text-gray-700 text-xs font-bold my-4">Escalate</label>
+                            <label htmlFor='escalate' className="block uppercase tracking-wide text-gray-700 text-sm font-bold my-4">Escalate</label>
                         </div>
                     </div>
                     {formData.escalate && (
                         <>
                             <div className="flex flex-wrap -mx-3 mb-4">
                                 <div className="w-full px-3 mb-4">
-                                    <label htmlFor='escalate_to' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Escalate To</label>
+                                    <label htmlFor='escalate_to' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Escalate To</label>
                                     <select
                                         name="escalate_to"
                                         value={formData.escalate_to}

@@ -127,7 +127,7 @@ const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
                 <form onSubmit={handleSubmit}>
                     <div className="flex flex-wrap -mx-3 mb-6">
                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Name<span className='text-red-700 font-bold text-sm'>*</span></label>
+                            <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Name<span className='text-red-700 font-bold text-sm'>*</span></label>
                             <input
                                 type="text"
                                 name="name"
@@ -138,7 +138,7 @@ const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
                             />
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Username<span className='text-red-700 font-bold text-sm'>*</span></label>
+                            <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Username<span className='text-red-700 font-bold text-sm'>*</span></label>
                             <input
                                 type="text"
                                 name="username"
@@ -151,7 +151,7 @@ const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-6">
                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Password<span className='text-red-700 font-bold text-sm'>*</span></label>
+                            <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Password<span className='text-red-700 font-bold text-sm'>*</span></label>
                             <input
                                 type="password"
                                 name="password"
@@ -162,7 +162,7 @@ const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
                             />
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Confirm Password<span className='text-red-700 font-bold text-sm'>*</span></label>
+                            <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Confirm Password<span className='text-red-700 font-bold text-sm'>*</span></label>
                             <input
                                 type="password"
                                 name="confirmPassword"
@@ -175,7 +175,7 @@ const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-3">
                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Email Address<span className='text-red-700 font-bold text-sm'>*</span></label>
+                            <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Email Address<span className='text-red-700 font-bold text-sm'>*</span></label>
                             <input
                                 type="email"
                                 name="email"
@@ -186,7 +186,7 @@ const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
                             />
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Mobile Number<span className='text-red-700 font-bold text-sm'>*</span></label>
+                            <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Mobile Number<span className='text-red-700 font-bold text-sm'>*</span></label>
                             <input
                                 type="text"
                                 name="mobile"
@@ -212,7 +212,7 @@ const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
 
                     <div className="flex flex-wrap -mx-3 mt-3 mb-6">
                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Role<span className='text-red-700 font-bold text-sm'>*</span></label>
+                            <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Role<span className='text-red-700 font-bold text-sm'>*</span></label>
                             <select
                                 name="role"
                                 value={formData.role}
@@ -228,7 +228,7 @@ const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner Name<span className='text-red-700 font-bold text-sm'>*</span></label>
+                            <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Partner Name<span className='text-red-700 font-bold text-sm'>*</span></label>
                             <select
                                 name="partner_code"
                                 value={formData.partner_code}
@@ -246,7 +246,7 @@ const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-6">
                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Valid From<span className='text-red-700 font-bold text-sm'>*</span></label>
+                            <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Valid From<span className='text-red-700 font-bold text-sm'>*</span></label>
                             <input
                                 type="date"
                                 name="valid_from"
@@ -257,7 +257,7 @@ const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
                             />
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Valid Till<span className='text-red-700 font-bold text-sm'>*</span></label>
+                            <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Valid Till<span className='text-red-700 font-bold text-sm'>*</span></label>
                             <input
                                 type="date"
                                 name="valid_till"

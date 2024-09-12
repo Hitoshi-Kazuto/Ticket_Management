@@ -72,7 +72,7 @@ const StatusInfoPopup = ({ isOpen, Status, onClose }) => {
                 </button>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Status Id:</label>
+                        <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Status Id:</label>
                         <input
                             type="text"
                             name="Status_Id"
@@ -82,7 +82,7 @@ const StatusInfoPopup = ({ isOpen, Status, onClose }) => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Status Name:</label>
+                        <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Status Name:</label>
                         <input
                             type="text"
                             name="Status_Name"
@@ -92,7 +92,7 @@ const StatusInfoPopup = ({ isOpen, Status, onClose }) => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Remarks:</label>
+                        <label className="uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Remarks:</label>
                         <textarea
                             name="Remarks"
                             value={formData.Remarks}

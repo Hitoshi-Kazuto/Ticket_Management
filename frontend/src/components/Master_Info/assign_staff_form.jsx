@@ -83,14 +83,14 @@ const AssignStaffPopup = ({ isOpen, ticket, onClose, dropdownValues }) => {
             <div className="bg-white p-8 rounded-lg shadow-lg relative w-2/4 max-h-3/4 overflow-y-auto">
                 <button
                     onClick={onClose}
-                    className="absolute top-0 right-0 mt-2 mr-2 uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 hover:text-gray-900"
+                    className="absolute top-0 right-0 mt-2 mr-2 uppercase tracking-wide text-gray-700 text-sm font-bold mb-2 hover:text-gray-900"
                 >
                     &times;
                 </button>
                 <form onSubmit={handleSubmit}>
                     <div className="flex flex-wrap -mx-3 mb-4 overflow-y-auto max-h-64">
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label htmlFor='Requested_By' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Requested By</label>
+                            <label htmlFor='Requested_By' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Requested By</label>
                             <input
                                 type="text"
                                 name="Requested_by"
@@ -101,7 +101,7 @@ const AssignStaffPopup = ({ isOpen, ticket, onClose, dropdownValues }) => {
                             />
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label htmlFor='Organization' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Organization</label>
+                            <label htmlFor='Organization' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Organization</label>
                             <select
                                 name="Organization"
                                 value={formData.Organization}
@@ -118,7 +118,7 @@ const AssignStaffPopup = ({ isOpen, ticket, onClose, dropdownValues }) => {
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label htmlFor='Partner_Name' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Partner</label>
+                            <label htmlFor='Partner_Name' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Partner</label>
                             <select
                                 name="Partner_Name"
                                 value={formData.Partner_Name}
@@ -133,7 +133,7 @@ const AssignStaffPopup = ({ isOpen, ticket, onClose, dropdownValues }) => {
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label htmlFor='Software_Name' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Software</label>
+                            <label htmlFor='Software_Name' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Software</label>
                             <select
                                 name="Software_Name"
                                 value={formData.Software_Name}
@@ -150,7 +150,7 @@ const AssignStaffPopup = ({ isOpen, ticket, onClose, dropdownValues }) => {
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3">
-                            <label htmlFor='Priority' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Priority</label>
+                            <label htmlFor='Priority' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Priority</label>
                             <select
                                 name="Priority"
                                 value={formData.Priority}
@@ -166,7 +166,7 @@ const AssignStaffPopup = ({ isOpen, ticket, onClose, dropdownValues }) => {
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label htmlFor='Title' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Title</label>
+                            <label htmlFor='Title' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Title</label>
                             <input
                                 type="text"
                                 name="Title"
@@ -179,7 +179,7 @@ const AssignStaffPopup = ({ isOpen, ticket, onClose, dropdownValues }) => {
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full px-3">
-                            <label htmlFor='description' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Description</label>
+                            <label htmlFor='description' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Description</label>
                             <textarea
                                 type="text-field"
                                 name="Description"
@@ -193,7 +193,7 @@ const AssignStaffPopup = ({ isOpen, ticket, onClose, dropdownValues }) => {
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">File Attachment</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">File Attachment</label>
                             <a href={`${API_URL}api/ticket/${ticket.file_path}`} target="_blank" rel="noopener noreferrer">
                                 {formData.File_Path}
                             </a>
@@ -205,7 +205,7 @@ const AssignStaffPopup = ({ isOpen, ticket, onClose, dropdownValues }) => {
 
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label htmlFor='Category' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Category</label>
+                            <label htmlFor='Category' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Category</label>
                             <select
                                 name="Category"
                                 value={formData.Category}
@@ -220,7 +220,7 @@ const AssignStaffPopup = ({ isOpen, ticket, onClose, dropdownValues }) => {
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label htmlFor='Assigned_Staff' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Assign To</label>
+                            <label htmlFor='Assigned_Staff' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Assign To</label>
                             <select
                                 name="Assigned_Staff"
                                 value={formData.Assigned_Staff}

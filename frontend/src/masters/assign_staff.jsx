@@ -105,7 +105,7 @@ const TicketMaster = () => {
                     id="search"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="px-4 py-3.5 m-3 mr-1.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-5/12"
+                    className="px-4 py-3.5 m-3 mr-1.5 bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 w-5/12"
                     placeholder="Search Ticket Name"
                     required
                 />
@@ -161,8 +161,8 @@ const TicketMaster = () => {
                     />
                     <label htmlFor="low" className="mr-3">Low</label>
                 </div>
-                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-800 dark:text-gray-400">
+                <table className="w-full text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead className="text-sm text-gray-700 uppercase bg-gray-100 dark:bg-gray-800 dark:text-gray-400">
                         <tr>
                             <th scope="col" className="px-6 py-3">Title</th>
                             <th scope="col" className="px-6 py-3">Requested By</th>
