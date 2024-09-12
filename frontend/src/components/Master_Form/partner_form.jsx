@@ -29,6 +29,11 @@ const PopupForm = ({ isOpen, onClose, onSubmit , error}) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmit(formData);
+        setFormData({
+            Partner_Code: '',
+            Partner_Name: '',
+            Remarks: ''
+        });
     };
 
     if (!isOpen) {

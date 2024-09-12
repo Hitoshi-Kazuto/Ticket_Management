@@ -19,6 +19,11 @@ const PopupForm = ({ isOpen, onClose, onSubmit, error }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmit(formData);
+        setFormData({
+            Category_Code: '',
+            Category_Name: '',
+            Remarks: ''
+        });
     };
 
     if (!isOpen) {

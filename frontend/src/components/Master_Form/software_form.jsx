@@ -19,6 +19,11 @@ const PopupForm = ({ isOpen, onClose, onSubmit, error }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmit(formData);
+        setFormData({
+            Software_Id: '',
+            Software_Name: '',
+            Remarks: ''
+        });
     };
 
     if (!isOpen) {

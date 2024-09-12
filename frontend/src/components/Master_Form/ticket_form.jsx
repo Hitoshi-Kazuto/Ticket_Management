@@ -108,6 +108,19 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
             formDataToSubmit.append('file', selectedFile);
         }
         onSubmit(formDataToSubmit);
+        setFormData({
+            Requested_by: '',
+            Organization: '',
+            Partner_code: '',
+            Software_Name: '',
+            Title: '',
+            Description: '',
+            Priority: '',
+            Category: '',
+            Status: 'Open',
+            Assigned_Staff: '',
+            created_by: username || ''
+        });
     };
 
     const isPartnerEditable = formData.Organization === 'Partner';
@@ -357,6 +370,19 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
             formDataToSubmit.append('file', selectedFile);
         }
         onSubmit(formDataToSubmit);
+        setFormData({
+            Requested_by: '',
+            Organization: '',
+            Partner_code: '',
+            Software_Name: '',
+            Title: '',
+            Description: '',
+            Priority: '',
+            Category: '',
+            Status: 'Open',
+            Assigned_Staff: '',
+            created_by: username || ''
+        });
     };
 
 
@@ -610,6 +636,19 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
             formDataToSubmit.append('file', selectedFile);
         }
         onSubmit(formDataToSubmit);
+        setFormData({
+            Requested_by: '',
+            Organization: '',
+            Partner_code: '',
+            Software_Name: '',
+            Title: '',
+            Description: '',
+            Priority: '',
+            Category: '',
+            Status: 'Open',
+            Assigned_Staff: '',
+            created_by: username || ''
+        });
     };
 
     const isPartnerEditable = formData.Organization === 'Partner';

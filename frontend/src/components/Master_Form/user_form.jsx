@@ -106,6 +106,18 @@ const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
 
 
         onSubmit(formData);
+        setFormData({
+            name: '',
+            username: '',
+            password: '',
+            confirmPassword: '',
+            email: '',
+            mobile: '',
+            role: '',
+            partner_code: '',
+            valid_from: today,
+            valid_till: ''
+        });
     };
 
     const isUserEditable = formData.role === 'Partner';

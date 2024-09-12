@@ -18,6 +18,10 @@ const PopupForm = ({ isOpen, onClose, onSubmit, error }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmit(formData);
+        setFormData({
+            Status_Name: '',
+            Remarks: ''
+        });
     };
 
     if (!isOpen) {
