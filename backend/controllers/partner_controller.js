@@ -11,11 +11,11 @@ export const createPartner = async (req, res) => {
 
         const query = `
             INSERT INTO partner_master 
-            (partner_code, partner_name, remarks, status, created_by, created_time) 
+            (partner_name, partner_code, remarks, status, created_by, created_time) 
             VALUES ($1, $2, $3, $4, $5, $6)
             RETURNING *;
         `;
-        const values = [Partner_Code, Partner_Name, Remarks, status, created_by, created_time];
+        const values = [ Partner_Name, Partner_Code, Remarks, status, created_by, created_time];
 
         const { rows } = await pool.query(query, values);
         res.json({ success: true, partner: rows[0] });
