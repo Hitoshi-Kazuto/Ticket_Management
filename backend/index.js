@@ -23,7 +23,7 @@ const PORT = process.env.port || 3000;
 const app = express();
 app.use(bodyParser.json());
 app.use(cors({
-    origin: "https://ticket-management-frontend.vercel.app",
+    origin: "*",
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
     allowedHeaders: 'Authorization, Content-Type',

@@ -10,7 +10,7 @@ export const createPartner = async (req, res) => {
         const status = true;
 
         const query = `
-            INSERT INTO Partner_Master 
+            INSERT INTO partner_master 
             (partner_code, partner_name, remarks, status, created_by, created_time) 
             VALUES ($1, $2, $3, $4, $5, $6)
             RETURNING *;
