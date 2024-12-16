@@ -43,14 +43,17 @@ const SoftwareInfoPopup = ({ isOpen, software, onClose }) => {
         e.preventDefault();
         formData.Updated_By = username;
         try {
-            const response = await axios.put(`${API_URL}api/software/${software.sw_id}`,{headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }}, formData);
+            const response = await axios.put(
+                `${API_URL}api/software/${software.sw_id}`, 
+                formData,  // data payload
+                {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                }
+            );
             if (response.data.success) {
-                // Handle successful update (e.g., close the popup and refresh the data)
                 onClose();
-            } else {
-                console.error('Form submission unsuccessful:', response.data.error);
             }
         } catch (error) {
             console.error('Error submitting form:', error);
