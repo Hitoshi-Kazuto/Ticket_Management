@@ -34,7 +34,6 @@ const PopupForm = ({ isOpen, onClose, onSubmit , error}) => {
             Partner_Name: '',
             Remarks: ''
         });
-        onClose();
     };
 
     if (!isOpen) {

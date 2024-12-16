@@ -48,14 +48,18 @@ const UserMaster = () => {
     const handleFormSubmit = async (formData) => {
         formData.created_by = username;
         try {
-            const response = await axios.post(`${API_URL}api/user/user-form`, {
-                headers: {
-                    'Authorization': `Bearer ${token}` // Include the token in the header
+            const response = await axios.post(
+                `${API_URL}api/user/user-form`, 
+                formData,  // data payload
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
                 }
-            }, formData);
+            );
             if (response.data.success) {
-                fetchUserData(); // Refetch data after successful submission
-                handleClosePopup(); // Close the popup
+                fetchUserData();
+                handleClosePopup();
                 setError('');
             } else {
                 console.error('Form submission unsuccessful');
@@ -81,13 +85,17 @@ const UserMaster = () => {
 
     const handleDelete = async (user_id) => {
         try {
-            const response = await axios.post(`${API_URL}api/user/inactivate`, {
-                headers: {
-                    'Authorization': `Bearer ${token}` // Include the token in the header
+            const response = await axios.post(
+                `${API_URL}api/user/inactivate`,
+                { user_id },  // data payload
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
                 }
-            }, { user_id });
+            );
             if (response.data.success) {
-                fetchUserData(); // Refresh data after successful deletion
+                fetchUserData();
             } else {
                 console.error('Inactivation unsuccessful:', response.data.error);
             }
@@ -98,20 +106,24 @@ const UserMaster = () => {
 
     const handleActivate = async (user_id) => {
         try {
-            const response = await axios.post(`${API_URL}api/user/activate`, {
-                headers: {
-                    'Authorization': `Bearer ${token}` // Include the token in the header
+            const response = await axios.post(
+                `${API_URL}api/user/activate`,
+                { user_id },  // data payload
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
                 }
-            }, { user_id });
+            );
             if (response.data.success) {
-                fetchUserData(); // Refresh data after successful deletion
+                fetchUserData();
             } else {
                 console.error('Activation unsuccessful:', response.data.error);
             }
         } catch (error) {
             console.error('Error activating User:', error);
         }
-    }
+    };
 
     // const fetchPartnerCodes = async () => {
     //     try {

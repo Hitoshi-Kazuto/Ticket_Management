@@ -93,9 +93,14 @@ const TicketMaster = () => {
 
     const fetchUpdates = async (ticket_id) => {
         try {
-            const response = await fetch(`${API_URL}api/ticket/admin-access/ticket-updates/${ticket_id}`,{headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }});
+            const response = await axios.get(
+                `${API_URL}api/ticket/admin-access/ticket-updates/${ticket_id}`,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                }
+            );
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -121,7 +126,14 @@ const TicketMaster = () => {
     useEffect(() => {
         const fetchDropdownValues = async () => {
             try {
-                const response = await axios.get('${API_URL}api/dropdown-values');
+                const response = await axios.get(
+                    `${API_URL}api/dropdown-values`,
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        }
+                    }
+                );
                 setDropdownValues(response.data);
             } catch (error) {
                 console.error('Error fetching dropdown values:', error);

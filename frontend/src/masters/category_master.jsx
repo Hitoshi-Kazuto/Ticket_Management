@@ -47,9 +47,15 @@ const categoryMaster = () => {
     const handleFormSubmit = async (formData) => {
         formData.created_by = username;
         try {
-            const response = await axios.post(`${API_URL}/category/category-form`,{headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }}, formData);
+            const response = await axios.post(
+                `${API_URL}/category/category-form`, 
+                formData,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                }
+            );
             if (response.data.success) {
                 fetchCategoryData(); // Refetch data after successful submission
                 handleClosePopup(); // Close the popup
@@ -78,9 +84,15 @@ const categoryMaster = () => {
 
     const handleDelete = async (cat_id) => {
         try {
-            const response = await axios.post(`${API_URL}api/category/inactivate`,{headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }}, { cat_id });
+            const response = await axios.post(
+                `${API_URL}api/category/inactivate`, 
+                { cat_id },
+                {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                }
+            );
             if (response.data.success) {
                 fetchCategoryData(); // Refresh data after successful deletion
             } else {
@@ -93,9 +105,15 @@ const categoryMaster = () => {
 
     const handleActivate = async (cat_id) => {
         try {
-            const response = await axios.post(`${API_URL}api/category/activate`,{headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }}, { cat_id });
+            const response = await axios.post(
+                `${API_URL}api/category/activate`, 
+                { cat_id },
+                {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                }
+            );
             if (response.data.success) {
                 fetchCategoryData(); // Refresh data after successful deletion
             } else {
