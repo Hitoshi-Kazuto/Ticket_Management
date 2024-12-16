@@ -48,7 +48,7 @@ const categoryMaster = () => {
         formData.created_by = username;
         try {
             const response = await axios.post(
-                `${API_URL}/category/category-form`, 
+                `${API_URL}api/category/category-form`, 
                 formData,
                 {
                     headers: {
