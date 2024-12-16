@@ -44,9 +44,15 @@ const PartnerMaster = () => {
     const handleFormSubmit = async (formData) => {
         formData.created_by = username;
         try {
-            const response = await axios.post(`${API_URL}api/partner/partner-form`, {headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }}, formData);
+            const response = await axios.post(
+                `${API_URL}api/partner/partner-form`, 
+                formData,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                }
+            );
             if (response.data.success) {
                 fetchPartnerData(); // Refetch data after successful submission
                 handleClosePopup(); // Close the popup
@@ -75,9 +81,15 @@ const PartnerMaster = () => {
 
     const handleDelete = async (partner_id) => {
         try {
-            const response = await axios.post(`${API_URL}api/partner/inactivate`,{headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }}, { partner_id });
+            const response = await axios.post(
+                `${API_URL}api/partner/inactivate`, 
+                { partner_id },
+                {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                }
+            );
             if (response.data.success) {
                 fetchPartnerData(); // Refresh data after successful deletion
             } else {
@@ -90,9 +102,15 @@ const PartnerMaster = () => {
 
     const handleActivate = async (partner_id) => {
         try {
-            const response = await axios.post(`${API_URL}api/partner/activate`,{headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }}, { partner_id });
+            const response = await axios.post(
+                `${API_URL}api/partner/activate`, 
+                { partner_id },
+                {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                }
+            );
             if (response.data.success) {
                 fetchPartnerData(); // Refresh data after successful deletion
             } else {

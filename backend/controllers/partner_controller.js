@@ -3,7 +3,7 @@ import express from "express";
 const app = express();
 
 export const createPartner = async (req, res) => {
-    const { partner_code, Partner_Name, Remarks, created_by } = req.body;
+    const { Partner_Code, Partner_Name, Remarks, created_by } = req.body;
 
     try {
         const created_time = new Date();
