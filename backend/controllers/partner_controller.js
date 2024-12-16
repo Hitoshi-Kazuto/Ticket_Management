@@ -15,7 +15,7 @@ export const createPartner = async (req, res) => {
             VALUES ($1, $2, $3, $4, $5, $6)
             RETURNING *;
         `;
-        const values = [ Partner_Name, partner_code, Remarks, status, created_by, created_time];
+        const values = [ Partner_Name, Partner_Code, Remarks, status, created_by, created_time];
 
         const { rows } = await pool.query(query, values);
         res.json({ success: true, partner: rows[0] });
