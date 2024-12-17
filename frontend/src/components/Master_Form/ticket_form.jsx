@@ -185,7 +185,7 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
                             >
                                 <option value="">---- Select User ----</option>
                                 {filteredUsers.map((user) => (
-                                    <option key={user.user_id} value={user.username}>{user.username}</option>
+                                    <option key={user.user_id} value={user.username}>{user.name}</option>
                                 ))}
                             </select>
                         </div>
@@ -292,7 +292,7 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
                             >
                                 <option value="">---- Select Staff ----</option>
                                 {dropdownValues.usernames.map((username) => (
-                                    <option key={username.user_id} value={username.username}>{username.username}</option>
+                                    <option key={username.user_id} value={username.username}>{username.name}</option>
                                 ))}
                             </select>
                         </div>
@@ -482,22 +482,6 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Category</label>
-                            <select
-                                name="Category"
-                                value={formData.Category}
-                                onChange={handleChange}
-                                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                required
-                            >
-                                <option value="">---- Select Category ----</option>
-                                {dropdownValues.categories.map((category) => (
-                                    <option key={category.cat_id} value={category.category}>{category.category}</option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
-                    <div className="w-full md:w-1/2 px-3 -mx-3 mb-4">
                         <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Title</label>
                         <input
                             type="text"
@@ -507,6 +491,7 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
                             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                             required
                         />
+                        </div>
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full px-3">
@@ -553,7 +538,6 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
 };
 
 export { UserTicketForm };
-
 
 
 
@@ -713,7 +697,7 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
                             >
                                 <option value="">---- Select User ----</option>
                                 {filteredUsers.map((user) => (
-                                    <option key={user.user_id} value={user.username}>{user.username}</option>
+                                    <option key={user.user_id} value={user.username}>{user.name}</option>
                                 ))}
                             </select>
                         </div>
