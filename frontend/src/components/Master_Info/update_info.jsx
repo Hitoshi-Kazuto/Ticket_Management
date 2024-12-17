@@ -100,7 +100,8 @@ const UpdateInfoUserPopup = ({ show, updates, onClose }) => {
                 <button onClick={onClose} className="absolute top-0 right-0 mt-2 mr-2 text-gray-700 hover:text-gray-900">
                     &times;
                 </button>
-                <h2 className="text-xl font-bold mb-4">Update Information</h2>
+                <h2 className="text-xl font-bold mb-4 text-gray-900">UPDATE INFORMATION</h2>
+                <hr className='px-3 mb-4 my-4'></hr>
                 <table className="w-full bg-white table-auto overflow-y-auto max-h-64">
                     <thead>
                         <tr>

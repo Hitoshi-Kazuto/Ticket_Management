@@ -133,6 +133,8 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
     return (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
             <div className="bg-white p-8 rounded-lg shadow-lg relative w-2/4">
+                <span className="self-right text-xl mb-8 font-bold whitespace-nowrap text-gray-900">ADD TICKET</span>
+                <hr className='px-3 mb-4 my-4'></hr>
                 <button
                     onClick={onClose}
                     className="absolute top-0 right-0 mt-2 mr-2 uppercase tracking-wide text-gray-700 text-sm font-bold mb-2 hover:text-gray-900"
@@ -394,6 +396,7 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
             <div className="bg-white p-8 rounded-lg shadow-lg relative w-2/4">
             <span className="self-right text-xl mb-8 font-bold whitespace-nowrap text-gray-900">CREATE TICKET</span>
+            <hr className='px-3 mb-4 my-4'></hr>
                 <button
                     onClick={onClose}
                     className="absolute top-0 right-0 mt-2 mr-2 uppercase tracking-wide text-gray-700 text-sm font-bold mb-2 hover:text-gray-900"
@@ -646,6 +649,8 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
     return (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
             <div className="bg-white p-8 rounded-lg shadow-lg relative w-2/4">
+            <span className="self-right text-xl mb-8 font-bold whitespace-nowrap text-gray-900">CREATE TICKET</span>
+            <hr className='px-3 mb-4 my-4'></hr>
                 <button
                     onClick={onClose}
                     className="absolute top-0 right-0 mt-2 mr-2 uppercase tracking-wide text-gray-700 text-sm font-bold mb-2 hover:text-gray-900"
