@@ -130,7 +130,7 @@ const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
     return (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
             <div className="bg-white p-8 rounded-lg shadow-lg relative">
-                <span className="self-right text-xl font-bold whitespace-nowrap text-gray-700 dark:text-white">Create User</span>
+                <span className="self-right text-xl font-bold whitespace-nowrap text-grey-700">Create User</span>
                 <button
                     onClick={onClose}
                     className="absolute top-0 right-0 mt-2 mr-2 text-gray-700 hover:text-gray-900"
