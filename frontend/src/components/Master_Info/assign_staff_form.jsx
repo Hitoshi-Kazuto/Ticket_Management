@@ -81,6 +81,7 @@ const AssignStaffPopup = ({ isOpen, ticket, onClose, dropdownValues }) => {
     return (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white p-8 rounded-lg shadow-lg relative w-2/4 max-h-3/4 overflow-y-auto">
+                <span className="self-right text-xl mb-4 font-bold whitespace-nowrap text-gray-700">ASSIGN STAFF</span>
                 <button
                     onClick={onClose}
                     className="absolute top-0 right-0 mt-2 mr-2 uppercase tracking-wide text-gray-700 text-sm font-bold mb-2 hover:text-gray-900"
