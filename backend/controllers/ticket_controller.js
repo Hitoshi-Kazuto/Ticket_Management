@@ -325,7 +325,7 @@ app.put('/helpdesk-access/:ticket_id', upload.single('file'), async (req, res) =
         escalate, escalate_to, Update_Description, Technical_Description
     } = req.body;
 
-    const client = await pool.connect();
+    const client = await pool.connect(); // Assuming db pool setup with client
 
     try {
         const updated_time = new Date();

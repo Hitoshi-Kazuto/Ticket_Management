@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Home from '../components/Home/home';
 import AdminTicketForm, { UserTicketForm, HelpdeskTicketForm } from '../components/Master_Form/ticket_form';
-import TicketUpdatePopup, { UserTicketInfo, HelpdeskTicketUpdatePopup } from '../components/Master_Info/ticket_info';
+import AdminTicketInfo, { UserTicketInfo, HelpdeskTicketInfo } from '../components/Master_Info/ticket_info';
 import UpdateInfoPopup, {UpdateInfoUserPopup} from '../components/Master_Info/update_info'
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
@@ -356,7 +356,7 @@ const TicketMaster = () => {
                     </div>
                 </div>
                 {role === 'Admin' && selectedTicket && (
-                    <TicketUpdatePopup
+                    <AdminTicketInfo
                         isOpen={true}
                         ticket={selectedTicket}
                         onClose={handleCloseUpdatePopup}
@@ -380,7 +380,7 @@ const TicketMaster = () => {
                     />
                 )}
                 {role === 'Helpdesk' && selectedTicket && (
-                    <HelpdeskTicketUpdatePopup
+                    <HelpdeskTicketInfo
                         isOpen={true}
                         ticket={selectedTicket}
                         onClose={handleCloseUpdatePopup}

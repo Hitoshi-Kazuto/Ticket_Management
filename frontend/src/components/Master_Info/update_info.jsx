@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const truncateText = (text, length) => {
     if (text.length <= length) {
@@ -7,8 +8,8 @@ const truncateText = (text, length) => {
     return text.substring(0, length) + '...';
 };
 
-const UpdateInfoPopup = ({ show, updates, onClose }) => {
-    if (!show) return null;
+const UpdateInfo = ({ isOpen, updates, onClose }) => {
+    if (!isOpen) return null;
 
     const [open, setOpen] = useState(false);
     const [selectedDescription, setSelectedDescription] = useState('');
@@ -75,11 +76,35 @@ const UpdateInfoPopup = ({ show, updates, onClose }) => {
     );
 };
 
-export default UpdateInfoPopup;
+export default UpdateInfo;
 
 
-const UpdateInfoUserPopup = ({ show, updates, onClose }) => {
-    if (!show) return null;
+const UpdateInfoUserPopup = ({ isOpen, ticket, onClose }) => {
+    const [updates, setUpdates] = useState([]);
+    const API_URL = 'https://ticket-management-ten.vercel.app/';
+
+    useEffect(() => {
+        if (ticket) {
+            const token = localStorage.getItem('token');
+            const endpoint = `${API_URL}api/ticket/admin-access/ticket-updates/${ticket.ticket_id}`;
+            
+            axios.get(endpoint, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(response => {
+                    if (response.data.success) {
+                        setUpdates(response.data.updates);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching updates:', error);
+                });
+        }
+    }, [ticket]);
+
+    if (!isOpen) return null;
 
     const [open, setOpen] = useState(false);
     const [selectedDescription, setSelectedDescription] = useState('');
