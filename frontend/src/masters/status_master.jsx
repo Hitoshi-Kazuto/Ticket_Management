@@ -54,8 +54,10 @@ const StatusMaster = () => {
                 fetchStatusData(); // Refetch data after successful submission
                 handleClosePopup(); // Close the popup
                 setError('');
+                return true;
             } else {
                 console.error('Form submission unsuccessful');
+                return false;
             }
         } catch (error) {
             if (error.response && error.response.status === 409) {
@@ -63,6 +65,7 @@ const StatusMaster = () => {
             } else {
                 setError('Error adding software');
             }
+            return false;
         }
     };
 

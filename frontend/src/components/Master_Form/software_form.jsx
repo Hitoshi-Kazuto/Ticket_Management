@@ -16,14 +16,16 @@ const PopupForm = ({ isOpen, onClose, onSubmit, error }) => {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        onSubmit(formData);
-        setFormData({
-            Software_Id: '',
-            Software_Name: '',
-            Remarks: ''
-        });
+        const success = await onSubmit(formData);
+        if(success){
+            setFormData({
+                Software_Id: '',
+                Software_Name: '',
+                Remarks: ''
+            });
+        }
     };
 
     if (!isOpen) {

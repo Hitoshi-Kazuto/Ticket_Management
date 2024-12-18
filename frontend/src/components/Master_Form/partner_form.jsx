@@ -26,14 +26,16 @@ const PopupForm = ({ isOpen, onClose, onSubmit , error}) => {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        onSubmit(formData);
-        setFormData({
-            Partner_Code: '',
-            Partner_Name: '',
-            Remarks: ''
-        });
+        const success = await onSubmit(formData);
+        if (success) {
+            setFormData({
+                Partner_Code: '',
+                Partner_Name: '',
+                Remarks: ''
+            });
+        }
     };
 
     if (!isOpen) {

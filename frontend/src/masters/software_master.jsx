@@ -56,8 +56,10 @@ const softwareMaster = () => {
                 fetchSoftwareData(); // Refetch data after successful submission
                 handleClosePopup(); // Close the popup
                 setError('');
+                return true;
             } else {
                 console.error('Form submission unsuccessful');
+                return false;
             }
         } catch (error) {
             if (error.response && error.response.status === 409) {
@@ -65,6 +67,7 @@ const softwareMaster = () => {
             } else {
                 setError('Error adding software');
             }
+            return false;
         }
     };
 

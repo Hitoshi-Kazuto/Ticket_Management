@@ -54,11 +54,13 @@ const PartnerMaster = () => {
                 }
             );
             if (response.data.success) {
-                fetchPartnerData(); // Refetch data after successful submission
-                handleClosePopup(); // Close the popup
+                fetchPartnerData();
+                handleClosePopup();
                 setError('');
+                return true; // Return true on success
             } else {
                 console.error('Form submission unsuccessful');
+                return false;
             }
         } catch (error) {
             if (error.response && error.response.status === 409) {
@@ -66,6 +68,7 @@ const PartnerMaster = () => {
             } else {
                 setError('Error adding partner');
             }
+            return false; // Return false on error
         }
     };
 

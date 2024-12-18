@@ -282,7 +282,7 @@ app.put('/admin-access/:ticket_id', upload.single('file'), async (req, res) => {
         escalate, escalate_to, Update_Description, Technical_Description
     } = req.body;
 
-    const client = await pool.connect(); // Assuming db pool setup with client
+    const client = await pool.connect();
 
     try {
         const updated_time = new Date();
@@ -295,14 +295,15 @@ app.put('/admin-access/:ticket_id', upload.single('file'), async (req, res) => {
             SET Status = $1, updated_by = $2, updated_time = $3, assigned_staff = $4
             WHERE Ticket_Id = $5
         `;
-        const ticketUpdateValues = [Status, updated_by, updated_time, Assigned_Staff, ticket_id];
+        const staffToAssign = (escalate && escalate_to) ? escalate_to : Assigned_Staff;
+        const ticketUpdateValues = [Status, updated_by, updated_time, staffToAssign, ticket_id];
         await client.query(ticketUpdateQuery, ticketUpdateValues);
 
         // Insert new escalation entry
         const insertEscalationQuery = `
-                    INSERT INTO ticket_update (ticket_id, escalate, escalate_to, user_description, technical_description, created_by, created_time)
-                    VALUES ($1, $2, $3, $4, $5, $6, $7)
-                `;
+            INSERT INTO ticket_update (ticket_id, escalate, escalate_to, user_description, technical_description, created_by, created_time)
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
+        `;
         const insertEscalationValues = [ticket_id, escalate, escalate_to, Update_Description, Technical_Description, updated_by, created_time];
         await client.query(insertEscalationQuery, insertEscalationValues);
 
@@ -324,27 +325,28 @@ app.put('/helpdesk-access/:ticket_id', upload.single('file'), async (req, res) =
         escalate, escalate_to, Update_Description, Technical_Description
     } = req.body;
 
-    const client = await pool.connect(); // Assuming db pool setup with client
+    const client = await pool.connect();
 
     try {
         const updated_time = new Date();
         const created_time = new Date();
         await client.query('BEGIN');
 
-        // Update ticket details
+        // Update ticket details - use escalate_to as assigned_staff if escalating
         const ticketUpdateQuery = `
             UPDATE ticket
             SET Status = $1, updated_by = $2, updated_time = $3, assigned_staff = $4
             WHERE Ticket_Id = $5
         `;
-        const ticketUpdateValues = [Status, updated_by, updated_time, Assigned_Staff, ticket_id];
+        const staffToAssign = (escalate && escalate_to) ? escalate_to : Assigned_Staff;
+        const ticketUpdateValues = [Status, updated_by, updated_time, staffToAssign, ticket_id];
         await client.query(ticketUpdateQuery, ticketUpdateValues);
 
-        // Insert new escalation entry
+        // Insert new update entry
         const insertEscalationQuery = `
-                    INSERT INTO ticket_update (ticket_id, escalate, escalate_to, user_description, technical_description, created_by, created_time)
-                    VALUES ($1, $2, $3, $4, $5, $6, $7)
-                `;
+            INSERT INTO ticket_update (ticket_id, escalate, escalate_to, user_description, technical_description, created_by, created_time)
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
+        `;
         const insertEscalationValues = [ticket_id, escalate, escalate_to, Update_Description, Technical_Description, updated_by, created_time];
         await client.query(insertEscalationQuery, insertEscalationValues);
 
@@ -355,7 +357,7 @@ app.put('/helpdesk-access/:ticket_id', upload.single('file'), async (req, res) =
         console.error('Error processing update:', err);
         res.status(500).json({ success: false, message: 'Internal server error' });
     } finally {
-        client.release(); // Release client back to pool
+        client.release();
     }
 });
 

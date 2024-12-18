@@ -60,8 +60,10 @@ const categoryMaster = () => {
                 fetchCategoryData(); // Refetch data after successful submission
                 handleClosePopup(); // Close the popup
                 setError('');
+                return true;
             } else {
                 console.error('Form submission unsuccessful');
+                return false;
             }
         } catch (error) {
             if (error.response && error.response.status === 409) {
@@ -69,6 +71,7 @@ const categoryMaster = () => {
             } else {
                 setError('Error adding software');
             }
+            return false;
         }
     };
 
