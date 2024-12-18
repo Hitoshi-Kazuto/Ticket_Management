@@ -100,26 +100,20 @@ const TicketMaster = () => {
                     }
                 }
             );
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const data = await response.json();
-            if (data.success) {
-                setUpdates(data.updates);
+            if (response.data.success) {
+                setUpdates(response.data.updates);
+                setShowUpdatesPopup(true);
             } else {
                 console.error('Failed to fetch updates');
-                return [];
             }
         } catch (error) {
             console.error('Error fetching updates:', error);
-            return [];
         }
     };
 
     const handleShowUpdates = (ticket_id) => {
         setSelectedTicketId(ticket_id);
         fetchUpdates(ticket_id);
-        setShowUpdatesPopup(true);
     };
 
     useEffect(() => {
@@ -303,28 +297,28 @@ const TicketMaster = () => {
                 {role === 'Admin' && selectedTicket && (
                     <UpdateInfoPopup 
                         show={showUpdatesPopup}
-                        updates={selectedTicket}
+                        updates={updates}
                         onClose={() => setShowUpdatesPopup(false)}
                     />
                 )}
                 {role === 'Helpdesk' && selectedTicket && (
                     <UpdateInfoPopup 
                         show={showUpdatesPopup}
-                        updates={selectedTicket}
+                        updates={updates}
                         onClose={() => setShowUpdatesPopup(false)}
                     />
                 )}
                 {role === 'Partner' && selectedTicket && (
                     <UpdateInfoUserPopup
-                        isOpen={showUpdatesPopup}
-                        updates={selectedTicket}
+                        show={showUpdatesPopup}
+                        updates={updates}
                         onClose={() => setShowUpdatesPopup(false)}
                     />
                 )}
                 {role === 'Orbis' && selectedTicket && (
                     <UpdateInfoUserPopup
-                        isOpen={showUpdatesPopup}
-                        updates={selectedTicket}
+                        show={showUpdatesPopup}
+                        updates={updates}
                         onClose={() => setShowUpdatesPopup(false)}
                     />
                 )}
