@@ -82,8 +82,8 @@ const AdminTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) => 
     const isAssignedStaffEditable = formData.Assigned_Staff === '';
 
     return (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-8 rounded-lg shadow-lg relative w-2/4 max-h-3/4 overflow-y-auto">
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto flex items-center justify-center">
+            <div className="bg-white p-8 rounded-lg shadow-lg relative w-2/4 my-8 max-h-[90vh] overflow-y-auto">
                 <span className="self-right text-xl mb-8 font-bold whitespace-nowrap text-gray-900">UPDATE TICKET</span>
                 <hr className='px-3 mb-4 my-4'></hr>
                 <button
@@ -670,8 +670,8 @@ const HelpdeskTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) 
     const isAssignedStaffEditable = formData.Assigned_Staff === '';
 
     return (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-8 rounded-lg shadow-lg relative w-2/4 max-h-3/4 overflow-y-auto">
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto flex items-center justify-center">
+            <div className="bg-white p-8 rounded-lg shadow-lg relative w-2/4 my-8 max-h-[90vh] overflow-y-auto">
                 <button
                     onClick={onClose}
                     className="absolute top-0 right-0 mt-2 mr-2 uppercase tracking-wide text-gray-700 text-sm font-bold mb-2 hover:text-gray-900"
