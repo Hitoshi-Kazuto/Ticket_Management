@@ -304,7 +304,7 @@ const TicketMaster = () => {
                     />
                 )}
                 <div className="px-3 pb-3">
-                    <div className="overflow-auto shadow-md rounded-lg max-h-[calc(100vh-200px)]">
+                    <div className="overflow-auto shadow-md rounded-lg max-h-[calc(100vh)]">
                         <table className="w-full text-base text-left rtl:text-right text-gray-500 dark:text-gray-400 dark:bg-gray-900">
                             <thead className="text-sm text-gray-700 uppercase bg-gray-100 dark:bg-gray-800 dark:text-gray-400">
                                 <tr>
