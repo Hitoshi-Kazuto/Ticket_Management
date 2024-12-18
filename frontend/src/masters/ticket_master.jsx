@@ -26,6 +26,7 @@ const TicketMaster = () => {
         requested_by: [],
     });
     const API_URL = 'https://ticket-management-ten.vercel.app/';
+    const [updatesLoading, setUpdatesLoading] = useState(false);
 
     useEffect(() => {
         // Fetch Ticket data from backend when component mounts
@@ -148,30 +149,32 @@ const TicketMaster = () => {
     };
 
     const fetchUpdates = async (ticket_id) => {
+        setUpdatesLoading(true);
         try {
-            const response = await fetch(`${API_URL}api/ticket/admin-access/ticket-updates/${ticket_id}`, {headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }});
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const data = await response.json();
-            if (data.success) {
-                setUpdates(data.updates);
+            const response = await axios.get(
+                `${API_URL}api/ticket/admin-access/ticket-updates/${ticket_id}`,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                }
+            );
+            if (response.data.success) {
+                setUpdates(response.data.updates);
+                setShowUpdatesPopup(true);
             } else {
                 console.error('Failed to fetch updates');
-                return [];
             }
         } catch (error) {
             console.error('Error fetching updates:', error);
-            return [];
+        } finally {
+            setUpdatesLoading(false);
         }
     };
 
     const handleShowUpdates = (ticket_id) => {
         setSelectedTicketId(ticket_id);
         fetchUpdates(ticket_id);
-        setShowUpdatesPopup(true);
     };
 
     useEffect(() => {
@@ -389,31 +392,31 @@ const TicketMaster = () => {
                 )}
                 {role === 'Admin' && (
                     <UpdateInfoPopup
-                    show={showUpdatesPopup}
-                    updates={updates}
-                    onClose={() => setShowUpdatesPopup(false)}
-                />
+                        show={showUpdatesPopup && !updatesLoading}
+                        updates={updates}
+                        onClose={() => setShowUpdatesPopup(false)}
+                    />
                 )}
                 {role === 'Helpdesk' && (
                     <UpdateInfoPopup
-                    show={showUpdatesPopup}
-                    updates={updates}
-                    onClose={() => setShowUpdatesPopup(false)}
-                />
+                        show={showUpdatesPopup && !updatesLoading}
+                        updates={updates}
+                        onClose={() => setShowUpdatesPopup(false)}
+                    />
                 )}
                 {role === 'Orbis' && (
                     <UpdateInfoUserPopup
-                    show={showUpdatesPopup}
-                    updates={updates}
-                    onClose={() => setShowUpdatesPopup(false)}
-                />
+                        show={showUpdatesPopup && !updatesLoading}
+                        updates={updates}
+                        onClose={() => setShowUpdatesPopup(false)}
+                    />
                 )}
                 {role === 'Partner' && (
                     <UpdateInfoUserPopup
-                    show={showUpdatesPopup}
-                    updates={updates}
-                    onClose={() => setShowUpdatesPopup(false)}
-                />
+                        show={showUpdatesPopup && !updatesLoading}
+                        updates={updates}
+                        onClose={() => setShowUpdatesPopup(false)}
+                    />
                 )}
             </div>
         </div>
