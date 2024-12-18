@@ -161,46 +161,50 @@ const TicketMaster = () => {
                     />
                     <label htmlFor="low" className="mr-3">Low</label>
                 </div>
-                <table className="w-full text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead className="text-sm text-gray-700 uppercase bg-gray-100 dark:bg-gray-800 dark:text-gray-400">
-                        <tr>
-                            <th scope="col" className="px-6 py-3">Title</th>
-                            <th scope="col" className="px-6 py-3">Requested By</th>
-                            <th scope="col" className="px-6 py-3">Organization</th>
-                            <th scope="col" className="px-6 py-3">Priority</th>
-                            <th scope="col" className="px-6 py-3">Status</th>
-                            <th scope="col" className="px-3 py-3"><span className="sr-only">Assign</span></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredTickets.map(Ticket => (
-                            <tr key={Ticket.ticket_id} className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {Ticket.title}
-                                </td>
-                                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {Ticket.requested_by}
-                                </td>
-                                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {Ticket.organization}
-                                </td>
-                                <td className="px-6 py-4">
-                                    {Ticket.priority}
-                                </td>
-                                <td className="px-6 py-4">
-                                    {Ticket.status}
-                                </td>
-                                <td className="px-4 py-4 text-center">
-                                    <button
-                                        onClick={() => handleAssignClick(Ticket)}
-                                        className="text-white px-4 py-2 rounded-md bg-blue-700 hover:bg-blue-800"
-                                    >Assign
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                <div className="px-3 pb-3">
+                    <div className="overflow-auto shadow-md rounded-lg max-h-[calc(100vh-200px)]">
+                        <table className="w-full text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            <thead className="text-sm text-gray-700 uppercase bg-gray-100 dark:bg-gray-800 dark:text-gray-400">
+                                <tr>
+                                    <th scope="col" className="px-6 py-3">Title</th>
+                                    <th scope="col" className="px-6 py-3">Requested By</th>
+                                    <th scope="col" className="px-6 py-3">Organization</th>
+                                    <th scope="col" className="px-6 py-3">Priority</th>
+                                    <th scope="col" className="px-6 py-3">Status</th>
+                                    <th scope="col" className="px-3 py-3"><span className="sr-only">Assign</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filteredTickets.map(Ticket => (
+                                    <tr key={Ticket.ticket_id} className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {Ticket.title}
+                                        </td>
+                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {Ticket.requested_by}
+                                        </td>
+                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {Ticket.organization}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {Ticket.priority}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {Ticket.status}
+                                        </td>
+                                        <td className="px-4 py-4 text-center">
+                                            <button
+                                                onClick={() => handleAssignClick(Ticket)}
+                                                className="text-white px-4 py-2 rounded-md bg-blue-700 hover:bg-blue-800"
+                                            >Assign
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 {selectedTicket && (
                     <AssignPopup
                         isOpen={true}

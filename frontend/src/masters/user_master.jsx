@@ -214,60 +214,63 @@ const UserMaster = () => {
                 >Add
                 </button>
                 <UserForm isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleFormSubmit} error={error} dropdownValues={dropdownValues} />
-                <table className="w-full text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead className="text-sm text-gray-700 uppercase bg-gray-100 dark:bg-gray-800 dark:text-gray-400">
-                        <tr>
-                            <th scope="col" className="px-6 py-3">Username</th>
-                            <th scope="col" className="px-6 py-3">Display Name</th>
-                            <th scope="col" className="px-6 py-3">Role</th>
-                            <th scope="col" className="px-6 py-3">Partner Name</th>
-                            <th scope="col" className="px-6 py-3">Status</th>
-                            <th scope="col" className="px-3 py-3"><span className="sr-only">Info</span></th>
-                            <th scope="col" className="pl-3 pr-6 py-3"><span className="sr-only">Edit</span></th>
-                        </tr>
-                    </thead>
-                    {(
-                        <tbody>
-                            {filteredUsers.map(User => (
-                                <tr key={User.user_id} className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {User.username}
-                                    </td>
-                                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {User.name}
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        {User.role}
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        {User.partner_name}
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        {User.active_status ? 'Active' : 'Inactive'}
-                                    </td>
-                                    <td className="px-2 py-4 text-right">
-                                        <button
-                                            onClick={() => handleInfoClick(User)}
-                                            className="text-white px-4 py-2 rounded-md bg-blue-700 hover:bg-blue-800"
-                                        >Info
-                                        </button>
-                                    </td>
-                                    <td className="px-2 py-4 text-center">
-                                        {User.active_status ? <button
-                                            onClick={() => handleDelete(User.user_id)}
-                                            className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700"
-                                        >Delete
-                                        </button> :
-                                            <button
-                                                onClick={() => handleActivate(User.user_id)}
-                                                className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700"
-                                            >Activate
-                                            </button>}
-                                    </td>
+                <div className="px-3 pb-3">
+                    <div className="overflow-auto shadow-md rounded-lg max-h-[calc(100vh-200px)]">
+                        <table className="w-full text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            <thead className="text-sm text-gray-700 uppercase bg-gray-100 dark:bg-gray-800 dark:text-gray-400">
+                                <tr>
+                                    <th scope="col" className="px-6 py-3">Username</th>
+                                    <th scope="col" className="px-6 py-3">Display Name</th>
+                                    <th scope="col" className="px-6 py-3">Role</th>
+                                    <th scope="col" className="px-6 py-3">Partner Name</th>
+                                    <th scope="col" className="px-6 py-3">Status</th>
+                                    <th scope="col" className="px-3 py-3"><span className="sr-only">Info</span></th>
+                                    <th scope="col" className="pl-3 pr-6 py-3"><span className="sr-only">Edit</span></th>
                                 </tr>
-                            ))}
-                        </tbody>)}
-                </table>
+                            </thead>
+                            <tbody>
+                                {filteredUsers.map(User => (
+                                    <tr key={User.user_id} className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {User.username}
+                                        </td>
+                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {User.name}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {User.role}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {User.partner_name}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {User.active_status ? 'Active' : 'Inactive'}
+                                        </td>
+                                        <td className="px-2 py-4 text-right">
+                                            <button
+                                                onClick={() => handleInfoClick(User)}
+                                                className="text-white px-4 py-2 rounded-md bg-blue-700 hover:bg-blue-800"
+                                            >Info
+                                            </button>
+                                        </td>
+                                        <td className="px-2 py-4 text-center">
+                                            {User.active_status ? <button
+                                                onClick={() => handleDelete(User.user_id)}
+                                                className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700"
+                                            >Delete
+                                            </button> :
+                                                <button
+                                                    onClick={() => handleActivate(User.user_id)}
+                                                    className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700"
+                                                >Activate
+                                                </button>}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 {selectedUser && (
                     <UserInfoPopup
                         isOpen={true}
