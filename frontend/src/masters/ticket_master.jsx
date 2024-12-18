@@ -107,7 +107,7 @@ const TicketMaster = () => {
                 break;
             default:
                 console.error('Role not recognized');
-                return;
+                return false;
         }
 
         try {
@@ -121,8 +121,11 @@ const TicketMaster = () => {
                 fetchDataBasedOnRoles(); // Refetch data after successful submission
                 handleClosePopup(); // Close the popup
                 setError('');
+                return true; // Return true on success
             } else {
                 console.error('Form submission unsuccessful');
+                setError(response.data.message || 'Form submission unsuccessful');
+                return false;
             }
         } catch (error) {
             if (error.response && error.response.status === 409) {
@@ -130,6 +133,7 @@ const TicketMaster = () => {
             } else {
                 setError('Error adding Ticket');
             }
+            return false; // Return false on error
         }
     };
 

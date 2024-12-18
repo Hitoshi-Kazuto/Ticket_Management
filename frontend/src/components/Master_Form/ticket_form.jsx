@@ -98,7 +98,7 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const formDataToSubmit = new FormData();
         Object.keys(formData).forEach(key => {
@@ -107,20 +107,27 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
         if (selectedFile) {
             formDataToSubmit.append('file', selectedFile);
         }
-        onSubmit(formDataToSubmit);
-        setFormData({
-            Requested_by: '',
-            Organization: '',
-            Partner_code: '',
-            Software_Name: '',
-            Title: '',
-            Description: '',
-            Priority: '',
-            Category: '',
-            Status: 'Open',
-            Assigned_Staff: '',
-            created_by: username || ''
-        });
+
+        // Wait for the response from parent component
+        const success = await onSubmit(formDataToSubmit);
+        
+        // Only clear the form if submission was successful
+        if (success) {
+            setFormData({
+                Requested_by: '',
+                Organization: '',
+                Partner_code: '',
+                Software_Name: '',
+                Title: '',
+                Description: '',
+                Priority: '',
+                Category: '',
+                Status: 'Open',
+                Assigned_Staff: '',
+                created_by: username || ''
+            });
+            setSelectedFile(null);
+        }
     };
 
     const isPartnerEditable = formData.Organization === 'Partner';
@@ -362,7 +369,7 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const formDataToSubmit = new FormData();
         Object.keys(formData).forEach(key => {
@@ -371,20 +378,27 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
         if (selectedFile) {
             formDataToSubmit.append('file', selectedFile);
         }
-        onSubmit(formDataToSubmit);
-        setFormData({
-            Requested_by: '',
-            Organization: '',
-            Partner_code: '',
-            Software_Name: '',
-            Title: '',
-            Description: '',
-            Priority: '',
-            Category: '',
-            Status: 'Open',
-            Assigned_Staff: '',
-            created_by: username || ''
-        });
+
+        // Wait for the response from parent component
+        const success = await onSubmit(formDataToSubmit);
+        
+        // Only clear the form if submission was successful
+        if (success) {
+            setFormData({
+                Requested_by: '',
+                Organization: '',
+                Partner_code: '',
+                Software_Name: '',
+                Title: '',
+                Description: '',
+                Priority: '',
+                Category: '',
+                Status: 'Open',
+                Assigned_Staff: '',
+                created_by: username || ''
+            });
+            setSelectedFile(null);
+        }
     };
 
 
@@ -614,7 +628,7 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const formDataToSubmit = new FormData();
         Object.keys(formData).forEach(key => {
@@ -623,20 +637,27 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
         if (selectedFile) {
             formDataToSubmit.append('file', selectedFile);
         }
-        onSubmit(formDataToSubmit);
-        setFormData({
-            Requested_by: '',
-            Organization: '',
-            Partner_code: '',
-            Software_Name: '',
-            Title: '',
-            Description: '',
-            Priority: '',
-            Category: '',
-            Status: 'Open',
-            Assigned_Staff: '',
-            created_by: username || ''
-        });
+
+        // Wait for the response from parent component
+        const success = await onSubmit(formDataToSubmit);
+        
+        // Only clear the form if submission was successful
+        if (success) {
+            setFormData({
+                Requested_by: '',
+                Organization: '',
+                Partner_code: '',
+                Software_Name: '',
+                Title: '',
+                Description: '',
+                Priority: '',
+                Category: '',
+                Status: 'Open',
+                Assigned_Staff: '',
+                created_by: username || ''
+            });
+            setSelectedFile(null);
+        }
     };
 
     const isPartnerEditable = formData.Organization === 'Partner';
