@@ -294,28 +294,28 @@ const TicketMaster = () => {
                 )}
 
 
-                {role === 'Admin' && selectedTicket && (
+                {role === 'Admin' && (
                     <UpdateInfoPopup 
                         show={showUpdatesPopup}
                         updates={updates}
                         onClose={() => setShowUpdatesPopup(false)}
                     />
                 )}
-                {role === 'Helpdesk' && selectedTicket && (
+                {role === 'Helpdesk' && (
                     <UpdateInfoPopup 
                         show={showUpdatesPopup}
                         updates={updates}
                         onClose={() => setShowUpdatesPopup(false)}
                     />
                 )}
-                {role === 'Partner' && selectedTicket && (
+                {role === 'Partner' && (
                     <UpdateInfoUserPopup
                         show={showUpdatesPopup}
                         updates={updates}
                         onClose={() => setShowUpdatesPopup(false)}
                     />
                 )}
-                {role === 'Orbis' && selectedTicket && (
+                {role === 'Orbis' && (
                     <UpdateInfoUserPopup
                         show={showUpdatesPopup}
                         updates={updates}
