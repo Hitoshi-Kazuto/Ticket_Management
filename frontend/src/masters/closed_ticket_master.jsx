@@ -24,6 +24,7 @@ const TicketMaster = () => {
         requested_by: [],
     });
     const API_URL = 'https://ticket-management-ten.vercel.app/';
+    const [updatesLoading, setUpdatesLoading] = useState(false);
 
     useEffect(() => {
         // Fetch Ticket data from backend when component mounts
@@ -91,6 +92,7 @@ const TicketMaster = () => {
     };
 
     const fetchUpdates = async (ticket_id) => {
+        setUpdatesLoading(true);
         try {
             const response = await axios.get(
                 `${API_URL}api/ticket/admin-access/ticket-updates/${ticket_id}`,
@@ -102,23 +104,20 @@ const TicketMaster = () => {
             );
             if (response.data.success) {
                 setUpdates(response.data.updates);
-                return true; // Return true on successful fetch
+                setShowUpdatesPopup(true);
             } else {
                 console.error('Failed to fetch updates');
-                return false;
             }
         } catch (error) {
             console.error('Error fetching updates:', error);
-            return false;
+        } finally {
+            setUpdatesLoading(false);
         }
     };
 
-    const handleShowUpdates = async (ticket_id) => {
+    const handleShowUpdates = (ticket_id) => {
         setSelectedTicketId(ticket_id);
-        const success = await fetchUpdates(ticket_id);
-        if (success) {
-            setShowUpdatesPopup(true); // Only show popup if data was fetched successfully
-        }
+        fetchUpdates(ticket_id);
     };
 
     useEffect(() => {
@@ -301,28 +300,28 @@ const TicketMaster = () => {
 
                 {role === 'Admin' && (
                     <UpdateInfoPopup 
-                        show={showUpdatesPopup}
+                        show={showUpdatesPopup && !updatesLoading}
                         updates={updates}
                         onClose={() => setShowUpdatesPopup(false)}
                     />
                 )}
                 {role === 'Helpdesk' && (
                     <UpdateInfoPopup 
-                        show={showUpdatesPopup}
+                        show={showUpdatesPopup && !updatesLoading}
                         updates={updates}
                         onClose={() => setShowUpdatesPopup(false)}
                     />
                 )}
                 {role === 'Partner' && (
                     <UpdateInfoUserPopup
-                        show={showUpdatesPopup}
+                        show={showUpdatesPopup && !updatesLoading}
                         updates={updates}
                         onClose={() => setShowUpdatesPopup(false)}
                     />
                 )}
                 {role === 'Orbis' && (
                     <UpdateInfoUserPopup
-                        show={showUpdatesPopup}
+                        show={showUpdatesPopup && !updatesLoading}
                         updates={updates}
                         onClose={() => setShowUpdatesPopup(false)}
                     />
