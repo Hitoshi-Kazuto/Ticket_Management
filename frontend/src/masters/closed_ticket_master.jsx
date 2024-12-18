@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Home from '../components/Home/home';
 import TicketUpdatePopup, { UserTicketInfo } from '../components/Master_Info/ticket_info';
-import UpdateInfoPopup from '../components/Master_Info/update_info'
+import UpdateInfoPopup, {UpdateInfoUserPopup} from '../components/Master_Info/update_info'
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
@@ -10,7 +10,6 @@ const TicketMaster = () => {
     const [Tickets, setTickets] = useState([]);
     const [selectedTicket, setSelectedTicket] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
-    const [error, setError] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
     const [showUpdatesPopup, setShowUpdatesPopup] = useState(false);
     const [updates, setUpdates] = useState([]);
@@ -275,6 +274,14 @@ const TicketMaster = () => {
                         dropdownValues={dropdownValues}
                     />
                 )}
+                {role === 'Helpdesk' && selectedTicket && (
+                    <TicketUpdatePopup
+                        isOpen={true}
+                        ticket={selectedTicket}
+                        onClose={handleCloseUpdatePopup}
+                        dropdownValues={dropdownValues}
+                    />
+                )}
                 {role === 'Partner' && selectedTicket && (
                     <UserTicketInfo
                         isOpen={true}
@@ -291,11 +298,36 @@ const TicketMaster = () => {
                         dropdownValues={dropdownValues}
                     />
                 )}
-                <UpdateInfoPopup
-                    isOpen={showUpdatesPopup}
-                    updates={selectedTicket}
-                    onClose={() => setShowUpdatesPopup(false)}
-                />
+
+
+                {role === 'Admin' && selectedTicket && (
+                    <UpdateInfoPopup 
+                        show={showUpdatesPopup}
+                        updates={selectedTicket}
+                        onClose={() => setShowUpdatesPopup(false)}
+                    />
+                )}
+                {role === 'Helpdesk' && selectedTicket && (
+                    <UpdateInfoPopup 
+                        show={showUpdatesPopup}
+                        updates={selectedTicket}
+                        onClose={() => setShowUpdatesPopup(false)}
+                    />
+                )}
+                {role === 'Partner' && selectedTicket && (
+                    <UpdateInfoUserPopup
+                        isOpen={showUpdatesPopup}
+                        updates={selectedTicket}
+                        onClose={() => setShowUpdatesPopup(false)}
+                    />
+                )}
+                {role === 'Orbis' && selectedTicket && (
+                    <UpdateInfoUserPopup
+                        isOpen={showUpdatesPopup}
+                        updates={selectedTicket}
+                        onClose={() => setShowUpdatesPopup(false)}
+                    />
+                )}
             </div>
         </div>
     );
