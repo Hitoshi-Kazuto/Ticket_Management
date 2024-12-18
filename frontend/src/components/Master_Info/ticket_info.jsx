@@ -594,7 +594,7 @@ const UserTicketInfo = ({ isOpen, ticket, onClose, dropdownValues}) => {
 
 export { UserTicketInfo };
 
-const HelpdeskTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) => {
+const HelpdeskTicketInfo = ({ isOpen, ticket, onClose, dropdownValues }) => {
     const username = localStorage.getItem('username');
     const API_URL = 'https://ticket-management-ten.vercel.app/';
     const [formData, setFormData] = useState({
@@ -920,4 +920,4 @@ const HelpdeskTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) 
     );
 };
 
-export {HelpdeskTicketUpdatePopup}
+export {HelpdeskTicketInfo}
