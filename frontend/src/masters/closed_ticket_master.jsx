@@ -102,18 +102,23 @@ const TicketMaster = () => {
             );
             if (response.data.success) {
                 setUpdates(response.data.updates);
-                setShowUpdatesPopup(true);
+                return true; // Return true on successful fetch
             } else {
                 console.error('Failed to fetch updates');
+                return false;
             }
         } catch (error) {
             console.error('Error fetching updates:', error);
+            return false;
         }
     };
 
-    const handleShowUpdates = (ticket_id) => {
+    const handleShowUpdates = async (ticket_id) => {
         setSelectedTicketId(ticket_id);
-        fetchUpdates(ticket_id);
+        const success = await fetchUpdates(ticket_id);
+        if (success) {
+            setShowUpdatesPopup(true); // Only show popup if data was fetched successfully
+        }
     };
 
     useEffect(() => {
