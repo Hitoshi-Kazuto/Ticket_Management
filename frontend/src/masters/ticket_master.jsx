@@ -389,28 +389,28 @@ const TicketMaster = () => {
                 )}
                 {role === 'Admin' && (
                     <UpdateInfoPopup
-                    show={showUpdatesPopup}
+                    isOpen={showUpdatesPopup}
                     updates={updates}
                     onClose={() => setShowUpdatesPopup(false)}
                 />
                 )}
                 {role === 'Helpdesk' && (
                     <UpdateInfoPopup
-                    show={showUpdatesPopup}
+                    isOpen={showUpdatesPopup}
                     updates={updates}
                     onClose={() => setShowUpdatesPopup(false)}
                 />
                 )}
                 {role === 'Orbis' && (
                     <UpdateInfoUserPopup
-                    show={showUpdatesPopup}
+                    isOpen={showUpdatesPopup}
                     updates={updates}
                     onClose={() => setShowUpdatesPopup(false)}
                 />
                 )}
                 {role === 'Partner' && (
                     <UpdateInfoUserPopup
-                    show={showUpdatesPopup}
+                    isOpen={showUpdatesPopup}
                     updates={updates}
                     onClose={() => setShowUpdatesPopup(false)}
                 />

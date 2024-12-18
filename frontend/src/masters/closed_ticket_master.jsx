@@ -292,8 +292,8 @@ const TicketMaster = () => {
                     />
                 )}
                 <UpdateInfoPopup
-                    show={showUpdatesPopup}
-                    updates={updates}
+                    isOpen={showUpdatesPopup}
+                    updates={selectedTicket}
                     onClose={() => setShowUpdatesPopup(false)}
                 />
             </div>
