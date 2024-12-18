@@ -49,8 +49,8 @@ const UserMaster = () => {
         formData.created_by = username;
         try {
             const response = await axios.post(
-                `${API_URL}api/user/user-form`, 
-                formData,  // data payload
+                `${API_URL}api/user/user-form`,
+                formData,
                 {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -61,8 +61,10 @@ const UserMaster = () => {
                 fetchUserData();
                 handleClosePopup();
                 setError('');
+                return true; // Return true on success
             } else {
-                console.error('Form submission unsuccessful');
+                setError(response.data.message || 'Form submission unsuccessful');
+                return false;
             }
         } catch (error) {
             if (error.response && error.response.status === 409) {
@@ -70,6 +72,7 @@ const UserMaster = () => {
             } else {
                 setError('Error adding User');
             }
+            return false; // Return false on error
         }
     };
 

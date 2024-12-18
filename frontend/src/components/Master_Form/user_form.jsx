@@ -104,20 +104,30 @@ const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
             return;
         }
 
-
-        onSubmit(formData);
-        setFormData({
-            name: '',
-            username: '',
-            password: '',
-            confirmPassword: '',
-            email: '',
-            mobile: '',
-            role: '',
-            partner_code: '',
-            valid_from: today,
-            valid_till: ''
-        });
+        // Wait for the response from parent component
+        const success = await onSubmit(formData);
+        
+        // Only clear the form if submission was successful
+        if (success) {
+            setFormData({
+                name: '',
+                username: '',
+                password: '',
+                confirmPassword: '',
+                email: '',
+                mobile: '',
+                role: '',
+                partner_code: '',
+                valid_from: today,
+                valid_till: ''
+            });
+            // Reset any validation states if needed
+            setEmailError('');
+            setEmailValid('');
+            setPhoneError('');
+            setPhoneValid('');
+            setError('');
+        }
     };
 
     const isUserEditable = formData.role === 'Partner';
