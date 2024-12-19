@@ -326,7 +326,14 @@ const TicketMaster = () => {
                                 {filteredTickets.map(Ticket => (
                                     <tr key={Ticket.ticket_id} className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
                                         <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {Ticket.created_time}
+                                            {new Date(Ticket.created_time).toLocaleString('en-GB', {
+                                                year: 'numeric',
+                                                month: '2-digit',
+                                                day: '2-digit',
+                                                hour: '2-digit',
+                                                minute: '2-digit',
+                                                second: '2-digit'
+                                            })}
                                         </td>
                                         <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {Ticket.title}
@@ -350,14 +357,16 @@ const TicketMaster = () => {
                                             <button
                                                 onClick={() => handleUpdateClick(Ticket)}
                                                 className="text-white px-4 py-2 rounded-md bg-blue-700 hover:bg-blue-800"
-                                            >Ticket Info
+                                            ><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50" viewBox="0 0 50 50">
+                                                <path d="M25,2C12.297,2,2,12.297,2,25s10.297,23,23,23s23-10.297,23-23S37.703,2,25,2z M25,11c1.657,0,3,1.343,3,3s-1.343,3-3,3 s-3-1.343-3-3S23.343,11,25,11z M29,38h-2h-4h-2v-2h2V23h-2v-2h2h4v2v13h2V38z"></path>
+                                            </svg>
                                             </button>
                                         </td>
                                         <td className="px-2 py-4 text-center">
                                             <button
                                                 onClick={() => handleShowUpdates(Ticket.ticket_id)}
                                                 className="text-white px-4 py-2 rounded-md bg-purple-500 hover:bg-purple-800"
-                                            >Update Info
+                                            ><img width="24" height="24" src="https://img.icons8.com/material-outlined/24/edit-property.png" alt="edit-property"/>
                                             </button>
                                         </td>
                                     </tr>
