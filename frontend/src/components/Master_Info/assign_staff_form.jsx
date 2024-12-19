@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const AssignStaffPopup = ({ isOpen, ticket, onClose, onSubmit }) => {
+const AssignStaffPopup = ({ isOpen, ticket, onClose, onSubmit, dropdownValues }) => {
     const username = localStorage.getItem('username');
     const API_URL = 'https://ticket-management-ten.vercel.app/';
     const [formData, setFormData] = useState({
