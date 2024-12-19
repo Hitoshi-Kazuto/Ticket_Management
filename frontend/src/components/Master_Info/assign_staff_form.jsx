@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const AssignStaffPopup = ({ isOpen, ticket, onClose, dropdownValues }) => {
+const AssignStaffPopup = ({ isOpen, ticket, onClose, onSubmit }) => {
     const username = localStorage.getItem('username');
     const API_URL = 'https://ticket-management-ten.vercel.app/';
     const [formData, setFormData] = useState({
@@ -14,7 +14,7 @@ const AssignStaffPopup = ({ isOpen, ticket, onClose, dropdownValues }) => {
         Description: '',
         Priority: '',
         Category: '',
-        Status: '',
+        Status: 'Assigned',
         Assigned_Staff: '',
         File_Path: '',
         updated_by: '',
@@ -37,7 +37,7 @@ const AssignStaffPopup = ({ isOpen, ticket, onClose, dropdownValues }) => {
                 Description: ticket.description,
                 Priority: ticket.priority,
                 Category: ticket.category,
-                Status: ticket.status,
+                Status: "Assigned",
                 Assigned_Staff: ticket.assigned_staff || '',
                 File_Path: ticket.file_path,
                 updated_by: ticket.updated_by,
@@ -56,19 +56,13 @@ const AssignStaffPopup = ({ isOpen, ticket, onClose, dropdownValues }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        formData.updated_by = username;
-        try {
-            const response = await axios.put(`${API_URL}api/ticket/helpdesk-access/assign-staff/${ticket.ticket_id}`,{headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }}, formData);
-            if (response.data.success) {
-                // Handle successful update (e.g., close the popup and refresh the data)
-                onClose();
-            } else {
-                console.error('Form submission unsuccessful:', response.data.error);
-            }
-        } catch (error) {
-            console.error('Error submitting form:', error);
+        const success = await onSubmit({
+            Assigned_Staff: formData.Assigned_Staff,
+            Category: formData.Category,
+            Status: formData.Status
+        });
+        if (success) {
+            onClose();
         }
     };
 
@@ -76,6 +70,7 @@ const AssignStaffPopup = ({ isOpen, ticket, onClose, dropdownValues }) => {
         return null;
     }
 
+    const isCategoryEditable = formData.Category === '';
     const isAssignedStaffEditable = formData.Assigned_Staff === '';
 
     return (
@@ -213,7 +208,8 @@ const AssignStaffPopup = ({ isOpen, ticket, onClose, dropdownValues }) => {
                                 value={formData.Category}
                                 onChange={handleChange}
                                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                disabled
+                                required = {isCategoryEditable}
+                                disabled = {!isCategoryEditable}
                             >
                                 <option value="">---- Select Category ----</option>
                                 {dropdownValues.categories.map((category) => (

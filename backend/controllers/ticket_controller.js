@@ -250,23 +250,29 @@ app.get('/assign-staff', async (req, res) => {
 });
 app.put('/helpdesk-access/assign-staff/:ticket_id', upload.single('file'), async (req, res) => {
     const { ticket_id } = req.params;
-    const { Assigned_Staff } = req.body;
+    const { Assigned_Staff, Category, Status } = req.body;
 
-    const client = await pool.connect(); // Assuming db pool setup with client
+    const client = await pool.connect();
 
     try {
-
-        // Update ticket details
+        await client.query('BEGIN');
+        
         const ticketUpdateQuery = `
             UPDATE ticket
-            SET assigned_staff = $1
-            WHERE Ticket_Id = $2
+            SET assigned_staff = $1, category = $2, status = $3
+            WHERE Ticket_Id = $4
         `;
-        const ticketUpdateValues = [Assigned_Staff, ticket_id];
+        const ticketUpdateValues = [Assigned_Staff, Category, Status, ticket_id];
         await client.query(ticketUpdateQuery, ticketUpdateValues);
+        
+        await client.query('COMMIT');
+        res.json({ success: true });
     } catch (err) {
+        await client.query('ROLLBACK');
         console.error('Error processing update:', err);
         res.status(500).json({ success: false, message: 'Internal server error' });
+    } finally {
+        client.release();
     }
 });
 

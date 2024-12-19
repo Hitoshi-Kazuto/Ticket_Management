@@ -122,7 +122,7 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
                 Description: '',
                 Priority: '',
                 Category: '',
-                Status: 'Open',
+                Status: 'Submitted',
                 Assigned_Staff: '',
                 created_by: username || ''
             });

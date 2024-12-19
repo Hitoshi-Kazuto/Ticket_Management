@@ -95,6 +95,30 @@ const TicketMaster = () => {
 
     const role = getUserRole();
 
+    const handleFormSubmit = async (formData) => {
+        try {
+            const response = await axios.put(
+                `${API_URL}api/ticket/helpdesk-access/assign-staff/${selectedTicket.ticket_id}`,
+                formData,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                }
+            );
+            if (response.data.success) {
+                fetchData();
+                return true;
+            } else {
+                console.error('Form submission unsuccessful:', response.data.error);
+                return false;
+            }
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            return false;
+        }
+    };
+
     return (
         <div>
             <Home />
@@ -210,6 +234,7 @@ const TicketMaster = () => {
                         isOpen={true}
                         ticket={selectedTicket}
                         onClose={handleCloseAssignPopup}
+                        onSubmit={handleFormSubmit}
                         dropdownValues={dropdownValues}
                     />
                 )}
