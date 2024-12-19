@@ -343,7 +343,7 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
         Description: '',
         Priority: '',
         Category: '',
-        Status: 'Open',
+        Status: 'Submitted',
         Assigned_Staff: '',
         created_by: username || ''
     });
@@ -572,7 +572,7 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
         Description: '',
         Priority: '',
         Category: '',
-        Status: 'Open',
+        Status: 'Submitted',
         Assigned_Staff: '',
         created_by: username || ''
     });
