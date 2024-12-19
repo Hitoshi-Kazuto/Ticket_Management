@@ -51,7 +51,17 @@ const UpdateInfoPopup = ({ show, updates, onClose }) => {
                                 </td>
                                 <td className="px-4 py-2 text-left">{update.escalate ? 'Yes' : 'No'}</td>
                                 <td className="px-4 py-2 text-left">{update.escalate ? update.escalate_to : '-'}</td>
-                                <td className="px-4 py-2 text-left">{update.created_time ? update.created_time.split('T')[0] : ''}</td>
+                                <td className="px-4 py-2 text-left">
+                                    {update.created_time ? new Date(update.created_time).toLocaleString('en-GB', {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit',
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                        second: '2-digit',
+                                        hour12: false
+                                    }).replace(',', ' -') : ''}
+                                </td>
                             </tr>
                         ))}
                     </tbody>
@@ -119,7 +129,17 @@ const UpdateInfoUserPopup = ({ show, updates, onClose }) => {
                                 </td>
                                 <td className="px-4 py-2 text-left">{update.escalate ? 'Yes' : 'No'}</td>
                                 <td className="px-4 py-2 text-left">{update.escalate ? update.escalate_to : '-'}</td>
-                                <td className="px-4 py-2 text-left">{update.created_time ? update.created_time.split('T')[0] : ''}</td>
+                                <td className="px-4 py-2 text-left">
+                                    {update.created_time ? new Date(update.created_time).toLocaleString('en-GB', {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit',
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                        second: '2-digit',
+                                        hour12: false
+                                    }).replace(',', ' -') : ''}
+                                </td>
                             </tr>
                         ))}
                     </tbody>

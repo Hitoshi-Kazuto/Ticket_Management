@@ -332,8 +332,9 @@ const TicketMaster = () => {
                                                 day: '2-digit',
                                                 hour: '2-digit',
                                                 minute: '2-digit',
-                                                second: '2-digit'
-                                            })}
+                                                second: '2-digit',
+                                                hour12: false
+                                            }).replace(',', ' -')}
                                         </td>
                                         <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {Ticket.title}
