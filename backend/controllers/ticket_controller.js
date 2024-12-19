@@ -75,7 +75,7 @@ app.post('/user-access/ticket-form', upload.single('file'), async (req, res) => 
 
         const query = `
             INSERT INTO ticket
-            (Requested_by, Organization, Partner_code, Software_Name, Status,  Title, Priority, Description, created_by, created_time ) 
+            (Requested_by, Organization, Partner_code, Software_Name, Status, Title, Priority, Description, created_by, created_time ) 
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
             RETURNING *;
         `;
