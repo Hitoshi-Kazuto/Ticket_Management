@@ -68,18 +68,17 @@ app.post('/admin-access/ticket-form', upload.single('file'), async (req, res) =>
 });
 app.post('/user-access/ticket-form', upload.single('file'), async (req, res) => {
     const { Requested_by, Organization, Partner_code, Software_Name, Description, Priority, Category, Status, created_by, Title } = req.body;
-    // const file = req.file;
 
     try {
         const created_time = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
         const query = `
             INSERT INTO ticket
-            (Requested_by, Organization, Partner_code, Software_Name, Status, Title, Priority, Description, created_by, created_time ) 
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+            (Requested_by, Organization, Partner_code, Software_Name, Status, Title, Priority, Description, created_by, created_time) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             RETURNING *;
         `;
-        const values = [Requested_by, Organization, Partner_code, Software_Name, Status, Title, Priority, Description, created_by, created_time ];
+        const values = [Requested_by, Organization, Partner_code, Software_Name, Status, Title, Priority, Description, created_by, created_time];
 
         const { rows } = await pool.query(query, values);
         const ticket_id = rows[0].ticket_id;
