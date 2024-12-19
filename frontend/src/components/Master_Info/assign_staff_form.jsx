@@ -208,8 +208,7 @@ const AssignStaffPopup = ({ isOpen, ticket, onClose, onSubmit, dropdownValues })
                                 value={formData.Category}
                                 onChange={handleChange}
                                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                required = {isCategoryEditable}
-                                disabled = {!isCategoryEditable}
+                                required
                             >
                                 <option value="">---- Select Category ----</option>
                                 {dropdownValues.categories.map((category) => (
