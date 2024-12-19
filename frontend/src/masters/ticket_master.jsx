@@ -311,9 +311,11 @@ const TicketMaster = () => {
                         <table className="w-full text-base text-left rtl:text-right text-gray-500 dark:text-gray-400 dark:bg-gray-900">
                             <thead className="text-sm text-gray-700 uppercase bg-gray-100 dark:bg-gray-800 dark:text-gray-400">
                                 <tr>
+                                    <th scope="col" className="px-6 py-3">Creation Date</th>
                                     <th scope="col" className="px-6 py-3">Title</th>
                                     <th scope="col" className="px-6 py-3">Requested By</th>
                                     <th scope="col" className="px-6 py-3">Organization</th>
+                                    <th scope="col" className="px-6 py-3">Assigned Staff</th>
                                     <th scope="col" className="px-6 py-3">Priority</th>
                                     <th scope="col" className="px-6 py-3">Status</th>
                                     <th scope="col" className="px-3 py-3"><span className="sr-only">Update</span></th>
@@ -324,6 +326,9 @@ const TicketMaster = () => {
                                 {filteredTickets.map(Ticket => (
                                     <tr key={Ticket.ticket_id} className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
                                         <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {Ticket.created_time}
+                                        </td>
+                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {Ticket.title}
                                         </td>
                                         <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -331,6 +336,9 @@ const TicketMaster = () => {
                                         </td>
                                         <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {Ticket.organization}
+                                        </td>
+                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {Ticket.assigned_staff}
                                         </td>
                                         <td className="px-6 py-4">
                                             {Ticket.priority}

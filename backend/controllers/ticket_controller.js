@@ -19,7 +19,7 @@ app.post('/admin-access/ticket-form', upload.single('file'), async (req, res) =>
     const file = req.file;
 
     try {
-        const created_time = new Date();
+        const created_time = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
         const query = `
             INSERT INTO ticket
@@ -71,7 +71,7 @@ app.post('/user-access/ticket-form', upload.single('file'), async (req, res) => 
     // const file = req.file;
 
     try {
-        const created_time = new Date();
+        const created_time = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
         const query = `
             INSERT INTO ticket
@@ -123,7 +123,7 @@ app.post('/helpdesk-access/ticket-form', upload.single('file'), async (req, res)
     // const file = req.file;
 
     try {
-        const created_time = new Date();
+        const created_time = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
         const query = `
             INSERT INTO ticket
@@ -285,11 +285,12 @@ app.put('/admin-access/:ticket_id', upload.single('file'), async (req, res) => {
     const client = await pool.connect();
 
     try {
-        const updated_time = new Date();
-        const created_time = new Date();
+        // Format timestamps with both date and time
+        const updated_time = new Date().toISOString().slice(0, 19).replace('T', ' ');
+        const created_time = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
         await client.query('BEGIN');
 
-        // Update ticket details
         const ticketUpdateQuery = `
             UPDATE ticket
             SET Status = $1, updated_by = $2, updated_time = $3, assigned_staff = $4
