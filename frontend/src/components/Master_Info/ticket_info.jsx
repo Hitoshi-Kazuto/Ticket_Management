@@ -96,14 +96,18 @@ const AdminTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) => 
                     <div className="flex flex-wrap -mx-3 mb-4 overflow-y-auto max-h-64">
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
                             <label htmlFor='Requested_By' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Requested By</label>
-                            <input
-                                type="text"
+                            <select
                                 name="Requested_by"
                                 value={formData.Requested_by}
                                 onChange={handleChange}
                                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                disabled
-                            />
+                                required
+                            >
+                                <option value="">---- Select User ----</option>
+                                {filteredUsers.map((user) => (
+                                    <option key={user.user_id} value={user.username}>{user.name}</option>
+                                ))}
+                            </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
                             <label htmlFor='Organization' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Organization</label>
@@ -236,7 +240,7 @@ const AdminTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) => 
                             >
                                 <option value="">---- Select Staff ----</option>
                                 {dropdownValues.usernames.map((username) => (
-                                    <option key={username.user_id} value={username.username}>{username.username}</option>
+                                    <option key={username.user_id} value={username.username}>{username.name}</option>
                                 ))}
                             </select>
                         </div>
@@ -423,14 +427,18 @@ const UserTicketInfo = ({ isOpen, ticket, onClose, dropdownValues}) => {
                     <div className="flex flex-wrap -mx-3 mb-4 overflow-y-auto max-h-64">
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
                             <label htmlFor='Requested_By' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Requested By</label>
-                            <input
-                                type="text"
+                            <select
                                 name="Requested_by"
                                 value={formData.Requested_by}
                                 onChange={handleChange}
-                                className="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-100 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                disabled
-                            />
+                                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                required
+                            >
+                                <option value="">---- Select User ----</option>
+                                {filteredUsers.map((user) => (
+                                    <option key={user.user_id} value={user.username}>{user.name}</option>
+                                ))}
+                            </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
                             <label htmlFor='Organization' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Organization</label>
@@ -682,14 +690,18 @@ const HelpdeskTicketInfo = ({ isOpen, ticket, onClose, dropdownValues }) => {
                     <div className="flex flex-wrap -mx-3 mb-4 overflow-y-auto max-h-64">
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
                             <label htmlFor='Requested_By' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Requested By</label>
-                            <input
-                                type="text"
+                            <select
                                 name="Requested_by"
                                 value={formData.Requested_by}
                                 onChange={handleChange}
                                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                disabled
-                            />
+                                required
+                            >
+                                <option value="">---- Select User ----</option>
+                                {filteredUsers.map((user) => (
+                                    <option key={user.user_id} value={user.username}>{user.name}</option>
+                                ))}
+                            </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
                             <label htmlFor='Organization' className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Organization</label>

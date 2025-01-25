@@ -258,7 +258,7 @@ const TicketMaster = () => {
                                         </td>
                                         <td className="px-2 py-4 text-center">
                                             <button
-                                                ticket='View Updates'
+                                                title='View Updates'
                                                 onClick={() => handleShowUpdates(Ticket.ticket_id)}
                                                 className="text-white px-4 py-2 rounded-md bg-purple-500 hover:bg-purple-800"
                                             ><img width="24" height="24" 
