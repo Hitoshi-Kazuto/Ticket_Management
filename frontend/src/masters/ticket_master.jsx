@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Home from '../components/Home/home';
 import AdminTicketForm, { UserTicketForm, HelpdeskTicketForm } from '../components/Master_Form/ticket_form';
-import AdminTicketInf, { UserTicketInfo, HelpdeskTicketInfo } from '../components/Master_Info/ticket_info';
+import AdminTicketInfo, { UserTicketInfo, HelpdeskTicketInfo } from '../components/Master_Info/ticket_info';
 import UpdateInfoPopup, {UpdateInfoUserPopup} from '../components/Master_Info/update_info'
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
@@ -356,6 +356,7 @@ const TicketMaster = () => {
                                         </td>
                                         <td className="px-2 py-4 text-right">
                                             <button
+                                                title='View Detail'
                                                 onClick={() => handleUpdateClick(Ticket)}
                                                 className="text-white px-4 py-2 rounded-md bg-blue-700 hover:bg-blue-800"
                                             ><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="25" height="25" viewBox="0 0 50 50"
@@ -367,6 +368,7 @@ const TicketMaster = () => {
                                         </td>
                                         <td className="px-2 py-4 text-center">
                                             <button
+                                                title='View Updates'
                                                 onClick={() => handleShowUpdates(Ticket.ticket_id)}
                                                 className="text-white px-4 py-2 rounded-md bg-purple-500 hover:bg-purple-800"
                                             ><img width="24" height="24" 
@@ -383,7 +385,7 @@ const TicketMaster = () => {
                     </div>
                 </div>
                 {role === 'Admin' && selectedTicket && (
-                    <AdminTicketInf
+                    <AdminTicketInfo
                         isOpen={true}
                         ticket={selectedTicket}
                         onClose={handleCloseUpdatePopup}

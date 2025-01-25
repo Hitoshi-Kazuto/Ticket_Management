@@ -246,16 +246,26 @@ const TicketMaster = () => {
                                         </td>
                                         <td className="px-2 py-4 text-right">
                                             <button
+                                                title='View Ticket'
                                                 onClick={() => handleUpdateClick(Ticket)}
                                                 className="text-white px-4 py-2 rounded-md bg-blue-700 hover:bg-blue-800"
-                                            >Ticket Info
+                                            ><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="25" height="25" viewBox="0 0 50 50"
+                                                className="fill-white"
+                                            >
+                                                <path d="M25,2C12.297,2,2,12.297,2,25s10.297,23,23,23s23-10.297,23-23S37.703,2,25,2z M25,11c1.657,0,3,1.343,3,3s-1.343,3-3,3 s-3-1.343-3-3S23.343,11,25,11z M29,38h-2h-4h-2v-2h2V23h-2v-2h2h4v2v13h2V38z"></path>
+                                            </svg>
                                             </button>
                                         </td>
                                         <td className="px-2 py-4 text-center">
                                             <button
+                                                ticket='View Updates'
                                                 onClick={() => handleShowUpdates(Ticket.ticket_id)}
                                                 className="text-white px-4 py-2 rounded-md bg-purple-500 hover:bg-purple-800"
-                                            >Update Info
+                                            ><img width="24" height="24" 
+                                                src="https://img.icons8.com/material-outlined/24/edit-property.png" 
+                                                alt="edit-property"
+                                                className="invert brightness-0"
+                                            />
                                             </button>
                                         </td>
                                     </tr>
