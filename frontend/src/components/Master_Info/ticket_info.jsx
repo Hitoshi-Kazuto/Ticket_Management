@@ -101,7 +101,7 @@ const AdminTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) => 
                                 value={formData.Requested_by}
                                 onChange={handleChange}
                                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                required
+                                disabled
                             >
                                 <option value="">---- Select User ----</option>
                                 {dropdownValues.requested_by.map((user) => (
@@ -432,7 +432,7 @@ const UserTicketInfo = ({ isOpen, ticket, onClose, dropdownValues}) => {
                                 value={formData.Requested_by}
                                 onChange={handleChange}
                                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                required
+                                disabled
                             >
                                 <option value="">---- Select User ----</option>
                                 {dropdownValues.requested_by.map((user) => (
@@ -695,7 +695,7 @@ const HelpdeskTicketInfo = ({ isOpen, ticket, onClose, dropdownValues }) => {
                                 value={formData.Requested_by}
                                 onChange={handleChange}
                                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                required
+                                disabled
                             >
                                 <option value="">---- Select User ----</option>
                                 {dropdownValues.requested_by.map((user) => (
