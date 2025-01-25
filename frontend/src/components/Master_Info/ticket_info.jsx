@@ -104,7 +104,7 @@ const AdminTicketUpdatePopup = ({ isOpen, ticket, onClose, dropdownValues }) => 
                                 required
                             >
                                 <option value="">---- Select User ----</option>
-                                {filteredUsers.map((user) => (
+                                {dropdownValues.requested_by.map((user) => (
                                     <option key={user.user_id} value={user.username}>{user.name}</option>
                                 ))}
                             </select>
@@ -435,7 +435,7 @@ const UserTicketInfo = ({ isOpen, ticket, onClose, dropdownValues}) => {
                                 required
                             >
                                 <option value="">---- Select User ----</option>
-                                {filteredUsers.map((user) => (
+                                {dropdownValues.requested_by.map((user) => (
                                     <option key={user.user_id} value={user.username}>{user.name}</option>
                                 ))}
                             </select>
@@ -698,7 +698,7 @@ const HelpdeskTicketInfo = ({ isOpen, ticket, onClose, dropdownValues }) => {
                                 required
                             >
                                 <option value="">---- Select User ----</option>
-                                {filteredUsers.map((user) => (
+                                {dropdownValues.requested_by.map((user) => (
                                     <option key={user.user_id} value={user.username}>{user.name}</option>
                                 ))}
                             </select>
