@@ -233,7 +233,7 @@ const TicketMaster = () => {
                                             {Ticket.title}
                                         </td>
                                         <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {Ticket.requested_by}
+                                        {dropdownValues.requested_by.find(user => user.username === Ticket.requested_by)?.name || Ticket.requested_by}
                                         </td>
                                         <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {Ticket.organization}
