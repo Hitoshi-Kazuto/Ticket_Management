@@ -198,6 +198,10 @@ const TicketMaster = () => {
 
     const role = getUserRole();
 
+    // Add these debug logs
+    console.log("Sample Ticket requested_by:", Tickets[0]?.requested_by);
+    console.log("dropdownValues usernames:", dropdownValues.usernames);
+
     return (
         <div>
             <Home />
@@ -340,7 +344,7 @@ const TicketMaster = () => {
                                             {Ticket.title}
                                         </td>
                                         <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {dropdownValues.usernames.find(user => user.username === Ticket.requested_by)?.name || Ticket.requested_by}
+                                            {dropdownValues.usernames.find(user => user.username === Ticket.requested_by)?.name || Ticket.requested_by}
                                         </td>
                                         <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {Ticket.organization}
