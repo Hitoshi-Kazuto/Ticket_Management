@@ -90,18 +90,16 @@ const Sidebar = () => {
                         <svg className={`w-4 h-4 ml-auto ${isDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
                     </button>
                     {isDropdownOpen && (
-                        <div id="dropdown-ticket-management" className="space-y-2 pl-8 mt-1">
+                        <div id="dropdown-ticket-management" className="space-y-2 pl-8 mt-1" onClick={(e) => e.stopPropagation()}>
                             <NavLink
                                 to='/ticket'
                                 className="flex items-center w-full p-2 text-lg text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
-                                onClick={(e) => e.stopPropagation()}
                             >
                                 View Tickets
                             </NavLink>
                             <NavLink
                                 to='/closed-ticket'
                                 className="flex items-center w-full p-2 text-lg text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
-                                onClick={(e) => e.stopPropagation()}
                             >
                                 Closed Tickets
                             </NavLink>
