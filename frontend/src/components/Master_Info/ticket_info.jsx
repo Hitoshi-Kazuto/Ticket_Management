@@ -834,7 +834,7 @@ const HelpdeskTicketInfo = ({ isOpen, ticket, onClose, dropdownValues }) => {
                             >
                                 <option value="">---- Select Staff ----</option>
                                 {dropdownValues.usernames.map((username) => (
-                                    <option key={username.user_id} value={username.username}>{username.username}</option>
+                                    <option key={username.user_id} value={username.username}>{username.name}</option>
                                 ))}
                             </select>
                         </div>
