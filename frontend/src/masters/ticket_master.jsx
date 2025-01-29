@@ -346,7 +346,7 @@ const TicketMaster = () => {
                                             {Ticket.organization}
                                         </td>
                                         <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {dropdownValues.usernames.find(user => user.username === Ticket.assigned_staff)? user.name : Ticket.assigned_staff}
+                                            {dropdownValues.usernames.find(user => user.username === Ticket.assigned_staff)? usernames.name : Ticket.assigned_staff}
                                         </td>
                                         <td className="px-6 py-4">
                                             {Ticket.priority}
