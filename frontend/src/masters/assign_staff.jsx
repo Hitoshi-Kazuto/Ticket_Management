@@ -218,9 +218,19 @@ const TicketMaster = () => {
                                         </td>
                                         <td className="px-4 py-4 text-center">
                                             <button
+                                                title='Assign'
                                                 onClick={() => handleAssignClick(Ticket)}
                                                 className="text-white px-4 py-2 rounded-md bg-blue-700 hover:bg-blue-800"
-                                            >Assign
+                                            ><svg 
+                                                    xmlns="http://www.w3.org/2000/svg" 
+                                                    width="24" 
+                                                    height="24" 
+                                                    viewBox="0 0 24 24" 
+                                                    className="fill-white"
+                                                >
+                                                    <path d="M12 3c-4.962 0-9 4.038-9 9 0 4.963 4.038 9 9 9 4.963 0 9-4.037 9-9 0-4.962-4.037-9-9-9zm0 16c-3.859 0-7-3.14-7-7 0-3.859 3.141-7 7-7 3.859 0 7 3.141 7 7 0 3.86-3.141 7-7 7z"/>
+                                                    <path d="M13 7h-2v5H6v2h5v5h2v-5h5v-2h-5z"/>
+                                                </svg>
                                             </button>
                                         </td>
                                     </tr>
