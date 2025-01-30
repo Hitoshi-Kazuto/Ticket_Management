@@ -404,6 +404,57 @@ app.get('/admin-access/ticket-updates/:ticket_id', async (req, res) => {
     }
 });
 
+// ... existing code ...
+
+app.put('/withdraw/:ticket_id', async (req, res) => {
+    const { ticket_id } = req.params;
+    const client = await pool.connect();
+
+    try {
+        await client.query('BEGIN');
+
+        // Get the current time for the update
+        const updated_time = new Date().toISOString().slice(0, 19).replace('T', ' ');
+        const created_time = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+        // Update ticket status to Closed
+        const ticketUpdateQuery = `
+            UPDATE ticket
+            SET status = 'Closed', 
+                updated_time = $1
+            WHERE ticket_id = $2
+            RETURNING *;
+        `;
+        const ticketUpdateValues = [updated_time, ticket_id];
+        const updatedTicket = await client.query(ticketUpdateQuery, ticketUpdateValues);
+
+        // Add an entry in ticket_update table to record the withdrawal
+        const insertUpdateQuery = `
+            INSERT INTO ticket_update 
+            (ticket_id, user_description, created_by, created_time)
+            VALUES ($1, $2, $3, $4)
+        `;
+        const insertUpdateValues = [
+            ticket_id,
+            'Ticket withdrawn by requester',
+            updatedTicket.rows[0].requested_by,
+            created_time
+        ];
+        await client.query(insertUpdateQuery, insertUpdateValues);
+
+        await client.query('COMMIT');
+        res.json({ success: true, message: 'Ticket withdrawn successfully' });
+    } catch (err) {
+        await client.query('ROLLBACK');
+        console.error('Error processing withdrawal:', err);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    } finally {
+        client.release();
+    }
+});
+
+// ... existing code ...
+
 
 
 

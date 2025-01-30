@@ -205,6 +205,29 @@ const TicketMaster = () => {
     // console.log("Sample Ticket requested_by:", Tickets[0]?.requested_by);
     // console.log("dropdownValues usernames:", dropdownValues.usernames);
 
+    const handleWithdraw = async (ticketId) => {
+        try {
+            const response = await axios.put(
+                `${API_URL}api/ticket/withdraw/${ticketId}`,
+                {},
+                {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                }
+            );
+            
+            if (response.data.success) {
+                // Refresh the ticket list after successful withdrawal
+                fetchDataBasedOnRoles();
+            } else {
+                console.error('Failed to withdraw ticket');
+            }
+        } catch (error) {
+            console.error('Error withdrawing ticket:', error);
+        }
+    };
+
     return (
         <div>
             <Home />
@@ -363,17 +386,27 @@ const TicketMaster = () => {
                                         <td className="px-6 py-4">
                                             {Ticket.status}
                                         </td>
-                                        <td className="px-2 py-4 text-right">
-                                            <button
-                                                title='View Detail'
-                                                onClick={() => handleUpdateClick(Ticket)}
-                                                className="text-white px-4 py-2 rounded-md bg-blue-700 hover:bg-blue-800"
-                                            ><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="25" height="25" viewBox="0 0 50 50"
-                                                className="fill-white"
-                                            >
-                                                <path d="M25,2C12.297,2,2,12.297,2,25s10.297,23,23,23s23-10.297,23-23S37.703,2,25,2z M25,11c1.657,0,3,1.343,3,3s-1.343,3-3,3 s-3-1.343-3-3S23.343,11,25,11z M29,38h-2h-4h-2v-2h2V23h-2v-2h2h4v2v13h2V38z"></path>
-                                            </svg>
-                                            </button>
+                                        <td className="px-2 py-4 text-center">
+                                        {/* Only show withdraw button if user is the requester and status is Submitted or Assigned */}
+                                        {getUsername() === Ticket.requested_by && 
+                                            (Ticket.status === 'Submitted' || Ticket.status === 'Assigned') && (
+                                                <button
+                                                    title='Withdraw Ticket'
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        if (window.confirm('Are you sure you want to withdraw this ticket?')) {
+                                                            handleWithdraw(Ticket.ticket_id);
+                                                        }
+                                                    }}
+                                                    className="text-white px-4 py-2 rounded-md bg-red-500 hover:bg-red-800"
+                                                >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                        <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>
+                                                        <line x1="18" y1="9" x2="12" y2="15"/>
+                                                        <line x1="12" y1="9" x2="18" y2="15"/>
+                                                    </svg>
+                                                </button>
+                                            )}
                                         </td>
                                         <td className="px-2 py-4 text-center">
                                             <button
