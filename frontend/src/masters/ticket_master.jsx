@@ -139,7 +139,10 @@ const TicketMaster = () => {
     };
 
 
-    const handleUpdateClick = (Ticket) => {
+    const handleUpdateClick = (e, Ticket) => {
+        if (e.target.closest('button') || e.target.closest('td:last-child')) {
+            return;
+        }
         setSelectedTicket(Ticket);
     };
 
@@ -173,7 +176,6 @@ const TicketMaster = () => {
     };
 
     const handleShowUpdates = (e, ticket_id) => {
-        e.stopPropagation();
         setSelectedTicketId(ticket_id);
         fetchUpdates(ticket_id);
     };
@@ -330,8 +332,8 @@ const TicketMaster = () => {
                             <tbody>
                                 {filteredTickets.map(Ticket => (
                                     <tr key={Ticket.ticket_id} 
-                                        onClick={() => handleUpdateClick(Ticket)}
-                                        className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                                        onClick={(e) => handleUpdateClick(e, Ticket)}
+                                        className="cursor-pointer bg-white border-b dark:bg-gray-900 dark:border-gray-700">
                                         <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {new Date(Ticket.created_time).toLocaleString('en-GB', {
                                                 year: 'numeric',
