@@ -328,7 +328,9 @@ const TicketMaster = () => {
                             </thead>
                             <tbody>
                                 {filteredTickets.map(Ticket => (
-                                    <tr key={Ticket.ticket_id} className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                                    <tr key={Ticket.ticket_id} 
+                                        onClick={() => handleUpdateClick(Ticket)}
+                                        className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
                                         <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {new Date(Ticket.created_time).toLocaleString('en-GB', {
                                                 year: 'numeric',
