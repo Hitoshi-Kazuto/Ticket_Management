@@ -108,7 +108,7 @@ const Sidebar = () => {
                                 className="flex items-center w-full p-2 text-lg text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
                             >
                                 Closed Tickets
-                            </NavLink>g
+                            </NavLink>
                         </div>
                     )}
           </div>
