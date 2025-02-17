@@ -420,7 +420,7 @@ app.put('/withdraw/:ticket_id', async (req, res) => {
         // Update ticket status to Closed
         const ticketUpdateQuery = `
             UPDATE ticket
-            SET status = 'Closed', 
+            SET status = 'Withdraw', 
                 updated_time = $1
             WHERE ticket_id = $2
             RETURNING *;

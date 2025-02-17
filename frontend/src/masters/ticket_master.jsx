@@ -27,6 +27,7 @@ const TicketMaster = () => {
     });
     const API_URL = 'https://ticket-management-ten.vercel.app/';
     const [updatesLoading, setUpdatesLoading] = useState(false);
+    const [statusDropdownFilter, setStatusDropdownFilter] = useState('');
 
     useEffect(() => {
         // Fetch Ticket data from backend when component mounts
@@ -196,10 +197,18 @@ const TicketMaster = () => {
 
     const filteredTickets = Tickets.filter(Ticket =>
         Ticket.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
-        (statusFilter === 'all' || (statusFilter === 'critical' && Ticket.priority === 'Critical') || (statusFilter === 'high' && Ticket.priority === 'High') || (statusFilter === 'medium' && Ticket.priority === 'Medium') || (statusFilter === 'low' && Ticket.priority === 'Low'))
+        (statusFilter === 'all' || 
+        (statusFilter === 'critical' && Ticket.priority === 'Critical') || 
+        (statusFilter === 'high' && Ticket.priority === 'High') || 
+        (statusFilter === 'medium' && Ticket.priority === 'Medium') || 
+        (statusFilter === 'low' && Ticket.priority === 'Low')) &&
+        (statusDropdownFilter === '' || Ticket.status === statusDropdownFilter)
     );
 
     const role = getUserRole();
+
+    // Get unique status values from tickets
+    const uniqueStatuses = [...new Set(Tickets.map(ticket => ticket.status))];
 
     // debug logs
     // console.log("Sample Ticket requested_by:", Tickets[0]?.requested_by);
@@ -294,6 +303,16 @@ const TicketMaster = () => {
                     />
                     <label htmlFor="low" className="mr-3">Low</label>
                 </div>
+                <select
+                    value={statusDropdownFilter}
+                    onChange={(e) => setStatusDropdownFilter(e.target.value)}
+                    className="px-4 py-3.5 mx-2 bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                >
+                    <option value="">All Statuses</option>
+                    {uniqueStatuses.map(status => (
+                        <option key={status} value={status}>{status}</option>
+                    ))}
+                </select>
                 <button
                     onClick={handleAddClick}
                     type="button"
