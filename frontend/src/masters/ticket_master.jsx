@@ -307,7 +307,9 @@ const TicketMaster = () => {
                 >
                     <option value="">All Statuses</option>
                     {dropdownValues.statuses.map(status => (
-                        <option key={status} value={status}>{status}</option>
+                        <option key={status.status_id || status} value={status.status || status}>
+                            {status.status || status}
+                        </option>
                     ))}
                 </select>
                 <button
