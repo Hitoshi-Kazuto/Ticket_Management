@@ -207,9 +207,6 @@ const TicketMaster = () => {
 
     const role = getUserRole();
 
-    // Get unique status values from tickets
-    const uniqueStatuses = [...new Set(Tickets.map(ticket => ticket.status))];
-
     // debug logs
     // console.log("Sample Ticket requested_by:", Tickets[0]?.requested_by);
     // console.log("dropdownValues usernames:", dropdownValues.usernames);
@@ -309,7 +306,7 @@ const TicketMaster = () => {
                     className="px-4 py-3.5 mx-2 bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500"
                 >
                     <option value="">All Statuses</option>
-                    {uniqueStatuses.map(status => (
+                    {dropdownValues.statuses.map(status => (
                         <option key={status} value={status}>{status}</option>
                     ))}
                 </select>
