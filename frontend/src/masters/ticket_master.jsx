@@ -306,11 +306,13 @@ const TicketMaster = () => {
                     className="px-4 py-3.5 mx-2 bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500"
                 >
                     <option value="">All Statuses</option>
-                    {dropdownValues.statuses.map(status => (
-                        <option key={status.status_id || status} value={status.status || status}>
-                            {status.status || status}
-                        </option>
-                    ))}
+                    {dropdownValues.statuses
+                        .filter(status => (status.status || status) !== 'Closed')
+                        .map(status => (
+                            <option key={status.status_id || status} value={status.status || status}>
+                                {status.status || status}
+                            </option>
+                        ))}
                 </select>
                 <button
                     onClick={handleAddClick}
@@ -371,75 +373,83 @@ const TicketMaster = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {filteredTickets.map(Ticket => (
-                                    <tr key={Ticket.ticket_id} 
-                                        onClick={(e) => handleUpdateClick(e, Ticket)}
-                                        className="cursor-pointer bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {new Date(Ticket.created_time).toLocaleString('en-GB', {
-                                                year: 'numeric',
-                                                month: '2-digit',
-                                                day: '2-digit',
-                                                hour: '2-digit',
-                                                minute: '2-digit',
-                                                second: '2-digit',
-                                                hour12: false
-                                            }).replace(',', ' -')}
-                                        </td>
-                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {Ticket.title}
-                                        </td>
-                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {dropdownValues.requested_by.find(user => user.username === Ticket.requested_by)?.name || Ticket.requested_by}
-                                        </td>
-                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {Ticket.organization}
-                                        </td>
-                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {dropdownValues.usernames.find(user => user.username === Ticket.assigned_staff)?.name || Ticket.assigned_staff}
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            {Ticket.priority}
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            {Ticket.status}
-                                        </td>
-                                        <td className="px-2 py-4 text-center">
-                                        {/* Only show withdraw button if user is the requester and status is Submitted or Assigned */}
-                                        {getUsername() === Ticket.requested_by && 
-                                            (Ticket.status === 'Submitted' || Ticket.status === 'Assigned') && (
+                                {filteredTickets.length > 0 ? (
+                                    filteredTickets.map(Ticket => (
+                                        <tr key={Ticket.ticket_id} 
+                                            onClick={(e) => handleUpdateClick(e, Ticket)}
+                                            className="cursor-pointer bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                                            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                {new Date(Ticket.created_time).toLocaleString('en-GB', {
+                                                    year: 'numeric',
+                                                    month: '2-digit',
+                                                    day: '2-digit',
+                                                    hour: '2-digit',
+                                                    minute: '2-digit',
+                                                    second: '2-digit',
+                                                    hour12: false
+                                                }).replace(',', ' -')}
+                                            </td>
+                                            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                {Ticket.title}
+                                            </td>
+                                            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                {dropdownValues.requested_by.find(user => user.username === Ticket.requested_by)?.name || Ticket.requested_by}
+                                            </td>
+                                            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                {Ticket.organization}
+                                            </td>
+                                            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                {dropdownValues.usernames.find(user => user.username === Ticket.assigned_staff)?.name || Ticket.assigned_staff}
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                {Ticket.priority}
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                {Ticket.status}
+                                            </td>
+                                            <td className="px-2 py-4 text-center">
+                                            {/* Only show withdraw button if user is the requester and status is Submitted or Assigned */}
+                                            {getUsername() === Ticket.requested_by && 
+                                                (Ticket.status === 'Submitted' || Ticket.status === 'Assigned') && (
+                                                    <button
+                                                        title='Withdraw Ticket'
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            if (window.confirm('Are you sure you want to withdraw this ticket?')) {
+                                                                handleWithdraw(Ticket.ticket_id);
+                                                            }
+                                                        }}
+                                                        className="text-white px-4 py-2 rounded-md bg-red-500 hover:bg-red-800"
+                                                    >
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                            <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>
+                                                            <line x1="18" y1="9" x2="12" y2="15"/>
+                                                            <line x1="12" y1="9" x2="18" y2="15"/>
+                                                        </svg>
+                                                    </button>
+                                                )}
+                                            </td>
+                                            <td className="px-2 py-4 text-center">
                                                 <button
-                                                    title='Withdraw Ticket'
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        if (window.confirm('Are you sure you want to withdraw this ticket?')) {
-                                                            handleWithdraw(Ticket.ticket_id);
-                                                        }
-                                                    }}
-                                                    className="text-white px-4 py-2 rounded-md bg-red-500 hover:bg-red-800"
-                                                >
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                        <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>
-                                                        <line x1="18" y1="9" x2="12" y2="15"/>
-                                                        <line x1="12" y1="9" x2="18" y2="15"/>
-                                                    </svg>
+                                                    title='View Updates'
+                                                    onClick={() => handleShowUpdates(Ticket.ticket_id)}
+                                                    className="text-white px-4 py-2 rounded-md bg-purple-500 hover:bg-purple-800"
+                                                ><img width="24" height="24" 
+                                                    src="https://img.icons8.com/material-outlined/24/edit-property.png" 
+                                                    alt="edit-property"
+                                                    className="invert brightness-0"
+                                                />
                                                 </button>
-                                            )}
-                                        </td>
-                                        <td className="px-2 py-4 text-center">
-                                            <button
-                                                title='View Updates'
-                                                onClick={() => handleShowUpdates(Ticket.ticket_id)}
-                                                className="text-white px-4 py-2 rounded-md bg-purple-500 hover:bg-purple-800"
-                                            ><img width="24" height="24" 
-                                                src="https://img.icons8.com/material-outlined/24/edit-property.png" 
-                                                alt="edit-property"
-                                                className="invert brightness-0"
-                                            />
-                                            </button>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="9" className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                                            No tickets available for the selected filters
                                         </td>
                                     </tr>
-                                ))}
+                                )}
                             </tbody>
                         </table>
                     </div>
