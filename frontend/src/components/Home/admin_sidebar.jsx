@@ -6,9 +6,9 @@ const Sidebar = () => {
   const location = useLocation();
 
   const toggleDropdown = (e) => {
-    // Only toggle if the button itself is clicked, not its children
+    // Only toggle if the event is from the button itself, not from its children
     if (e.target === e.currentTarget) {
-      setIsDropdownOpen(!isDropdownOpen);
+      setIsDropdownOpen((prev) => !prev);
     }
   };
 
