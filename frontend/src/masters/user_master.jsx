@@ -250,12 +250,12 @@ const UserMaster = () => {
                             value={filterText}
                             onChange={e => setFilterText(e.target.value)}
                             placeholder="Search Users..."
-                            className="px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 w-72 text-base"
+                            className="px-5 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 w-72 text-base"
                         />
                         {filterText && (
                             <button
                                 onClick={handleClear}
-                                className="px-4 py-2.5 text-white bg-red-600 hover:bg-red-700 rounded-lg text-base"
+                                className="px-5 py-2 text-white bg-red-600 hover:bg-red-700 rounded-lg text-base"
                             >
                                 Clear
                             </button>
@@ -300,7 +300,7 @@ const UserMaster = () => {
                 <button
                     onClick={handleAddClick}
                     type="button"
-                    className="px-5 py-2.5 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-base"
+                    className="px-6 py-2 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-base"
                 >
                     Add User
                 </button>
@@ -311,8 +311,8 @@ const UserMaster = () => {
     return (
         <div>
             <Home />
-            <div className="overflow-x-auto shadow-md absolute right-0 w-5/6 p-4">
-                <p className='bg-gray-100 border-gray-200 p-4 m-0 dark:bg-gray-800 relative self-right text-2xl font-bold whitespace-nowrap dark:text-gray-400'>User Management</p>
+            <div className="overflow-x-auto shadow-md absolute right-0 w-5/6 px-6 py-3">
+                <p className='bg-gray-100 border-gray-200 px-6 py-3 m-0 dark:bg-gray-800 relative self-right text-2xl font-bold whitespace-nowrap dark:text-gray-400'>User Management</p>
                 
                 <DataTable
                     columns={columns}
@@ -353,7 +353,7 @@ const UserMaster = () => {
                         },
                         subHeader: {
                             style: {
-                                padding: '1.5rem 0',
+                                padding: '1rem 0',
                             },
                         },
                     }}
