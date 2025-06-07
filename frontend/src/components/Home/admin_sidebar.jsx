@@ -5,11 +5,8 @@ const Sidebar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const location = useLocation();
 
-  const toggleDropdown = (e) => {
-    // Only toggle if the event is from the button itself, not from its children
-    if (e.target === e.currentTarget) {
-      setIsDropdownOpen((prev) => !prev);
-    }
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev);
   };
 
   const menuItemClass = "flex items-center w-full p-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors duration-200 dark:text-gray-300 dark:hover:bg-gray-800";
