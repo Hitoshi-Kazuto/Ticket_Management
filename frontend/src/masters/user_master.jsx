@@ -5,26 +5,21 @@ import UserInfoPopup from '../components/Master_Info/user_info';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../components/Hooks/spinnerComponent';
+import DataTable from 'react-data-table-component';
 
 const UserMaster = () => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [Users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
-    const [searchQuery, setSearchQuery] = useState('');
     const [error, setError] = useState('');
     const [statusFilter, setStatusFilter] = useState('active');
     const [loading, setLoading] = useState(true);
-    const [DataTable, setDataTable] = useState(null);
+    const [filterText, setFilterText] = useState('');
     const token = localStorage.getItem('token');
-    const username = localStorage.getItem('username'); // Get username from local storage
+    const username = localStorage.getItem('username');
     const API_URL = 'https://ticket-management-ten.vercel.app/';
 
     useEffect(() => {
-        // Dynamically import DataTable
-        import('react-data-table-component').then(module => {
-            setDataTable(() => module.default);
-        });
-        // Fetch User data from backend when component mounts
         fetchUserData();
     }, []);
 
@@ -33,9 +28,10 @@ const UserMaster = () => {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
-        }) // Replace with your backend endpoint
+        })
             .then(response => {
                 setUsers(response.data);
+                setLoading(false);
             })
             .catch(error => {
                 console.error('Error fetching Users', error);
@@ -66,7 +62,7 @@ const UserMaster = () => {
                 fetchUserData();
                 handleClosePopup();
                 setError('');
-                return true; // Return true on success
+                return true;
             } else {
                 setError(response.data.message || 'Form submission unsuccessful');
                 return false;
@@ -77,10 +73,9 @@ const UserMaster = () => {
             } else {
                 setError('Error adding User');
             }
-            return false; // Return false on error
+            return false;
         }
     };
-
 
     const handleInfoClick = (User) => {
         setSelectedUser(User);
@@ -95,7 +90,7 @@ const UserMaster = () => {
         try {
             const response = await axios.post(
                 `${API_URL}api/user/inactivate`,
-                { user_id },  // data payload
+                { user_id },
                 {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -116,7 +111,7 @@ const UserMaster = () => {
         try {
             const response = await axios.post(
                 `${API_URL}api/user/activate`,
-                { user_id },  // data payload
+                { user_id },
                 {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -133,14 +128,6 @@ const UserMaster = () => {
         }
     };
 
-    // const fetchPartnerCodes = async () => {
-    //     try {
-    //         const response = await axios.get('${API_URL}api/partner-codes');
-    //         setFilteredPartners(response.data);
-    //     } catch (error) {
-    //         console.error('Error fetching partner codes:', error);
-    //     }
-    // };
     const [dropdownValues, setDropdownValues] = useState({
         partners: []
     });
@@ -150,7 +137,7 @@ const UserMaster = () => {
             try {
                 const response = await axios.get(`${API_URL}api/partner-codes`, {
                     headers: {
-                        'Authorization': `Bearer ${token}` // Include the token in the header
+                        'Authorization': `Bearer ${token}`
                     }
                 });
                 setDropdownValues(response.data);
@@ -161,9 +148,15 @@ const UserMaster = () => {
         fetchDropdownValues();
     }, []);
 
-    const filteredUsers = Users.filter(User =>
-        User.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-        (statusFilter === 'all' || (statusFilter === 'active' && User.active_status) || (statusFilter === 'inactive' && !User.active_status))
+    const filteredItems = Users.filter(
+        item => {
+            const matchesFilter = item.name.toLowerCase().includes(filterText.toLowerCase()) ||
+                                item.username.toLowerCase().includes(filterText.toLowerCase());
+            const matchesStatus = statusFilter === 'all' || 
+                                (statusFilter === 'active' && item.active_status) || 
+                                (statusFilter === 'inactive' && !item.active_status);
+            return matchesFilter && matchesStatus;
+        }
     );
 
     const columns = [
@@ -238,94 +231,99 @@ const UserMaster = () => {
         },
     ];
 
+    const subHeaderComponent = (
+        <div className="flex items-center gap-4 mb-4">
+            <input
+                type="text"
+                value={filterText}
+                onChange={e => setFilterText(e.target.value)}
+                placeholder="Search Users..."
+                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+            />
+            <div className="flex items-center gap-2">
+                <input
+                    type="radio"
+                    id="all"
+                    name="status"
+                    value="all"
+                    checked={statusFilter === 'all'}
+                    onChange={() => setStatusFilter('all')}
+                    className="mr-1"
+                />
+                <label htmlFor="all" className="mr-3">All</label>
+                <input
+                    type="radio"
+                    id="active"
+                    name="status"
+                    value="active"
+                    checked={statusFilter === 'active'}
+                    onChange={() => setStatusFilter('active')}
+                    className="mr-1"
+                />
+                <label htmlFor="active" className="mr-3">Active</label>
+                <input
+                    type="radio"
+                    id="inactive"
+                    name="status"
+                    value="inactive"
+                    checked={statusFilter === 'inactive'}
+                    onChange={() => setStatusFilter('inactive')}
+                    className="mr-1"
+                />
+                <label htmlFor="inactive" className="mr-3">Inactive</label>
+            </div>
+            <button
+                onClick={handleAddClick}
+                type="button"
+                className="px-4 py-2 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm"
+            >
+                Add User
+            </button>
+        </div>
+    );
+
     return (
         <div>
             <Home />
-            <div className="overflow-x-auto shadow-md absolute right-0 w-5/6">
-                <p className=' bg-gray-100 border-gray-200 p-3 m-0 dark:bg-gray-800 relative self-right text-xl font-semibold whitespace-nowrap dark:text-gray-400'>User Management</p>
-                <input
-                    type="text"
-                    id="search"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="px-4 py-3.5 m-3 mr-1.5 bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 w-5/12"
-                    placeholder="Search User Name"
-                    required
+            <div className="overflow-x-auto shadow-md absolute right-0 w-5/6 p-4">
+                <p className='bg-gray-100 border-gray-200 p-3 m-0 dark:bg-gray-800 relative self-right text-xl font-semibold whitespace-nowrap dark:text-gray-400'>User Management</p>
+                
+                <DataTable
+                    columns={columns}
+                    data={filteredItems}
+                    pagination
+                    paginationPerPage={10}
+                    paginationRowsPerPageOptions={[10, 20, 30, 40, 50]}
+                    subHeader
+                    subHeaderComponent={subHeaderComponent}
+                    persistTableHead
+                    highlightOnHover
+                    pointerOnHover
+                    responsive
+                    striped
+                    customStyles={{
+                        headRow: {
+                            style: {
+                                backgroundColor: '#f3f4f6',
+                                color: '#374151',
+                            },
+                        },
+                        rows: {
+                            style: {
+                                minHeight: '72px',
+                            },
+                        },
+                    }}
                 />
-                <div className="inline-flex mx-2 items-center">
-                    <input
-                        type="radio"
-                        id="all"
-                        name="status"
-                        value="all"
-                        checked={statusFilter === 'all'}
-                        onChange={() => setStatusFilter('all')}
-                        className="mr-1.5"
-                    />
-                    <label htmlFor="all" className="mr-3">All</label>
-                    <input
-                        type="radio"
-                        id="active"
-                        name="status"
-                        value="active"
-                        checked={statusFilter === 'active'}
-                        onChange={() => setStatusFilter('active')}
-                        className="mr-1.5"
-                    />
-                    <label htmlFor="active" className="mr-3">Active</label>
-                    <input
-                        type="radio"
-                        id="inactive"
-                        name="status"
-                        value="inactive"
-                        checked={statusFilter === 'inactive'}
-                        onChange={() => setStatusFilter('inactive')}
-                        className="mr-1.5"
-                    />
-                    <label htmlFor="inactive" className="mr-3">Inactive</label>
-                </div>
-                <button
-                    onClick={handleAddClick}
-                    type="button"
-                    className="p-2 mx-1.5 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-base w-full sm:w-auto px-5 py-3.5 text-center"
-                >Add
-                </button>
-                <UserForm isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleFormSubmit} error={error} dropdownValues={dropdownValues} />
-                <div className="px-3 pb-3">
-                    <div className="overflow-auto shadow-md rounded-lg max-h-[calc(100vh-100px)]">
-                        {DataTable ? (
-                            <DataTable
-                                columns={columns}
-                                data={filteredUsers}
-                                pagination
-                                paginationPerPage={10}
-                                paginationRowsPerPageOptions={[10, 20, 30, 40, 50]}
-                                persistTableHead
-                                highlightOnHover
-                                pointerOnHover
-                                responsive
-                                striped
-                                customStyles={{
-                                    headRow: {
-                                        style: {
-                                            backgroundColor: '#f3f4f6',
-                                            color: '#374151',
-                                        },
-                                    },
-                                    rows: {
-                                        style: {
-                                            minHeight: '72px',
-                                        },
-                                    },
-                                }}
-                            />
-                        ) : (
-                            <div className="flex justify-center items-center h-64">
-                                <LoadingSpinner />
-                            </div>
-                        )}
-                    </div>
-                </div>
+
+                <UserForm 
+                    isOpen={isPopupOpen} 
+                    onClose={handleClosePopup} 
+                    onSubmit={handleFormSubmit} 
+                    error={error} 
+                    dropdownValues={dropdownValues} 
+                />
+                
                 {selectedUser && (
                     <UserInfoPopup
                         isOpen={true}
