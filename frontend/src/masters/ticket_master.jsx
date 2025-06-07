@@ -34,6 +34,7 @@ const TicketMaster = () => {
 
     useEffect(() => {
         fetchDataBasedOnRoles();
+        fetchDropdownValues();
     }, []);
 
     const getUserRole = () => {
@@ -72,20 +73,19 @@ const TicketMaster = () => {
                 apiUrl = `${API_URL}api/ticket/helpdesk-access/all`
                 break;
         }
-        axios.get(apiUrl, {
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-        })
-            .then(response => {
-                setTickets(response.data);
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error('Error fetching Tickets', error);
-                setLoading(false);
+        try {
+            const response = await axios.get(apiUrl, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
             });
-    }
+            setTickets(response.data);
+            setLoading(false);
+        } catch (error) {
+            console.error('Error fetching Tickets', error);
+            setLoading(false);
+        }
+    };
 
     const handleAddClick = () => {
         setIsPopupOpen(true);
@@ -183,21 +183,18 @@ const TicketMaster = () => {
         fetchUpdates(ticket_id);
     };
 
-    useEffect(() => {
-        const fetchDropdownValues = async () => {
-            try {
-                const response = await axios.get(`${API_URL}api/dropdown-values`, {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
-                });
-                setDropdownValues(response.data);
-            } catch (error) {
-                console.error('Error fetching dropdown values:', error);
-            }
-        };
-        fetchDropdownValues();
-    }, []);
+    const fetchDropdownValues = async () => {
+        try {
+            const response = await axios.get(`${API_URL}api/dropdown-values`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            setDropdownValues(response.data);
+        } catch (error) {
+            console.error('Error fetching dropdown values:', error);
+        }
+    };
 
     const handleWithdraw = async (ticketId) => {
         try {
@@ -441,11 +438,11 @@ const TicketMaster = () => {
                 />
 
                 {role === 'Admin' ? (
-                    <AdminTicketForm isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleFormSubmit} error={error} />
+                    <AdminTicketForm isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleFormSubmit} error={error} dropdownValues={dropdownValues} />
                 ) : role === 'Helpdesk' ? (
-                    <HelpdeskTicketForm isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleFormSubmit} error={error} />
+                    <HelpdeskTicketForm isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleFormSubmit} error={error} dropdownValues={dropdownValues} />
                 ) : (
-                    <UserTicketForm isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleFormSubmit} error={error} />
+                    <UserTicketForm isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleFormSubmit} error={error} dropdownValues={dropdownValues} />
                 )}
 
                 {role === 'Admin' ? (

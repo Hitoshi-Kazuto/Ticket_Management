@@ -127,7 +127,7 @@ const SoftwareMaster = () => {
     const columns = [
         {
             name: 'Software Name',
-            selector: row => row.software,
+            selector: row => row.software_name,
             sortable: true,
         },
         {
@@ -183,7 +183,7 @@ const SoftwareMaster = () => {
 
     const filteredItems = useMemo(() => {
         return softwares.filter(item => {
-            const matchesFilter = item.software.toLowerCase().includes(filterText.toLowerCase());
+            const matchesFilter = item.software_name.toLowerCase().includes(filterText.toLowerCase());
             const matchesStatus = statusFilter === 'all' || 
                                 (statusFilter === 'active' && item.status) || 
                                 (statusFilter === 'inactive' && !item.status);
