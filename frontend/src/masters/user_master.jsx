@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Home from '../components/Home/home';
 import UserForm from '../components/Master_Form/user_form';
 import UserInfoPopup from '../components/Master_Info/user_info';
@@ -15,6 +15,7 @@ const UserMaster = () => {
     const [statusFilter, setStatusFilter] = useState('active');
     const [loading, setLoading] = useState(true);
     const [filterText, setFilterText] = useState('');
+    const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
     const token = localStorage.getItem('token');
     const username = localStorage.getItem('username');
     const API_URL = 'https://ticket-management-ten.vercel.app/';
@@ -35,6 +36,7 @@ const UserMaster = () => {
             })
             .catch(error => {
                 console.error('Error fetching Users', error);
+                setLoading(false);
             });
     };
 
@@ -148,17 +150,6 @@ const UserMaster = () => {
         fetchDropdownValues();
     }, []);
 
-    const filteredItems = Users.filter(
-        item => {
-            const matchesFilter = item.name.toLowerCase().includes(filterText.toLowerCase()) ||
-                                item.username.toLowerCase().includes(filterText.toLowerCase());
-            const matchesStatus = statusFilter === 'all' || 
-                                (statusFilter === 'active' && item.active_status) || 
-                                (statusFilter === 'inactive' && !item.active_status);
-            return matchesFilter && matchesStatus;
-        }
-    );
-
     const columns = [
         {
             name: 'Username',
@@ -231,56 +222,86 @@ const UserMaster = () => {
         },
     ];
 
-    const subHeaderComponent = (
-        <div className="flex items-center gap-4 mb-4">
-            <input
-                type="text"
-                value={filterText}
-                onChange={e => setFilterText(e.target.value)}
-                placeholder="Search Users..."
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-            />
-            <div className="flex items-center gap-2">
-                <input
-                    type="radio"
-                    id="all"
-                    name="status"
-                    value="all"
-                    checked={statusFilter === 'all'}
-                    onChange={() => setStatusFilter('all')}
-                    className="mr-1"
-                />
-                <label htmlFor="all" className="mr-3">All</label>
-                <input
-                    type="radio"
-                    id="active"
-                    name="status"
-                    value="active"
-                    checked={statusFilter === 'active'}
-                    onChange={() => setStatusFilter('active')}
-                    className="mr-1"
-                />
-                <label htmlFor="active" className="mr-3">Active</label>
-                <input
-                    type="radio"
-                    id="inactive"
-                    name="status"
-                    value="inactive"
-                    checked={statusFilter === 'inactive'}
-                    onChange={() => setStatusFilter('inactive')}
-                    className="mr-1"
-                />
-                <label htmlFor="inactive" className="mr-3">Inactive</label>
+    const filteredItems = useMemo(() => {
+        return Users.filter(item => {
+            const matchesFilter = item.name.toLowerCase().includes(filterText.toLowerCase()) ||
+                                item.username.toLowerCase().includes(filterText.toLowerCase());
+            const matchesStatus = statusFilter === 'all' || 
+                                (statusFilter === 'active' && item.active_status) || 
+                                (statusFilter === 'inactive' && !item.active_status);
+            return matchesFilter && matchesStatus;
+        });
+    }, [Users, filterText, statusFilter]);
+
+    const subHeaderComponent = useMemo(() => {
+        const handleClear = () => {
+            if (filterText) {
+                setResetPaginationToggle(!resetPaginationToggle);
+                setFilterText('');
+            }
+        };
+
+        return (
+            <div className="flex items-center gap-4 mb-4">
+                <div className="flex items-center gap-2">
+                    <input
+                        type="text"
+                        value={filterText}
+                        onChange={e => setFilterText(e.target.value)}
+                        placeholder="Search Users..."
+                        className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                    />
+                    {filterText && (
+                        <button
+                            onClick={handleClear}
+                            className="px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-lg"
+                        >
+                            Clear
+                        </button>
+                    )}
+                </div>
+                <div className="flex items-center gap-2">
+                    <input
+                        type="radio"
+                        id="all"
+                        name="status"
+                        value="all"
+                        checked={statusFilter === 'all'}
+                        onChange={() => setStatusFilter('all')}
+                        className="mr-1"
+                    />
+                    <label htmlFor="all" className="mr-3">All</label>
+                    <input
+                        type="radio"
+                        id="active"
+                        name="status"
+                        value="active"
+                        checked={statusFilter === 'active'}
+                        onChange={() => setStatusFilter('active')}
+                        className="mr-1"
+                    />
+                    <label htmlFor="active" className="mr-3">Active</label>
+                    <input
+                        type="radio"
+                        id="inactive"
+                        name="status"
+                        value="inactive"
+                        checked={statusFilter === 'inactive'}
+                        onChange={() => setStatusFilter('inactive')}
+                        className="mr-1"
+                    />
+                    <label htmlFor="inactive" className="mr-3">Inactive</label>
+                </div>
+                <button
+                    onClick={handleAddClick}
+                    type="button"
+                    className="px-4 py-2 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm"
+                >
+                    Add User
+                </button>
             </div>
-            <button
-                onClick={handleAddClick}
-                type="button"
-                className="px-4 py-2 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm"
-            >
-                Add User
-            </button>
-        </div>
-    );
+        );
+    }, [filterText, resetPaginationToggle]);
 
     return (
         <div>
@@ -294,6 +315,7 @@ const UserMaster = () => {
                     pagination
                     paginationPerPage={10}
                     paginationRowsPerPageOptions={[10, 20, 30, 40, 50]}
+                    paginationResetDefaultPage={resetPaginationToggle}
                     subHeader
                     subHeaderComponent={subHeaderComponent}
                     persistTableHead
@@ -301,6 +323,17 @@ const UserMaster = () => {
                     pointerOnHover
                     responsive
                     striped
+                    progressPending={loading}
+                    progressComponent={
+                        <div className="flex justify-center items-center h-64">
+                            <LoadingSpinner />
+                        </div>
+                    }
+                    noDataComponent={
+                        <div className="flex justify-center items-center h-64 text-gray-500">
+                            No records to display
+                        </div>
+                    }
                     customStyles={{
                         headRow: {
                             style: {
