@@ -5,7 +5,6 @@ import UserInfoPopup from '../components/Master_Info/user_info';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../components/Hooks/spinnerComponent';
-import DataTable from 'react-data-table-component';
 
 const UserMaster = () => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -15,11 +14,16 @@ const UserMaster = () => {
     const [error, setError] = useState('');
     const [statusFilter, setStatusFilter] = useState('active');
     const [loading, setLoading] = useState(true);
+    const [DataTable, setDataTable] = useState(null);
     const token = localStorage.getItem('token');
     const username = localStorage.getItem('username'); // Get username from local storage
     const API_URL = 'https://ticket-management-ten.vercel.app/';
 
     useEffect(() => {
+        // Dynamically import DataTable
+        import('react-data-table-component').then(module => {
+            setDataTable(() => module.default);
+        });
         // Fetch User data from backend when component mounts
         fetchUserData();
     }, []);
@@ -289,31 +293,37 @@ const UserMaster = () => {
                 <UserForm isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleFormSubmit} error={error} dropdownValues={dropdownValues} />
                 <div className="px-3 pb-3">
                     <div className="overflow-auto shadow-md rounded-lg max-h-[calc(100vh-100px)]">
-                        <DataTable
-                            columns={columns}
-                            data={filteredUsers}
-                            pagination
-                            paginationPerPage={10}
-                            paginationRowsPerPageOptions={[10, 20, 30, 40, 50]}
-                            persistTableHead
-                            highlightOnHover
-                            pointerOnHover
-                            responsive
-                            striped
-                            customStyles={{
-                                headRow: {
-                                    style: {
-                                        backgroundColor: '#f3f4f6',
-                                        color: '#374151',
+                        {DataTable ? (
+                            <DataTable
+                                columns={columns}
+                                data={filteredUsers}
+                                pagination
+                                paginationPerPage={10}
+                                paginationRowsPerPageOptions={[10, 20, 30, 40, 50]}
+                                persistTableHead
+                                highlightOnHover
+                                pointerOnHover
+                                responsive
+                                striped
+                                customStyles={{
+                                    headRow: {
+                                        style: {
+                                            backgroundColor: '#f3f4f6',
+                                            color: '#374151',
+                                        },
                                     },
-                                },
-                                rows: {
-                                    style: {
-                                        minHeight: '72px',
+                                    rows: {
+                                        style: {
+                                            minHeight: '72px',
+                                        },
                                     },
-                                },
-                            }}
-                        />
+                                }}
+                            />
+                        ) : (
+                            <div className="flex justify-center items-center h-64">
+                                <LoadingSpinner />
+                            </div>
+                        )}
                     </div>
                 </div>
                 {selectedUser && (
