@@ -340,40 +340,15 @@ const UserMaster = () => {
                         </div>
                     }
                     customStyles={{
-                        table: {
-                            style: {
-                                backgroundColor: 'rgb(31, 41, 55)', // dark:bg-gray-800
-                            },
-                        },
                         headRow: {
                             style: {
-                                backgroundColor: 'rgb(31, 41, 55)', // dark:bg-gray-800
-                                color: 'rgb(156, 163, 175)', // dark:text-gray-400
-                                borderBottom: '1px solid rgb(55, 65, 81)', // dark:border-gray-700
+                                backgroundColor: '#f3f4f6',
+                                color: '#374151',
                             },
                         },
                         rows: {
                             style: {
                                 minHeight: '72px',
-                                backgroundColor: 'rgb(31, 41, 55)', // dark:bg-gray-800
-                                color: 'rgb(156, 163, 175)', // dark:text-gray-400
-                                '&:nth-of-type(odd)': {
-                                    backgroundColor: 'rgb(17, 24, 39)', // darker shade for striped rows
-                                },
-                                '&:hover': {
-                                    backgroundColor: 'rgb(55, 65, 81)', // dark:hover:bg-gray-700
-                                },
-                            },
-                        },
-                        pagination: {
-                            style: {
-                                backgroundColor: 'rgb(31, 41, 55)', // dark:bg-gray-800
-                                color: 'rgb(156, 163, 175)', // dark:text-gray-400
-                            },
-                        },
-                        subHeader: {
-                            style: {
-                                backgroundColor: 'rgb(31, 41, 55)', // dark:bg-gray-800
                             },
                         },
                     }}
