@@ -7,8 +7,6 @@ import './index.css'
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <Router>
-        <div className="min-h-screen bg-white dark:bg-gray-900">
             <App />
-        </div>
     </Router>
 );
