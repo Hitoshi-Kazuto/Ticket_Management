@@ -66,12 +66,12 @@ const Header = () => {
 
     return (
         <nav className="bg-gray-200 h-16 dark:bg-gray-900 relative my-0 z-50 flex items-center">
-            <div className="flex justify-between items-center mx-4 my-0 max-w">
+            <div className="flex justify-between items-center w-full mx-4 my-0 max-w">
                 <a href="#" className="flex items-center">
                     <img src="https://img.icons8.com/color/48/headset.png" className="mr-3 h-6 sm:h-9" alt="Logo" />
                     <span className="self-right text-xl font-bold whitespace-nowrap text-gray-700 dark:text-white">Helpdesk Management</span>
                 </a>
-                <div className="relative" ref={dropdownRef}>
+                <div className="relative flex items-center" ref={dropdownRef}>
                     <button onClick={toggleDropdown} className="text-right text-gray-900 dark:text-white flex items-center mx-auto">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 mr-2"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier">
                             <circle cx="12" cy="6" r="4" stroke="currentColor" strokeWidth="0.9600000000000002"></circle>

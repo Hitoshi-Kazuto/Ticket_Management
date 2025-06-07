@@ -6,8 +6,8 @@ const Sidebar = () => {
   const location = useLocation();
 
   const toggleDropdown = (e) => {
-    // Only toggle if clicking the button or its direct children
-    if (e.target.closest('button')) {
+    // Only toggle if the button itself is clicked, not its children
+    if (e.target === e.currentTarget) {
       setIsDropdownOpen(!isDropdownOpen);
     }
   };
@@ -102,6 +102,7 @@ const Sidebar = () => {
                 <button
                   onClick={toggleDropdown}
                   className={`${menuItemClass} justify-between w-full`}
+                  type="button"
                 >
                   <div className="flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className={iconClass}><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier">
