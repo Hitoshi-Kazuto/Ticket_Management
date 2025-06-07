@@ -16,7 +16,7 @@ const Sidebar = () => {
     const isDashboardActive = location.pathname === '/helpdesk-dashboard';
 
     return (
-        <aside id="sidebar-multi-level-sidebar" className="fixed top-0 left-0 z-40 w-1/6 h-screen bg-gray-200 dark:bg-gray-900">
+        <aside id="sidebar-multi-level-sidebar" className="fixed top-0 left-0 z-40 w-1/6 h-screen bg-gray-200 dark:bg-gray-900 border-r border-gray-300 dark:border-gray-700">
             <div className="h-full px-3 py-4 overflow-y-auto">
                 <NavLink
                     to='/helpdesk-dashboard'

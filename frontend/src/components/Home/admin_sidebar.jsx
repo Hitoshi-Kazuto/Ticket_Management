@@ -20,7 +20,7 @@ const Sidebar = () => {
   const isDashboardActive = location.pathname === '/dashboard';
 
   return (
-    <aside className="fixed top-16 left-0 w-[16.67%] h-[calc(100vh-4rem)] bg-white border-r border-gray-200 overflow-y-auto">
+    <aside className="fixed top-16 left-0 w-[16.67%] h-[calc(100vh-4rem)] bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 overflow-y-auto">
       <div className="p-4">
         <nav className="space-y-2">
           <NavLink
