@@ -32,6 +32,7 @@ const setPartnerName = (organization) => {
 const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
     const username = localStorage.getItem('username');
     const role = localStorage.getItem('role');
+    const [isLoading, setIsLoading] = useState(false);
 
     const [formData, setFormData] = useState({
         Requested_by: '',
@@ -100,6 +101,7 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         const formDataToSubmit = new FormData();
         Object.keys(formData).forEach(key => {
             formDataToSubmit.append(key, formData[key]);
@@ -128,6 +130,7 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
             });
             setSelectedFile(null);
         }
+        setIsLoading(false);
     };
 
     const isPartnerEditable = formData.Organization === 'Partner';
@@ -310,9 +313,20 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
                     <div className="flex justify-end">
                         <button
                             type="submit"
-                            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                            disabled={isLoading}
+                            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                         >
-                            Submit
+                            {isLoading ? (
+                                <>
+                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    Submitting...
+                                </>
+                            ) : (
+                                'Submit'
+                            )}
                         </button>
                     </div>
                 </form>
@@ -334,6 +348,7 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
         role = decoded.role; // Extract the role from the decoded token
         partner_code = decoded.partner_code;
     }
+    const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
         Requested_by: username || '',
         Organization: role || '',
@@ -371,6 +386,7 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         const formDataToSubmit = new FormData();
         Object.keys(formData).forEach(key => {
             formDataToSubmit.append(key, formData[key]);
@@ -399,6 +415,7 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
             });
             setSelectedFile(null);
         }
+        setIsLoading(false);
     };
 
 
@@ -543,9 +560,20 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
                     <div className="flex justify-end">
                         <button
                             type="submit"
-                            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                            disabled={isLoading}
+                            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                         >
-                            Submit
+                            {isLoading ? (
+                                <>
+                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    Submitting...
+                                </>
+                            ) : (
+                                'Submit'
+                            )}
                         </button>
                     </div>
                 </form>
@@ -562,6 +590,7 @@ export { UserTicketForm };
 const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
     const username = localStorage.getItem('username');
     const role = localStorage.getItem('role');
+    const [isLoading, setIsLoading] = useState(false);
 
     const [formData, setFormData] = useState({
         Requested_by: '',
@@ -630,6 +659,7 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         const formDataToSubmit = new FormData();
         Object.keys(formData).forEach(key => {
             formDataToSubmit.append(key, formData[key]);
@@ -658,6 +688,7 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
             });
             setSelectedFile(null);
         }
+        setIsLoading(false);
     };
 
     const isPartnerEditable = formData.Organization === 'Partner';
@@ -840,9 +871,20 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
                     <div className="flex justify-end">
                         <button
                             type="submit"
-                            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                            disabled={isLoading}
+                            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                         >
-                            Submit
+                            {isLoading ? (
+                                <>
+                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    Submitting...
+                                </>
+                            ) : (
+                                'Submit'
+                            )}
                         </button>
                     </div>
                 </form>
