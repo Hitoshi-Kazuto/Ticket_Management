@@ -300,7 +300,7 @@ const UserMaster = () => {
                 <button
                     onClick={handleAddClick}
                     type="button"
-                    className="px-6 py-2 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-base"
+                    className="px-8 py-2 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-base"
                 >
                     Add User
                 </button>
