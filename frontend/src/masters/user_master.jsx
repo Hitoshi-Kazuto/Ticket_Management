@@ -242,55 +242,60 @@ const UserMaster = () => {
         };
 
         return (
-            <div className="flex items-center gap-4 mb-4">
-                <div className="flex items-center gap-2">
-                    <input
-                        type="text"
-                        value={filterText}
-                        onChange={e => setFilterText(e.target.value)}
-                        placeholder="Search Users..."
-                        className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                    />
-                    {filterText && (
-                        <button
-                            onClick={handleClear}
-                            className="px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-lg"
-                        >
-                            Clear
-                        </button>
-                    )}
-                </div>
-                <div className="flex items-center gap-2">
-                    <input
-                        type="radio"
-                        id="all"
-                        name="status"
-                        value="all"
-                        checked={statusFilter === 'all'}
-                        onChange={() => setStatusFilter('all')}
-                        className="mr-1"
-                    />
-                    <label htmlFor="all" className="mr-3">All</label>
-                    <input
-                        type="radio"
-                        id="active"
-                        name="status"
-                        value="active"
-                        checked={statusFilter === 'active'}
-                        onChange={() => setStatusFilter('active')}
-                        className="mr-1"
-                    />
-                    <label htmlFor="active" className="mr-3">Active</label>
-                    <input
-                        type="radio"
-                        id="inactive"
-                        name="status"
-                        value="inactive"
-                        checked={statusFilter === 'inactive'}
-                        onChange={() => setStatusFilter('inactive')}
-                        className="mr-1"
-                    />
-                    <label htmlFor="inactive" className="mr-3">Inactive</label>
+            <div className="flex justify-between items-center mb-4">
+                <div className="flex items-center gap-6">
+                    <div className="flex items-center gap-2">
+                        <input
+                            type="text"
+                            value={filterText}
+                            onChange={e => setFilterText(e.target.value)}
+                            placeholder="Search Users..."
+                            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 w-64"
+                        />
+                        {filterText && (
+                            <button
+                                onClick={handleClear}
+                                className="px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-lg"
+                            >
+                                Clear
+                            </button>
+                        )}
+                    </div>
+                    <div className="flex items-center gap-4">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                            <input
+                                type="radio"
+                                name="status"
+                                value="all"
+                                checked={statusFilter === 'all'}
+                                onChange={() => setStatusFilter('all')}
+                                className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+                            />
+                            <span className="text-gray-700">All</span>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                            <input
+                                type="radio"
+                                name="status"
+                                value="active"
+                                checked={statusFilter === 'active'}
+                                onChange={() => setStatusFilter('active')}
+                                className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+                            />
+                            <span className="text-gray-700">Active</span>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                            <input
+                                type="radio"
+                                name="status"
+                                value="inactive"
+                                checked={statusFilter === 'inactive'}
+                                onChange={() => setStatusFilter('inactive')}
+                                className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+                            />
+                            <span className="text-gray-700">Inactive</span>
+                        </label>
+                    </div>
                 </div>
                 <button
                     onClick={handleAddClick}
@@ -301,7 +306,7 @@ const UserMaster = () => {
                 </button>
             </div>
         );
-    }, [filterText, resetPaginationToggle]);
+    }, [filterText, resetPaginationToggle, statusFilter]);
 
     return (
         <div>
@@ -335,15 +340,40 @@ const UserMaster = () => {
                         </div>
                     }
                     customStyles={{
+                        table: {
+                            style: {
+                                backgroundColor: 'rgb(31, 41, 55)', // dark:bg-gray-800
+                            },
+                        },
                         headRow: {
                             style: {
-                                backgroundColor: '#f3f4f6',
-                                color: '#374151',
+                                backgroundColor: 'rgb(31, 41, 55)', // dark:bg-gray-800
+                                color: 'rgb(156, 163, 175)', // dark:text-gray-400
+                                borderBottom: '1px solid rgb(55, 65, 81)', // dark:border-gray-700
                             },
                         },
                         rows: {
                             style: {
                                 minHeight: '72px',
+                                backgroundColor: 'rgb(31, 41, 55)', // dark:bg-gray-800
+                                color: 'rgb(156, 163, 175)', // dark:text-gray-400
+                                '&:nth-of-type(odd)': {
+                                    backgroundColor: 'rgb(17, 24, 39)', // darker shade for striped rows
+                                },
+                                '&:hover': {
+                                    backgroundColor: 'rgb(55, 65, 81)', // dark:hover:bg-gray-700
+                                },
+                            },
+                        },
+                        pagination: {
+                            style: {
+                                backgroundColor: 'rgb(31, 41, 55)', // dark:bg-gray-800
+                                color: 'rgb(156, 163, 175)', // dark:text-gray-400
+                            },
+                        },
+                        subHeader: {
+                            style: {
+                                backgroundColor: 'rgb(31, 41, 55)', // dark:bg-gray-800
                             },
                         },
                     }}
