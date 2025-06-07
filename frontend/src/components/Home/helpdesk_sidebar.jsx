@@ -1,20 +1,28 @@
 import React, { useState, useEffect } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 
 const Sidebar = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const location = useLocation();
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
+
+    const menuItemClass = "flex items-center w-full p-2 text-lg text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800";
+    const activeMenuItemClass = "bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-200";
+
+    // Check if the current path matches the helpdesk dashboard
+    const isDashboardActive = location.pathname === '/helpdesk-dashboard';
 
     return (
         <aside id="sidebar-multi-level-sidebar" className="fixed top-0 left-0 z-40 w-1/6 h-screen bg-gray-200 dark:bg-gray-900">
             <div className="h-full px-3 py-4 overflow-y-auto">
                 <NavLink
                     to='/helpdesk-dashboard'
-                    className={`flex items-center w-full p-2 mt-14 mb-2 text-lg text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800`}
-
+                    className={({ isActive }) =>
+                        `${menuItemClass} ${isActive || isDashboardActive ? activeMenuItemClass : ''}`
+                    }
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier">
                         <path d="M3 8.976C3 4.05476 4.05476 3 8.976 3H15.024C19.9452 3 21 4.05476 21 8.976V15.024C21 19.9452 19.9452 21 15.024 21H8.976C4.05476 21 3 19.9452 3 15.024V8.976Z" stroke="currentColor" strokeWidth="1.008"></path>
