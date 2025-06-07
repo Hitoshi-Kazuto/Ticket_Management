@@ -12,15 +12,15 @@ const Sidebar = () => {
     }
   };
 
-  const menuItemClass = "flex items-center w-full p-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors duration-200";
-  const activeMenuItemClass = "bg-blue-50 text-blue-700";
+  const menuItemClass = "flex items-center w-full p-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors duration-200 dark:text-gray-300 dark:hover:bg-gray-800";
+  const activeMenuItemClass = "bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-200";
   const iconClass = "w-5 h-5";
 
   // Check if the current path matches the dashboard
   const isDashboardActive = location.pathname === '/dashboard';
 
   return (
-    <aside className="fixed top-16 left-0 w-[16.67%] h-[calc(100vh-4rem)] bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 overflow-y-auto">
+    <aside className="fixed top-16 left-0 w-1/6 h-[calc(100vh-4rem)] bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 overflow-y-auto">
       <div className="p-4">
         <nav className="space-y-2">
           <NavLink

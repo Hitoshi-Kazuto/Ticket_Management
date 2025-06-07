@@ -9,14 +9,14 @@ const Sidebar = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
 
-    const menuItemClass = "flex items-center w-full p-2 text-lg text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800";
+    const menuItemClass = "flex items-center w-full p-2 text-lg text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800";
     const activeMenuItemClass = "bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-200";
 
     // Check if the current path matches the helpdesk dashboard
     const isDashboardActive = location.pathname === '/helpdesk-dashboard';
 
     return (
-        <aside id="sidebar-multi-level-sidebar" className="fixed top-0 left-0 z-40 w-1/6 h-screen bg-gray-200 dark:bg-gray-900 border-r border-gray-300 dark:border-gray-700">
+        <aside id="sidebar-multi-level-sidebar" className="fixed top-16 left-0 w-1/6 h-[calc(100vh-4rem)] bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 overflow-y-auto">
             <div className="h-full px-3 py-4 overflow-y-auto">
                 <NavLink
                     to='/helpdesk-dashboard'
