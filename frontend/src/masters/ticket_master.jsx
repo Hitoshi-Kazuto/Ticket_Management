@@ -155,9 +155,7 @@ const TicketMaster = () => {
         fetchDataBasedOnRoles();
     };
 
-    const handleShowUpdates = async (e, ticket_id) => {
-        e.preventDefault();
-        e.stopPropagation();
+    const fetchUpdates = async (ticket_id) => {
         setUpdatesLoading(true);
         try {
             const response = await axios.get(
@@ -179,6 +177,13 @@ const TicketMaster = () => {
         } finally {
             setUpdatesLoading(false);
         }
+    };
+
+    const handleShowUpdates = (e, ticket_id) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setSelectedTicketId(ticket_id);
+        fetchUpdates(ticket_id);
     };
 
     const handleWithdraw = async (e, ticketId) => {
@@ -475,28 +480,40 @@ const TicketMaster = () => {
                     <UpdateInfoPopup
                         show={showUpdatesPopup && !updatesLoading}
                         updates={updates}
-                        onClose={() => setShowUpdatesPopup(false)}
+                        onClose={() => {
+                            setShowUpdatesPopup(false);
+                            setSelectedTicketId(null);
+                        }}
                     />
                 )}
                 {role === 'Helpdesk' && (
                     <UpdateInfoPopup
                         show={showUpdatesPopup && !updatesLoading}
                         updates={updates}
-                        onClose={() => setShowUpdatesPopup(false)}
+                        onClose={() => {
+                            setShowUpdatesPopup(false);
+                            setSelectedTicketId(null);
+                        }}
                     />
                 )}
                 {role === 'Orbis' && (
                     <UpdateInfoUserPopup
                         show={showUpdatesPopup && !updatesLoading}
                         updates={updates}
-                        onClose={() => setShowUpdatesPopup(false)}
+                        onClose={() => {
+                            setShowUpdatesPopup(false);
+                            setSelectedTicketId(null);
+                        }}
                     />
                 )}
                 {role === 'Partner' && (
                     <UpdateInfoUserPopup
                         show={showUpdatesPopup && !updatesLoading}
                         updates={updates}
-                        onClose={() => setShowUpdatesPopup(false)}
+                        onClose={() => {
+                            setShowUpdatesPopup(false);
+                            setSelectedTicketId(null);
+                        }}
                     />
                 )}
             </div>
