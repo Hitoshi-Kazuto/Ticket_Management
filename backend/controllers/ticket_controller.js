@@ -452,70 +452,7 @@ app.put('/withdraw/:ticket_id', async (req, res) => {
     }
 });
 
-export const getWithdrawnUpdates = async (req, res) => {
-    const { ticket_id } = req.params;
-    try {
-        // First verify the ticket is withdrawn
-        const ticketQuery = "SELECT status FROM ticket WHERE ticket_id = $1";
-        const ticketResult = await pool.query(ticketQuery, [ticket_id]);
-        
-        if (ticketResult.rows.length === 0) {
-            return res.status(404).json({ success: false, message: 'Ticket not found' });
-        }
 
-        if (ticketResult.rows[0].status !== 'Withdraw') {
-            return res.status(400).json({ success: false, message: 'Ticket is not withdrawn' });
-        }
-
-        // Get all updates for the withdrawn ticket
-        const updatesQuery = `
-            SELECT * FROM ticket_update 
-            WHERE ticket_id = $1 
-            ORDER BY created_time DESC
-        `;
-        
-        const updatesResult = await pool.query(updatesQuery, [ticket_id]);
-        
-        res.json({
-            success: true,
-            updates: updatesResult.rows
-        });
-    } catch (error) {
-        console.error('Error fetching withdrawn ticket updates:', error);
-        res.status(500).json({ success: false, error: 'Internal Server Error' });
-    }
-};
-
-export const getTicketUpdates = async (req, res) => {
-    const { ticket_id } = req.params;
-    try {
-        const query = 'SELECT * FROM ticket_update WHERE ticket_id = $1 ORDER BY created_time DESC';
-        const values = [ticket_id];
-        const result = await pool.query(query, values);
-        res.json({ success: true, updates: result.rows });
-    } catch (error) {
-        console.error('Error fetching updates:', error);
-        res.status(500).json({ success: false, error: 'Internal Server Error' });
-    }
-};
-
-export const getTicketById = async (req, res) => {
-    const { ticket_id } = req.params;
-    try {
-        const query = 'SELECT * FROM ticket WHERE ticket_id = $1';
-        const values = [ticket_id];
-        const result = await pool.query(query, values);
-        
-        if (result.rows.length === 0) {
-            return res.status(404).json({ success: false, message: 'Ticket not found' });
-        }
-        
-        res.json(result.rows[0]);
-    } catch (error) {
-        console.error('Error fetching ticket:', error);
-        res.status(500).json({ success: false, error: 'Internal Server Error' });
-    }
-};
 
 // ... existing code ...
 
