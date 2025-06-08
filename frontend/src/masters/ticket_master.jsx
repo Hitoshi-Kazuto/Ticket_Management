@@ -236,6 +236,19 @@ const TicketMaster = () => {
 
     const columns = [
         {
+            name: 'Creation Date',
+            selector: row => new Date(row.created_time).toLocaleString('en-GB', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            }).replace(',', ' -'),
+            sortable: true,
+        },
+        {
             name: 'Title',
             selector: row => row.title,
             sortable: true,
@@ -248,6 +261,11 @@ const TicketMaster = () => {
         {
             name: 'Organization',
             selector: row => row.organization,
+            sortable: true,
+        },
+        {
+            name: 'Assigned To',
+            selector: row => row.assigned_staff || 'Not Assigned',
             sortable: true,
         },
         {
@@ -307,7 +325,8 @@ const TicketMaster = () => {
                                 (statusFilter === 'medium' && item.priority === 'Medium') || 
                                 (statusFilter === 'low' && item.priority === 'Low');
             const matchesDropdown = statusDropdownFilter === '' || item.status === statusDropdownFilter;
-            return matchesFilter && matchesStatus && matchesDropdown;
+            const isNotWithdrawn = item.status !== 'Withdraw';
+            return matchesFilter && matchesStatus && matchesDropdown && isNotWithdrawn;
         });
     }, [Tickets, filterText, statusFilter, statusDropdownFilter]);
 
