@@ -109,9 +109,8 @@ const TicketMaster = () => {
                     }
                 }
             );
-            if (response.data.success) {
-                setUpdates(response.data.updates);
-                setShowUpdatesPopup(true);
+            if (response.data && response.data.success) {
+                setUpdates(response.data.updates || []);
             } else {
                 console.error('Failed to fetch updates');
                 setUpdates([]);
@@ -405,7 +404,7 @@ const TicketMaster = () => {
                 {role === 'Admin' && showUpdatesPopup && (
                     <UpdateInfoPopup
                         show={true}
-                        updates={updates}
+                        updates={updates || []}
                         onClose={() => {
                             setShowUpdatesPopup(false);
                             setSelectedTicketId(null);
@@ -416,7 +415,7 @@ const TicketMaster = () => {
                 {role === 'Helpdesk' && showUpdatesPopup && (
                     <UpdateInfoPopup
                         show={true}
-                        updates={updates}
+                        updates={updates || []}
                         onClose={() => {
                             setShowUpdatesPopup(false);
                             setSelectedTicketId(null);
@@ -427,7 +426,7 @@ const TicketMaster = () => {
                 {role === 'Orbis' && showUpdatesPopup && (
                     <UpdateInfoUserPopup
                         show={true}
-                        updates={updates}
+                        updates={updates || []}
                         onClose={() => {
                             setShowUpdatesPopup(false);
                             setSelectedTicketId(null);
@@ -438,7 +437,7 @@ const TicketMaster = () => {
                 {role === 'Partner' && showUpdatesPopup && (
                     <UpdateInfoUserPopup
                         show={true}
-                        updates={updates}
+                        updates={updates || []}
                         onClose={() => {
                             setShowUpdatesPopup(false);
                             setSelectedTicketId(null);
