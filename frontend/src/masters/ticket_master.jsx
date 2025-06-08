@@ -158,49 +158,26 @@ const TicketMaster = () => {
     const fetchUpdates = async (ticket_id) => {
         setUpdatesLoading(true);
         try {
-            // First get the ticket status
-            const ticketResponse = await axios.get(
-                `${API_URL}api/ticket/${ticket_id}`,
-                {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
-                }
-            );
-
-            let updatesResponse;
-            if (ticketResponse.data && ticketResponse.data.status === 'Withdraw') {
-                // Use a different endpoint for withdrawn tickets
-                updatesResponse = await axios.get(
-                    `${API_URL}api/ticket/withdrawn-updates/${ticket_id}`,
-                    {
-                        headers: {
-                            'Authorization': `Bearer ${localStorage.getItem('token')}`
-                        }
-                    }
-                );
-            } else {
-                // Use the regular endpoint for active tickets
-                updatesResponse = await axios.get(
-                    `${API_URL}api/ticket/admin-access/ticket-updates/${ticket_id}`,
-                    {
-                        headers: {
-                            'Authorization': `Bearer ${localStorage.getItem('token')}`
-                        }
-                    }
-                );
+            // Find the ticket in our existing data
+            const ticket = Tickets.find(t => t.ticket_id === ticket_id);
+            if (!ticket) {
+                console.error('Ticket not found');
+                setUpdates([]);
+                setShowUpdatesPopup(false);
+                return;
             }
-            
-            if (updatesResponse.data && updatesResponse.data.success && Array.isArray(updatesResponse.data.updates)) {
-                setUpdates(updatesResponse.data.updates);
+
+            // Get updates from the ticket data
+            if (ticket.updates && Array.isArray(ticket.updates)) {
+                setUpdates(ticket.updates);
                 setShowUpdatesPopup(true);
             } else {
-                console.error('Invalid response format:', updatesResponse.data);
+                console.error('No updates found for ticket');
                 setUpdates([]);
                 setShowUpdatesPopup(false);
             }
         } catch (error) {
-            console.error('Error fetching updates:', error);
+            console.error('Error processing updates:', error);
             setUpdates([]);
             setShowUpdatesPopup(false);
         } finally {
