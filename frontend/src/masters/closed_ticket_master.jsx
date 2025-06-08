@@ -101,6 +101,7 @@ const TicketMaster = () => {
     const fetchUpdates = async (ticket_id) => {
         setUpdatesLoading(true);
         try {
+            console.log('Making request for ticket:', ticket_id);
             const response = await axios.get(
                 `${API_URL}api/ticket/admin-access/ticket-updates/${ticket_id}`,
                 {
@@ -110,12 +111,35 @@ const TicketMaster = () => {
                 }
             );
             
-            // Ensure we have a valid response and updates array
-            const updatesData = response.data?.updates || [];
-            setUpdates(updatesData);
+            console.log('Raw response:', response);
+            console.log('Response data:', response.data);
+            
+            // Check if response.data exists and has the expected structure
+            if (!response.data) {
+                console.error('No data in response');
+                setUpdates([]);
+                setShowUpdatesPopup(true);
+                return;
+            }
+
+            // Check if updates exist in the response
+            if (!response.data.updates) {
+                console.error('No updates in response data');
+                setUpdates([]);
+                setShowUpdatesPopup(true);
+                return;
+            }
+
+            // If we have updates, set them
+            console.log('Setting updates:', response.data.updates);
+            setUpdates(response.data.updates);
             setShowUpdatesPopup(true);
         } catch (error) {
-            console.error('Error fetching updates:', error);
+            console.error('Error details:', {
+                message: error.message,
+                response: error.response?.data,
+                status: error.response?.status
+            });
             setUpdates([]);
             setShowUpdatesPopup(true);
         } finally {
