@@ -1,20 +1,21 @@
 import React, { useState } from "react";
 
 const truncateText = (text, length) => {
+    if (!text) return '';
     if (text.length <= length) {
         return text;
     }
     return text.substring(0, length) + '...';
 };
 
-const UpdateInfoPopup = ({ show, updates, onClose }) => {
+const UpdateInfoPopup = ({ show, updates = [], onClose }) => {
     if (!show) return null;
 
     const [open, setOpen] = useState(false);
     const [selectedDescription, setSelectedDescription] = useState('');
 
     const handleOpenModal = (description) => {
-        setSelectedDescription(description);
+        setSelectedDescription(description || '');
         setOpen(true);
     };
 
@@ -22,6 +23,9 @@ const UpdateInfoPopup = ({ show, updates, onClose }) => {
         setOpen(false);
         setSelectedDescription('');
     };
+
+    // Ensure updates is always an array
+    const safeUpdates = Array.isArray(updates) ? updates : [];
 
     return (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center max-h-3/4 overflow-y-auto">
@@ -41,7 +45,7 @@ const UpdateInfoPopup = ({ show, updates, onClose }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {updates.map((update) => (
+                        {safeUpdates.map((update) => (
                             <tr key={update.update_id} className="border-b">
                                 <td className="px-4 py-2 text-left cursor-pointer" onClick={() => handleOpenModal(update.user_description)}>
                                     {truncateText(update.user_description, 30)}
@@ -87,15 +91,14 @@ const UpdateInfoPopup = ({ show, updates, onClose }) => {
 
 export default UpdateInfoPopup;
 
-
-const UpdateInfoUserPopup = ({ show, updates, onClose }) => {
+const UpdateInfoUserPopup = ({ show, updates = [], onClose }) => {
     if (!show) return null;
 
     const [open, setOpen] = useState(false);
     const [selectedDescription, setSelectedDescription] = useState('');
 
     const handleOpenModal = (description) => {
-        setSelectedDescription(description);
+        setSelectedDescription(description || '');
         setOpen(true);
     };
 
@@ -103,6 +106,9 @@ const UpdateInfoUserPopup = ({ show, updates, onClose }) => {
         setOpen(false);
         setSelectedDescription('');
     };
+
+    // Ensure updates is always an array
+    const safeUpdates = Array.isArray(updates) ? updates : [];
 
     return (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center max-h-3/4 overflow-y-auto">
@@ -122,7 +128,7 @@ const UpdateInfoUserPopup = ({ show, updates, onClose }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {updates.map((update) => (
+                        {safeUpdates.map((update) => (
                             <tr key={update.update_id} className="border-b">
                                 <td className="px-4 py-2 text-left cursor-pointer" onClick={() => handleOpenModal(update.user_description)}>
                                     {truncateText(update.user_description, 30)}
