@@ -143,8 +143,10 @@ const TicketMaster = () => {
     };
 
     const handleUpdateClick = (e, Ticket) => {
-        e.preventDefault();
-        e.stopPropagation();
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
         setSelectedTicket(Ticket);
     };
 
@@ -228,6 +230,16 @@ const TicketMaster = () => {
             sortable: true,
         },
         {
+            name: 'Requested By',
+            selector: row => row.requested_by,
+            sortable: true,
+        },
+        {
+            name: 'Organization',
+            selector: row => row.organization,
+            sortable: true,
+        },
+        {
             name: 'Priority',
             selector: row => row.priority,
             sortable: true,
@@ -238,15 +250,14 @@ const TicketMaster = () => {
             sortable: true,
         },
         {
-            name: 'Requested By',
-            selector: row => row.requested_by,
-            sortable: true,
-        },
-        {
             name: 'Updates',
             cell: row => (
                 <button
-                    onClick={(e) => handleShowUpdates(e, row.ticket_id)}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleShowUpdates(e, row.ticket_id);
+                    }}
                     className="text-white px-4 py-2 rounded-md bg-green-700 hover:bg-green-800"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="25" height="25" viewBox="0 0 50 50"
@@ -268,7 +279,11 @@ const TicketMaster = () => {
                 
                 return (
                     <button
-                        onClick={(e) => handleWithdraw(e, row.ticket_id)}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleWithdraw(e, row.ticket_id);
+                        }}
                         className="text-white px-4 py-2 rounded-md bg-red-700 hover:bg-red-800"
                     >
                         Withdraw
@@ -443,19 +458,44 @@ const TicketMaster = () => {
 
                 {selectedTicket && (
                     role === 'Admin' ? (
-                        <AdminTicketInfo isOpen={true} ticket={selectedTicket} onClose={handleCloseUpdatePopup} />
+                        <AdminTicketInfo 
+                            isOpen={true} 
+                            ticket={selectedTicket} 
+                            onClose={handleCloseUpdatePopup}
+                            dropdownValues={dropdownValues}
+                        />
                     ) : role === 'Helpdesk' ? (
-                        <HelpdeskTicketInfo isOpen={true} ticket={selectedTicket} onClose={handleCloseUpdatePopup} />
+                        <HelpdeskTicketInfo 
+                            isOpen={true} 
+                            ticket={selectedTicket} 
+                            onClose={handleCloseUpdatePopup}
+                            dropdownValues={dropdownValues}
+                        />
                     ) : (
-                        <UserTicketInfo isOpen={true} ticket={selectedTicket} onClose={handleCloseUpdatePopup} />
+                        <UserTicketInfo 
+                            isOpen={true} 
+                            ticket={selectedTicket} 
+                            onClose={handleCloseUpdatePopup}
+                            dropdownValues={dropdownValues}
+                        />
                     )
                 )}
 
                 {showUpdatesPopup && (
                     role === 'Admin' ? (
-                        <UpdateInfoPopup isOpen={true} updates={updates} onClose={() => setShowUpdatesPopup(false)} loading={updatesLoading} />
+                        <UpdateInfoPopup 
+                            isOpen={true} 
+                            updates={updates} 
+                            onClose={() => setShowUpdatesPopup(false)} 
+                            loading={updatesLoading} 
+                        />
                     ) : (
-                        <UpdateInfoUserPopup isOpen={true} updates={updates} onClose={() => setShowUpdatesPopup(false)} loading={updatesLoading} />
+                        <UpdateInfoUserPopup 
+                            isOpen={true} 
+                            updates={updates} 
+                            onClose={() => setShowUpdatesPopup(false)} 
+                            loading={updatesLoading} 
+                        />
                     )
                 )}
             </div>
