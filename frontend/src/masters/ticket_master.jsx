@@ -158,26 +158,25 @@ const TicketMaster = () => {
     const fetchUpdates = async (ticket_id) => {
         setUpdatesLoading(true);
         try {
-            // Find the ticket in our existing data
-            const ticket = Tickets.find(t => t.ticket_id === ticket_id);
-            if (!ticket) {
-                console.error('Ticket not found');
-                setUpdates([]);
-                setShowUpdatesPopup(false);
-                return;
-            }
-
-            // Get updates from the ticket data
-            if (ticket.updates && Array.isArray(ticket.updates)) {
-                setUpdates(ticket.updates);
+            const updatesResponse = await axios.get(
+                `${API_URL}api/ticket/admin-access/ticket-updates/${ticket_id}`,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                }
+            );
+            
+            if (updatesResponse.data && updatesResponse.data.success && Array.isArray(updatesResponse.data.updates)) {
+                setUpdates(updatesResponse.data.updates);
                 setShowUpdatesPopup(true);
             } else {
-                console.error('No updates found for ticket');
+                console.error('Invalid response format:', updatesResponse.data);
                 setUpdates([]);
                 setShowUpdatesPopup(false);
             }
         } catch (error) {
-            console.error('Error processing updates:', error);
+            console.error('Error fetching updates:', error);
             setUpdates([]);
             setShowUpdatesPopup(false);
         } finally {
