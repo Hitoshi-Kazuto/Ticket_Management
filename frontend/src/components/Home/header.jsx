@@ -48,7 +48,7 @@ const Header = () => {
         }
 
         try {
-            const response = await axios.post(`${API_URL}api/auth/change-password`, {
+            const response = await axios.post(`${API_URL}api/change-password`, {
                 username,
                 currentPassword,
                 newPassword,
