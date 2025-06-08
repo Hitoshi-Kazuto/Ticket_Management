@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import Home from '../components/Home/home';
 import AdminTicketForm, { UserTicketForm, HelpdeskTicketForm } from '../components/Master_Form/ticket_form';
 import AdminTicketInfo, { UserTicketInfo, HelpdeskTicketInfo } from '../components/Master_Info/ticket_info';
-import UpdateInfoPopup, {UpdateInfoUserPopup} from '../components/Master_Info/update_info'
+import UpdateInfoPopup, { UpdateInfoUserPopup } from '../components/Master_Info/update_info';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import LoadingSpinner from '../components/Hooks/spinnerComponent';
@@ -160,22 +160,33 @@ const TicketMaster = () => {
         e.stopPropagation();
         setUpdatesLoading(true);
         try {
-            const response = await axios.get(
-                `${API_URL}api/ticket/admin-access/ticket-updates/${ticket_id}`,
-                {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
+            const role = getUserRole();
+            let apiUrl;
+            
+            if (role === 'Admin') {
+                apiUrl = `${API_URL}api/ticket/admin-access/ticket-updates/${ticket_id}`;
+            } else if (role === 'Helpdesk') {
+                apiUrl = `${API_URL}api/ticket/helpdesk-access/ticket-updates/${ticket_id}`;
+            } else {
+                apiUrl = `${API_URL}api/ticket/user-access/ticket-updates/${ticket_id}`;
+            }
+
+            const response = await axios.get(apiUrl, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
-            );
+            });
+
             if (response.data.success) {
-                setUpdates(response.data.updates);
+                setUpdates(response.data.updates || []);
                 setShowUpdatesPopup(true);
             } else {
-                console.error('Failed to fetch updates');
+                console.error('Failed to fetch updates:', response.data.message);
+                alert('Failed to fetch updates');
             }
         } catch (error) {
             console.error('Error fetching updates:', error);
+            alert('Error fetching updates');
         } finally {
             setUpdatesLoading(false);
         }
