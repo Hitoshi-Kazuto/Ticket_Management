@@ -143,9 +143,8 @@ const TicketMaster = () => {
     };
 
     const handleUpdateClick = (e, Ticket) => {
-        if (e.target.closest('button') || e.target.closest('td:last-child')) {
-            return;
-        }
+        e.preventDefault();
+        e.stopPropagation();
         setSelectedTicket(Ticket);
     };
 
@@ -178,7 +177,9 @@ const TicketMaster = () => {
         }
     };
 
-    const handleShowUpdates = (ticket_id) => {
+    const handleShowUpdates = (e, ticket_id) => {
+        e.preventDefault();
+        e.stopPropagation();
         setSelectedTicketId(ticket_id);
         fetchUpdates(ticket_id);
     };
@@ -243,7 +244,7 @@ const TicketMaster = () => {
             name: 'Info',
             cell: row => (
                 <button
-                    onClick={() => handleUpdateClick(null, row)}
+                    onClick={(e) => handleUpdateClick(e, row)}
                     className="text-white px-4 py-2 rounded-md bg-blue-700 hover:bg-blue-800"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="25" height="25" viewBox="0 0 50 50"
@@ -259,7 +260,7 @@ const TicketMaster = () => {
             name: 'Updates',
             cell: row => (
                 <button
-                    onClick={() => handleShowUpdates(row.ticket_id)}
+                    onClick={(e) => handleShowUpdates(e, row.ticket_id)}
                     className="text-white px-4 py-2 rounded-md bg-green-700 hover:bg-green-800"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="25" height="25" viewBox="0 0 50 50"
@@ -273,14 +274,25 @@ const TicketMaster = () => {
         },
         {
             name: 'Actions',
-            cell: row => (
-                <button
-                    onClick={() => handleWithdraw(row.ticket_id)}
-                    className="text-white px-4 py-2 rounded-md bg-red-700 hover:bg-red-800"
-                >
-                    Withdraw
-                </button>
-            ),
+            cell: row => {
+                const currentUser = getUsername();
+                const isTicketCreator = row.requested_by === currentUser;
+                
+                if (!isTicketCreator) return null;
+                
+                return (
+                    <button
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleWithdraw(row.ticket_id);
+                        }}
+                        className="text-white px-4 py-2 rounded-md bg-red-700 hover:bg-red-800"
+                    >
+                        Withdraw
+                    </button>
+                );
+            },
             width: '100px',
         },
     ];
@@ -445,18 +457,22 @@ const TicketMaster = () => {
                     <UserTicketForm isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleFormSubmit} error={error} dropdownValues={dropdownValues} />
                 )}
 
-                {role === 'Admin' ? (
-                    <AdminTicketInfo isOpen={selectedTicket !== null} ticket={selectedTicket} onClose={handleCloseUpdatePopup} />
-                ) : role === 'Helpdesk' ? (
-                    <HelpdeskTicketInfo isOpen={selectedTicket !== null} ticket={selectedTicket} onClose={handleCloseUpdatePopup} />
-                ) : (
-                    <UserTicketInfo isOpen={selectedTicket !== null} ticket={selectedTicket} onClose={handleCloseUpdatePopup} />
+                {selectedTicket && (
+                    role === 'Admin' ? (
+                        <AdminTicketInfo isOpen={true} ticket={selectedTicket} onClose={handleCloseUpdatePopup} />
+                    ) : role === 'Helpdesk' ? (
+                        <HelpdeskTicketInfo isOpen={true} ticket={selectedTicket} onClose={handleCloseUpdatePopup} />
+                    ) : (
+                        <UserTicketInfo isOpen={true} ticket={selectedTicket} onClose={handleCloseUpdatePopup} />
+                    )
                 )}
 
-                {role === 'Admin' ? (
-                    <UpdateInfoPopup isOpen={showUpdatesPopup} updates={updates} onClose={() => setShowUpdatesPopup(false)} loading={updatesLoading} />
-                ) : (
-                    <UpdateInfoUserPopup isOpen={showUpdatesPopup} updates={updates} onClose={() => setShowUpdatesPopup(false)} loading={updatesLoading} />
+                {showUpdatesPopup && (
+                    role === 'Admin' ? (
+                        <UpdateInfoPopup isOpen={true} updates={updates} onClose={() => setShowUpdatesPopup(false)} loading={updatesLoading} />
+                    ) : (
+                        <UpdateInfoUserPopup isOpen={true} updates={updates} onClose={() => setShowUpdatesPopup(false)} loading={updatesLoading} />
+                    )
                 )}
             </div>
         </div>
