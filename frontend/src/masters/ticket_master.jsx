@@ -180,8 +180,6 @@ const TicketMaster = () => {
     };
 
     const handleShowUpdates = (e, ticket_id) => {
-        e.preventDefault();
-        e.stopPropagation();
         setSelectedTicketId(ticket_id);
         fetchUpdates(ticket_id);
     };
