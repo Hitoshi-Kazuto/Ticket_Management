@@ -253,11 +253,7 @@ const TicketMaster = () => {
             name: 'Updates',
             cell: row => (
                 <button
-                    onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        handleShowUpdates(e, row.ticket_id);
-                    }}
+                    onClick={(e) => handleUpdateClick(e, row)}
                     className="text-white px-4 py-2 rounded-md bg-green-700 hover:bg-green-800"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="25" height="25" viewBox="0 0 50 50"
@@ -279,11 +275,7 @@ const TicketMaster = () => {
                 
                 return (
                     <button
-                        onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            handleWithdraw(e, row.ticket_id);
-                        }}
+                        onClick={(e) => handleWithdraw(e, row.ticket_id)}
                         className="text-white px-4 py-2 rounded-md bg-red-700 hover:bg-red-800"
                     >
                         Withdraw
@@ -445,7 +437,6 @@ const TicketMaster = () => {
                             },
                         },
                     }}
-                    onRowClicked={(row) => handleUpdateClick(null, row)}
                 />
 
                 {role === 'Admin' ? (
