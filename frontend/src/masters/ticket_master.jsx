@@ -160,29 +160,21 @@ const TicketMaster = () => {
         e.stopPropagation();
         setUpdatesLoading(true);
         try {
-            const role = getUserRole();
-            let apiUrl;
-            
-            if (role === 'Admin') {
-                apiUrl = `${API_URL}api/ticket/admin-access/ticket-updates/${ticket_id}`;
-            } else if (role === 'Helpdesk') {
-                apiUrl = `${API_URL}api/ticket/helpdesk-access/ticket-updates/${ticket_id}`;
-            } else {
-                apiUrl = `${API_URL}api/ticket/user-access/ticket-updates/${ticket_id}`;
-            }
-
-            const response = await axios.get(apiUrl, {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+            const response = await axios.get(
+                `${API_URL}api/ticket/updates/${ticket_id}`,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
                 }
-            });
-
-            if (response.data.success) {
-                setUpdates(response.data.updates || []);
+            );
+            
+            if (response.data) {
+                setUpdates(response.data);
                 setShowUpdatesPopup(true);
             } else {
-                console.error('Failed to fetch updates:', response.data.message);
-                alert('Failed to fetch updates');
+                console.error('No updates data received');
+                alert('No updates available');
             }
         } catch (error) {
             console.error('Error fetching updates:', error);
@@ -487,13 +479,19 @@ const TicketMaster = () => {
                         <UpdateInfoPopup 
                             show={true} 
                             updates={updates} 
-                            onClose={() => setShowUpdatesPopup(false)} 
+                            onClose={() => {
+                                setShowUpdatesPopup(false);
+                                setUpdates([]);
+                            }} 
                         />
                     ) : (
                         <UpdateInfoUserPopup 
                             show={true} 
                             updates={updates} 
-                            onClose={() => setShowUpdatesPopup(false)} 
+                            onClose={() => {
+                                setShowUpdatesPopup(false);
+                                setUpdates([]);
+                            }} 
                         />
                     )
                 )}
