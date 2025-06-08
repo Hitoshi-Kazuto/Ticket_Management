@@ -100,24 +100,33 @@ const TicketMaster = () => {
 
     const fetchUpdates = async (ticket_id) => {
         setUpdatesLoading(true);
+        console.log('Fetching updates for ticket:', ticket_id);
         try {
             const response = await axios.get(
                 `${API_URL}api/ticket/admin-access/ticket-updates/${ticket_id}`,
                 {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
+                    },
+                    timeout: 5000 // Add a 5-second timeout
                 }
             );
+            console.log('Response received:', response.data);
             if (response.data && response.data.success) {
                 setUpdates(response.data.updates || []);
+                setShowUpdatesPopup(true);
             } else {
-                console.error('Failed to fetch updates');
+                console.error('Failed to fetch updates - Invalid response:', response.data);
                 setUpdates([]);
+                setShowUpdatesPopup(true);
             }
         } catch (error) {
-            console.error('Error fetching updates:', error);
+            console.error('Error fetching updates:', error.message);
+            if (error.code === 'ECONNABORTED') {
+                console.error('Request timed out');
+            }
             setUpdates([]);
+            setShowUpdatesPopup(true);
         } finally {
             setUpdatesLoading(false);
         }
@@ -126,6 +135,7 @@ const TicketMaster = () => {
     const handleShowUpdates = (e, ticket_id) => {
         e.preventDefault();
         e.stopPropagation();
+        console.log('Show updates clicked for ticket:', ticket_id);
         setSelectedTicketId(ticket_id);
         fetchUpdates(ticket_id);
     };
