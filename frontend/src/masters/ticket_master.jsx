@@ -184,20 +184,9 @@ const TicketMaster = () => {
         fetchUpdates(ticket_id);
     };
 
-    const fetchDropdownValues = async () => {
-        try {
-            const response = await axios.get(`${API_URL}api/dropdown-values`, {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            setDropdownValues(response.data);
-        } catch (error) {
-            console.error('Error fetching dropdown values:', error);
-        }
-    };
-
-    const handleWithdraw = async (ticketId) => {
+    const handleWithdraw = async (e, ticketId) => {
+        e.preventDefault();
+        e.stopPropagation();
         try {
             const response = await axios.put(
                 `${API_URL}api/ticket/withdraw/${ticketId}`,
@@ -216,6 +205,19 @@ const TicketMaster = () => {
             }
         } catch (error) {
             console.error('Error withdrawing ticket:', error);
+        }
+    };
+
+    const fetchDropdownValues = async () => {
+        try {
+            const response = await axios.get(`${API_URL}api/dropdown-values`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            setDropdownValues(response.data);
+        } catch (error) {
+            console.error('Error fetching dropdown values:', error);
         }
     };
 
@@ -239,22 +241,6 @@ const TicketMaster = () => {
             name: 'Requested By',
             selector: row => row.requested_by,
             sortable: true,
-        },
-        {
-            name: 'Info',
-            cell: row => (
-                <button
-                    onClick={(e) => handleUpdateClick(e, row)}
-                    className="text-white px-4 py-2 rounded-md bg-blue-700 hover:bg-blue-800"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="25" height="25" viewBox="0 0 50 50"
-                        className="fill-white"
-                    >
-                        <path d="M25,2C12.297,2,2,12.297,2,25s10.297,23,23,23s23-10.297,23-23S37.703,2,25,2z M25,11c1.657,0,3,1.343,3,3s-1.343,3-3,3 s-3-1.343-3-3S23.343,11,25,11z M29,38h-2h-4h-2v-2h2V23h-2v-2h2h4v2v13h2V38z"></path>
-                    </svg>
-                </button>
-            ),
-            width: '100px',
         },
         {
             name: 'Updates',
@@ -282,11 +268,7 @@ const TicketMaster = () => {
                 
                 return (
                     <button
-                        onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            handleWithdraw(row.ticket_id);
-                        }}
+                        onClick={(e) => handleWithdraw(e, row.ticket_id)}
                         className="text-white px-4 py-2 rounded-md bg-red-700 hover:bg-red-800"
                     >
                         Withdraw
@@ -444,9 +426,11 @@ const TicketMaster = () => {
                         rows: {
                             style: {
                                 minHeight: '72px',
+                                cursor: 'pointer',
                             },
                         },
                     }}
+                    onRowClicked={(row) => handleUpdateClick(null, row)}
                 />
 
                 {role === 'Admin' ? (
