@@ -202,12 +202,13 @@ const TicketMaster = () => {
             
             if (response.data.success) {
                 fetchDataBasedOnRoles();
-                console.log('Ticket withdrawn successfully');
+                alert('Ticket withdrawn successfully');
             } else {
-                console.error('Failed to withdraw ticket:', response.data.message);
+                alert(response.data.message || 'Failed to withdraw ticket');
             }
         } catch (error) {
-            console.error('Error withdrawing ticket:', error.response?.data?.message || error.message);
+            console.error('Error withdrawing ticket:', error);
+            alert(error.response?.data?.message || 'Error withdrawing ticket');
         }
     };
 
@@ -271,16 +272,16 @@ const TicketMaster = () => {
             cell: row => {
                 const currentUser = getUsername();
                 const isTicketCreator = row.requested_by === currentUser;
+                const isWithdrawn = row.status === 'Withdraw';
                 
-                if (!isTicketCreator) return null;
+                if (!isTicketCreator || isWithdrawn) return null;
                 
                 return (
                     <button
                         onClick={(e) => handleWithdraw(e, row.ticket_id)}
                         className="text-white px-4 py-2 rounded-md bg-red-700 hover:bg-red-800"
-                        disabled={row.status === 'Withdrawn'}
                     >
-                        {row.status === 'Withdrawn' ? 'Withdrawn' : 'Withdraw'}
+                        Withdraw
                     </button>
                 );
             },

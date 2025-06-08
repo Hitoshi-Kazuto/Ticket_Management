@@ -10,6 +10,7 @@ const app = express();
 app.put('/:ticket_id', upload.single('File_Path'), updateTicket);
 app.get('/', getTicket);
 app.post('/ticket-form', upload.single('File_Path'), createTicket);
+app.put('/withdraw/:ticket_id', withdrawTicket);
 
 
 export default app;
