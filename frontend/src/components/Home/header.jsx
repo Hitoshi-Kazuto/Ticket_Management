@@ -65,14 +65,14 @@ const Header = () => {
     };
 
     return (
-        <nav className="bg-gray-200 h-16 dark:bg-gray-900 relative my-0 z-50 flex items-center">
+        <nav className="bg-gray-200 h-16 relative my-0 z-50 flex items-center">
             <div className="flex justify-between items-center w-full mx-4 my-0 max-w">
                 <a href="#" className="flex items-center">
                     <img src="https://img.icons8.com/color/48/headset.png" className="mr-3 h-6 sm:h-9" alt="Logo" />
-                    <span className="self-right text-xl font-bold whitespace-nowrap text-gray-700 dark:text-white">Helpdesk Management</span>
+                    <span className="self-right text-2xl font-bold whitespace-nowrap text-gray-700">Helpdesk Management</span>
                 </a>
                 <div className="relative flex items-center" ref={dropdownRef}>
-                    <button onClick={toggleDropdown} className="text-right text-gray-900 dark:text-white flex items-center mx-auto">
+                    <button onClick={toggleDropdown} className="text-right text-gray-900 flex items-center mx-auto">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 mr-2"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier">
                             <circle cx="12" cy="6" r="4" stroke="currentColor" strokeWidth="0.9600000000000002"></circle>
                             <path d="M15 20.6151C14.0907 20.8619 13.0736 21 12 21C8.13401 21 5 19.2091 5 17C5 14.7909 8.13401 13 12 13C15.866 13 19 14.7909 19 17C19 17.3453 18.9234 17.6804 18.7795 18" stroke="currentColor" strokeWidth="0.9600000000000002" strokeLinecap="round"></path> </g></svg>
