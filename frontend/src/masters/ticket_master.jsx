@@ -155,7 +155,9 @@ const TicketMaster = () => {
         fetchDataBasedOnRoles();
     };
 
-    const fetchUpdates = async (ticket_id) => {
+    const handleShowUpdates = async (e, ticket_id) => {
+        e.preventDefault();
+        e.stopPropagation();
         setUpdatesLoading(true);
         try {
             const response = await axios.get(
@@ -177,13 +179,6 @@ const TicketMaster = () => {
         } finally {
             setUpdatesLoading(false);
         }
-    };
-
-    const handleShowUpdates = (e, ticket_id) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setSelectedTicketId(ticket_id);
-        fetchUpdates(ticket_id);
     };
 
     const handleWithdraw = async (e, ticketId) => {
