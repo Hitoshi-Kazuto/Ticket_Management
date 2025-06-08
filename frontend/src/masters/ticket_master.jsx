@@ -158,22 +158,51 @@ const TicketMaster = () => {
     const fetchUpdates = async (ticket_id) => {
         setUpdatesLoading(true);
         try {
-            const response = await axios.get(
-                `${API_URL}api/ticket/admin-access/ticket-updates/${ticket_id}`,
+            // First get the ticket status
+            const ticketResponse = await axios.get(
+                `${API_URL}api/ticket/${ticket_id}`,
                 {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     }
                 }
             );
-            if (response.data.success) {
-                setUpdates(response.data.updates);
+
+            let updatesResponse;
+            if (ticketResponse.data && ticketResponse.data.status === 'Withdraw') {
+                // Use a different endpoint for withdrawn tickets
+                updatesResponse = await axios.get(
+                    `${API_URL}api/ticket/withdrawn-updates/${ticket_id}`,
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        }
+                    }
+                );
+            } else {
+                // Use the regular endpoint for active tickets
+                updatesResponse = await axios.get(
+                    `${API_URL}api/ticket/admin-access/ticket-updates/${ticket_id}`,
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        }
+                    }
+                );
+            }
+            
+            if (updatesResponse.data && updatesResponse.data.success && Array.isArray(updatesResponse.data.updates)) {
+                setUpdates(updatesResponse.data.updates);
                 setShowUpdatesPopup(true);
             } else {
-                console.error('Failed to fetch updates');
+                console.error('Invalid response format:', updatesResponse.data);
+                setUpdates([]);
+                setShowUpdatesPopup(false);
             }
         } catch (error) {
             console.error('Error fetching updates:', error);
+            setUpdates([]);
+            setShowUpdatesPopup(false);
         } finally {
             setUpdatesLoading(false);
         }
@@ -182,6 +211,10 @@ const TicketMaster = () => {
     const handleShowUpdates = (e, ticket_id) => {
         e.preventDefault();
         e.stopPropagation();
+        if (!ticket_id) {
+            console.error('No ticket ID provided');
+            return;
+        }
         setSelectedTicketId(ticket_id);
         fetchUpdates(ticket_id);
     };
@@ -476,7 +509,7 @@ const TicketMaster = () => {
                     )
                 )}
 
-                {role === 'Admin' && showUpdatesPopup && !updatesLoading && (
+                {role === 'Admin' && showUpdatesPopup && !updatesLoading && updates && updates.length > 0 && (
                     <UpdateInfoPopup
                         show={true}
                         updates={updates}
@@ -487,7 +520,7 @@ const TicketMaster = () => {
                         }}
                     />
                 )}
-                {role === 'Helpdesk' && showUpdatesPopup && !updatesLoading && (
+                {role === 'Helpdesk' && showUpdatesPopup && !updatesLoading && updates && updates.length > 0 && (
                     <UpdateInfoPopup
                         show={true}
                         updates={updates}
@@ -498,7 +531,7 @@ const TicketMaster = () => {
                         }}
                     />
                 )}
-                {role === 'Orbis' && showUpdatesPopup && !updatesLoading && (
+                {role === 'Orbis' && showUpdatesPopup && !updatesLoading && updates && updates.length > 0 && (
                     <UpdateInfoUserPopup
                         show={true}
                         updates={updates}
@@ -509,7 +542,7 @@ const TicketMaster = () => {
                         }}
                     />
                 )}
-                {role === 'Partner' && showUpdatesPopup && !updatesLoading && (
+                {role === 'Partner' && showUpdatesPopup && !updatesLoading && updates && updates.length > 0 && (
                     <UpdateInfoUserPopup
                         show={true}
                         updates={updates}
