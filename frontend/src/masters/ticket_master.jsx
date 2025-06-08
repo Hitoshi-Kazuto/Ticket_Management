@@ -161,24 +161,21 @@ const TicketMaster = () => {
         setUpdatesLoading(true);
         try {
             const response = await axios.get(
-                `${API_URL}api/ticket/updates/${ticket_id}`,
+                `${API_URL}api/ticket/admin-access/ticket-updates/${ticket_id}`,
                 {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     }
                 }
             );
-            
-            if (response.data) {
-                setUpdates(response.data);
+            if (response.data.success) {
+                setUpdates(response.data.updates);
                 setShowUpdatesPopup(true);
             } else {
-                console.error('No updates data received');
-                alert('No updates available');
+                console.error('Failed to fetch updates');
             }
         } catch (error) {
             console.error('Error fetching updates:', error);
-            alert('Error fetching updates');
         } finally {
             setUpdatesLoading(false);
         }
@@ -474,26 +471,33 @@ const TicketMaster = () => {
                     )
                 )}
 
-                {showUpdatesPopup && (
-                    role === 'Admin' ? (
-                        <UpdateInfoPopup 
-                            show={true} 
-                            updates={updates} 
-                            onClose={() => {
-                                setShowUpdatesPopup(false);
-                                setUpdates([]);
-                            }} 
-                        />
-                    ) : (
-                        <UpdateInfoUserPopup 
-                            show={true} 
-                            updates={updates} 
-                            onClose={() => {
-                                setShowUpdatesPopup(false);
-                                setUpdates([]);
-                            }} 
-                        />
-                    )
+                {role === 'Admin' && (
+                    <UpdateInfoPopup
+                        show={showUpdatesPopup && !updatesLoading}
+                        updates={updates}
+                        onClose={() => setShowUpdatesPopup(false)}
+                    />
+                )}
+                {role === 'Helpdesk' && (
+                    <UpdateInfoPopup
+                        show={showUpdatesPopup && !updatesLoading}
+                        updates={updates}
+                        onClose={() => setShowUpdatesPopup(false)}
+                    />
+                )}
+                {role === 'Orbis' && (
+                    <UpdateInfoUserPopup
+                        show={showUpdatesPopup && !updatesLoading}
+                        updates={updates}
+                        onClose={() => setShowUpdatesPopup(false)}
+                    />
+                )}
+                {role === 'Partner' && (
+                    <UpdateInfoUserPopup
+                        show={showUpdatesPopup && !updatesLoading}
+                        updates={updates}
+                        onClose={() => setShowUpdatesPopup(false)}
+                    />
                 )}
             </div>
         </div>
