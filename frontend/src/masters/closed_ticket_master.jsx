@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Home from '../components/Home/home';
 import TicketUpdatePopup, { UserTicketInfo } from '../components/Master_Info/ticket_info';
 import UpdateInfoPopup, {UpdateInfoUserPopup} from '../components/Master_Info/update_info'
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+import LoadingSpinner from '../components/Hooks/spinnerComponent';
+import DataTable from 'react-data-table-component';
 
 const TicketMaster = () => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [Tickets, setTickets] = useState([]);
     const [selectedTicket, setSelectedTicket] = useState(null);
-    const [searchQuery, setSearchQuery] = useState('');
+    const [filterText, setFilterText] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
     const [showUpdatesPopup, setShowUpdatesPopup] = useState(false);
     const [updates, setUpdates] = useState([]);
@@ -25,26 +27,28 @@ const TicketMaster = () => {
     });
     const API_URL = 'https://ticket-management-ten.vercel.app/';
     const [updatesLoading, setUpdatesLoading] = useState(false);
+    const [statusDropdownFilter, setStatusDropdownFilter] = useState('');
+    const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
     useEffect(() => {
-        // Fetch Ticket data from backend when component mounts
         fetchDataBasedOnRoles();
+        fetchDropdownValues();
     }, []);
 
     const getUserRole = () => {
-        const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+        const token = localStorage.getItem('token');
         if (token) {
-            const decoded = jwtDecode(token); // Decode the token
-            return decoded.role; // Extract the role from the decoded token
+            const decoded = jwtDecode(token);
+            return decoded.role;
         }
         return null;
     };
 
     const getUsername = () => {
-        const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+        const token = localStorage.getItem('token');
         if (token) {
-            const decoded = jwtDecode(token); // Decode the token
-            return decoded.username; // Extract the role from the decoded token
+            const decoded = jwtDecode(token);
+            return decoded.username;
         }
         return null;
     };
@@ -64,25 +68,28 @@ const TicketMaster = () => {
                 apiUrl = `${API_URL}api/ticket/closed-ticket/user-access/${username}`;
                 break;
             case 'Helpdesk':
-                apiUrl = `${API_URL}api/ticket/closed-ticket/helpdesk-access`
-
+                apiUrl = `${API_URL}api/ticket/closed-ticket/helpdesk-access`;
+                break;
         }
-        axios.get(apiUrl, {
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-        }) // Include the token in headers) // Replace with your backend endpoint
-            .then(response => {
-                setTickets(response.data);
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error('Error fetching Tickets', error);
+        try {
+            const response = await axios.get(apiUrl, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
             });
-    }
+            setTickets(response.data);
+            setLoading(false);
+        } catch (error) {
+            console.error('Error fetching Tickets', error);
+            setLoading(false);
+        }
+    };
 
-
-    const handleUpdateClick = (Ticket) => {
+    const handleUpdateClick = (e, Ticket) => {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
         setSelectedTicket(Ticket);
     };
 
@@ -115,165 +122,251 @@ const TicketMaster = () => {
         }
     };
 
-    const handleShowUpdates = (ticket_id) => {
+    const handleShowUpdates = (e, ticket_id) => {
+        e.preventDefault();
+        e.stopPropagation();
         setSelectedTicketId(ticket_id);
         fetchUpdates(ticket_id);
     };
 
-    useEffect(() => {
-        const fetchDropdownValues = async () => {
-            try {
-                const response = await axios.get(
-                    `${API_URL}api/dropdown-values`,
-                    {
-                        headers: {
-                            'Authorization': `Bearer ${localStorage.getItem('token')}`
-                        }
-                    }
-                );
-                setDropdownValues(response.data);
-            } catch (error) {
-                console.error('Error fetching dropdown values:', error);
-            }
-        };
-        fetchDropdownValues();
-    }, []);
+    const fetchDropdownValues = async () => {
+        try {
+            const response = await axios.get(`${API_URL}api/dropdown-values`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            setDropdownValues(response.data);
+        } catch (error) {
+            console.error('Error fetching dropdown values:', error);
+        }
+    };
 
-    const filteredTickets = Tickets.filter(Ticket =>
-        Ticket.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
-        (statusFilter === 'all' || (statusFilter === 'critical' && Ticket.priority === 'Critical') || (statusFilter === 'high' && Ticket.priority === 'High') || (statusFilter === 'medium' && Ticket.priority === 'Medium') || (statusFilter === 'low' && Ticket.priority === 'Low'))
-    );
+    const columns = [
+        {
+            name: 'Creation Date',
+            selector: row => new Date(row.created_time).toLocaleString('en-GB', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            }).replace(',', ' -'),
+            sortable: true,
+        },
+        {
+            name: 'Title',
+            selector: row => row.title,
+            sortable: true,
+        },
+        {
+            name: 'Requested By',
+            selector: row => dropdownValues.requested_by.find(user => user.username === row.requested_by)?.name || row.requested_by,
+            sortable: true,
+        },
+        {
+            name: 'Organization',
+            selector: row => row.organization,
+            sortable: true,
+        },
+        {
+            name: 'Assigned To',
+            selector: row => row.assigned_staff || 'Not Assigned',
+            sortable: true,
+        },
+        {
+            name: 'Priority',
+            selector: row => row.priority,
+            sortable: true,
+        },
+        {
+            name: 'Status',
+            selector: row => row.status,
+            sortable: true,
+        },
+        {
+            name: 'Updates',
+            cell: row => (
+                <button
+                    onClick={(e) => handleShowUpdates(e, row.ticket_id)}
+                    className="text-white px-4 py-2 rounded-md bg-green-700 hover:bg-green-800"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="25" height="25" viewBox="0 0 50 50"
+                        className="fill-white"
+                    >
+                        <path d="M25,2C12.297,2,2,12.297,2,25s10.297,23,23,23s23-10.297,23-23S37.703,2,25,2z M25,11c1.657,0,3,1.343,3,3s-1.343,3-3,3 s-3-1.343-3-3S23.343,11,25,11z M29,38h-2h-4h-2v-2h2V23h-2v-2h2h4v2v13h2V38z"></path>
+                    </svg>
+                </button>
+            ),
+            width: '100px',
+        },
+        {
+            name: 'Actions',
+            cell: row => (
+                <button
+                    onClick={(e) => handleUpdateClick(e, row)}
+                    className="text-white px-4 py-2 rounded-md bg-blue-700 hover:bg-blue-800"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="25" height="25" viewBox="0 0 50 50"
+                        className="fill-white"
+                    >
+                        <path d="M25,2C12.297,2,2,12.297,2,25s10.297,23,23,23s23-10.297,23-23S37.703,2,25,2z M25,11c1.657,0,3,1.343,3,3s-1.343,3-3,3 s-3-1.343-3-3S23.343,11,25,11z M29,38h-2h-4h-2v-2h2V23h-2v-2h2h4v2v13h2V38z"></path>
+                    </svg>
+                </button>
+            ),
+            width: '100px',
+        },
+    ];
+
+    const filteredItems = useMemo(() => {
+        return Tickets.filter(item => {
+            const matchesFilter = item.title.toLowerCase().includes(filterText.toLowerCase());
+            const matchesStatus = statusFilter === 'all' || 
+                                (statusFilter === 'critical' && item.priority === 'Critical') || 
+                                (statusFilter === 'high' && item.priority === 'High') || 
+                                (statusFilter === 'medium' && item.priority === 'Medium') || 
+                                (statusFilter === 'low' && item.priority === 'Low');
+            const matchesDropdown = statusDropdownFilter === '' || item.status === statusDropdownFilter;
+            return matchesFilter && matchesStatus && matchesDropdown;
+        });
+    }, [Tickets, filterText, statusFilter, statusDropdownFilter]);
+
+    const handleClear = () => {
+        if (filterText) {
+            setResetPaginationToggle(!resetPaginationToggle);
+            setFilterText('');
+        }
+    };
 
     const role = getUserRole();
 
     return (
         <div>
             <Home />
-            <div className="overflow-x-auto shadow-md absolute right-0 w-5/6">
-                <p className=' bg-gray-100 border-gray-200 p-3 m-0 dark:bg-gray-800 relative self-right text-xl font-semibold whitespace-nowrap dark:text-gray-400'>Closed Tickets</p>
-                <input
-                    type="text"
-                    id="search"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="px-4 py-3.5 m-3 mr-1.5 bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 w-5/12"
-                    placeholder="Search Ticket Name"
-                    required
-                />
-                <div className="inline-flex mx-2 items-center">
-                    <input
-                        type="radio"
-                        id="all"
-                        name="status"
-                        value="all"
-                        checked={statusFilter === 'all'}
-                        onChange={() => setStatusFilter('all')}
-                        className="mr-1.5"
-                    />
-                    <label htmlFor="all" className="mr-3">All</label>
-                    <input
-                        type="radio"
-                        id="critical"
-                        name="status"
-                        value="critical"
-                        checked={statusFilter === 'critical'}
-                        onChange={() => setStatusFilter('critical')}
-                        className="mr-1.5"
-                    />
-                    <label htmlFor="critical" className="mr-3">Critical</label>
-                    <input
-                        type="radio"
-                        id="high"
-                        name="status"
-                        value="high"
-                        checked={statusFilter === 'high'}
-                        onChange={() => setStatusFilter('high')}
-                        className="mr-1.5"
-                    />
-                    <label htmlFor="high" className="mr-3">High</label>
-                    <input
-                        type="radio"
-                        id="medium"
-                        name="status"
-                        value="medium"
-                        checked={statusFilter === 'medium'}
-                        onChange={() => setStatusFilter('medium')}
-                        className="mr-1.5"
-                    />
-                    <label htmlFor="medium" className="mr-3">Medium</label>
-                    <input
-                        type="radio"
-                        id="low"
-                        name="status"
-                        value="low"
-                        checked={statusFilter === 'low'}
-                        onChange={() => setStatusFilter('low')}
-                        className="mr-1.5"
-                    />
-                    <label htmlFor="low" className="mr-3">Low</label>
-                </div>
-                <div className="px-3 pb-3">
-                    <div className="overflow-auto shadow-md rounded-lg max-h-[calc(100vh-100px)]">
-                        <table className="w-full text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                            <thead className="text-sm text-gray-700 uppercase bg-gray-100 dark:bg-gray-800 dark:text-gray-400">
-                                <tr>
-                                    <th scope="col" className="px-6 py-3">Title</th>
-                                    <th scope="col" className="px-6 py-3">Requested By</th>
-                                    <th scope="col" className="px-6 py-3">Organization</th>
-                                    <th scope="col" className="px-6 py-3">Priority</th>
-                                    <th scope="col" className="px-6 py-3">Status</th>
-                                    <th scope="col" className="px-3 py-3"><span className="sr-only">Update</span></th>
-                                    <th scope="col" className="pl-3 pr-6 py-3"><span className="sr-only">Edit</span></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filteredTickets.map(Ticket => (
-                                    <tr key={Ticket.ticket_id} className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {Ticket.title}
-                                        </td>
-                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {dropdownValues.requested_by.find(user => user.username === Ticket.requested_by)?.name || Ticket.requested_by}
-                                        </td>
-                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {Ticket.organization}
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            {Ticket.priority}
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            {Ticket.status}
-                                        </td>
-                                        <td className="px-2 py-4 text-right">
-                                            <button
-                                                title='View Ticket'
-                                                onClick={() => handleUpdateClick(Ticket)}
-                                                className="text-white px-4 py-2 rounded-md bg-blue-700 hover:bg-blue-800"
-                                            ><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="25" height="25" viewBox="0 0 50 50"
-                                                className="fill-white"
-                                            >
-                                                <path d="M25,2C12.297,2,2,12.297,2,25s10.297,23,23,23s23-10.297,23-23S37.703,2,25,2z M25,11c1.657,0,3,1.343,3,3s-1.343,3-3,3 s-3-1.343-3-3S23.343,11,25,11z M29,38h-2h-4h-2v-2h2V23h-2v-2h2h4v2v13h2V38z"></path>
-                                            </svg>
-                                            </button>
-                                        </td>
-                                        <td className="px-2 py-4 text-center">
-                                            <button
-                                                title='View Updates'
-                                                onClick={() => handleShowUpdates(Ticket.ticket_id)}
-                                                className="text-white px-4 py-2 rounded-md bg-purple-500 hover:bg-purple-800"
-                                            ><img width="24" height="24" 
-                                                src="https://img.icons8.com/material-outlined/24/edit-property.png" 
-                                                alt="edit-property"
-                                                className="invert brightness-0"
-                                            />
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+            <div className="overflow-x-auto shadow-md absolute right-0 w-5/6 px-6 py-3">
+                <div className="flex justify-between items-center mb-4">
+                    <p className='text-2xl font-bold text-gray-700'>Closed Tickets</p>
+                    <div className="flex items-center gap-8">
+                        <div className="flex items-center gap-3">
+                            <input
+                                type="text"
+                                value={filterText}
+                                onChange={e => setFilterText(e.target.value)}
+                                placeholder="Search Ticket..."
+                                className="px-5 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 w-72 text-base"
+                            />
+                            {filterText && (
+                                <button
+                                    onClick={handleClear}
+                                    className="px-5 py-2 text-white bg-red-600 hover:bg-red-700 rounded-lg text-base"
+                                >
+                                    Clear
+                                </button>
+                            )}
+                        </div>
+                        <div className="flex items-center gap-6">
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input
+                                    type="radio"
+                                    name="status"
+                                    value="all"
+                                    checked={statusFilter === 'all'}
+                                    onChange={() => setStatusFilter('all')}
+                                    className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+                                />
+                                <span className="text-gray-700 text-base">All</span>
+                            </label>
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input
+                                    type="radio"
+                                    name="status"
+                                    value="critical"
+                                    checked={statusFilter === 'critical'}
+                                    onChange={() => setStatusFilter('critical')}
+                                    className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+                                />
+                                <span className="text-gray-700 text-base">Critical</span>
+                            </label>
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input
+                                    type="radio"
+                                    name="status"
+                                    value="high"
+                                    checked={statusFilter === 'high'}
+                                    onChange={() => setStatusFilter('high')}
+                                    className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+                                />
+                                <span className="text-gray-700 text-base">High</span>
+                            </label>
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input
+                                    type="radio"
+                                    name="status"
+                                    value="medium"
+                                    checked={statusFilter === 'medium'}
+                                    onChange={() => setStatusFilter('medium')}
+                                    className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+                                />
+                                <span className="text-gray-700 text-base">Medium</span>
+                            </label>
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input
+                                    type="radio"
+                                    name="status"
+                                    value="low"
+                                    checked={statusFilter === 'low'}
+                                    onChange={() => setStatusFilter('low')}
+                                    className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+                                />
+                                <span className="text-gray-700 text-base">Low</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
+                
+                <DataTable
+                    columns={columns}
+                    data={filteredItems}
+                    pagination
+                    paginationPerPage={10}
+                    paginationRowsPerPageOptions={[10, 20, 30, 40, 50]}
+                    paginationResetDefaultPage={resetPaginationToggle}
+                    subHeader={false}
+                    persistTableHead
+                    highlightOnHover
+                    pointerOnHover
+                    responsive
+                    striped
+                    progressPending={loading}
+                    progressComponent={
+                        <div className="flex justify-center items-center h-64">
+                            <LoadingSpinner />
+                        </div>
+                    }
+                    noDataComponent={
+                        <div className="flex justify-center items-center h-64 text-gray-500">
+                            No records to display
+                        </div>
+                    }
+                    customStyles={{
+                        headRow: {
+                            style: {
+                                backgroundColor: '#f3f4f6',
+                                color: '#374151',
+                            },
+                        },
+                        rows: {
+                            style: {
+                                minHeight: '72px',
+                                cursor: 'pointer',
+                            },
+                        },
+                    }}
+                    onRowClicked={(row) => handleUpdateClick(null, row)}
+                />
+
                 {role === 'Admin' && selectedTicket && (
                     <TicketUpdatePopup
                         isOpen={true}
@@ -307,33 +400,48 @@ const TicketMaster = () => {
                     />
                 )}
 
-
-                {role === 'Admin' && (
-                    <UpdateInfoPopup 
-                        show={showUpdatesPopup && !updatesLoading}
+                {role === 'Admin' && showUpdatesPopup && !updatesLoading && updates && updates.length > 0 && (
+                    <UpdateInfoPopup
+                        show={true}
                         updates={updates}
-                        onClose={() => setShowUpdatesPopup(false)}
+                        onClose={() => {
+                            setShowUpdatesPopup(false);
+                            setSelectedTicketId(null);
+                            setUpdates([]);
+                        }}
                     />
                 )}
-                {role === 'Helpdesk' && (
-                    <UpdateInfoPopup 
-                        show={showUpdatesPopup && !updatesLoading}
+                {role === 'Helpdesk' && showUpdatesPopup && !updatesLoading && updates && updates.length > 0 && (
+                    <UpdateInfoPopup
+                        show={true}
                         updates={updates}
-                        onClose={() => setShowUpdatesPopup(false)}
+                        onClose={() => {
+                            setShowUpdatesPopup(false);
+                            setSelectedTicketId(null);
+                            setUpdates([]);
+                        }}
                     />
                 )}
-                {role === 'Partner' && (
+                {role === 'Orbis' && showUpdatesPopup && !updatesLoading && updates && updates.length > 0 && (
                     <UpdateInfoUserPopup
-                        show={showUpdatesPopup && !updatesLoading}
+                        show={true}
                         updates={updates}
-                        onClose={() => setShowUpdatesPopup(false)}
+                        onClose={() => {
+                            setShowUpdatesPopup(false);
+                            setSelectedTicketId(null);
+                            setUpdates([]);
+                        }}
                     />
                 )}
-                {role === 'Orbis' && (
+                {role === 'Partner' && showUpdatesPopup && !updatesLoading && updates && updates.length > 0 && (
                     <UpdateInfoUserPopup
-                        show={showUpdatesPopup && !updatesLoading}
+                        show={true}
                         updates={updates}
-                        onClose={() => setShowUpdatesPopup(false)}
+                        onClose={() => {
+                            setShowUpdatesPopup(false);
+                            setSelectedTicketId(null);
+                            setUpdates([]);
+                        }}
                     />
                 )}
             </div>
