@@ -499,6 +499,24 @@ export const getTicketUpdates = async (req, res) => {
     }
 };
 
+export const getTicketById = async (req, res) => {
+    const { ticket_id } = req.params;
+    try {
+        const query = 'SELECT * FROM ticket WHERE ticket_id = $1';
+        const values = [ticket_id];
+        const result = await pool.query(query, values);
+        
+        if (result.rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'Ticket not found' });
+        }
+        
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.error('Error fetching ticket:', error);
+        res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+};
+
 // ... existing code ...
 
 
