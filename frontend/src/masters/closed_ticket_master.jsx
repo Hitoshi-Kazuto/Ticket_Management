@@ -108,7 +108,7 @@ const TicketMaster = () => {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     },
-                    timeout: 5000 // Add a 5-second timeout
+                    timeout: 5000
                 }
             );
             console.log('Response received:', response.data);
