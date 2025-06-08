@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
+const API_URL = 'https://ticket-management-ten.vercel.app/';
+
 const Header = () => {
     const username = localStorage.getItem('username');
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -46,7 +48,7 @@ const Header = () => {
         }
 
         try {
-            const response = await axios.post('http://localhost:3000/change-password', {
+            const response = await axios.post(`${API_URL}api/auth/change-password`, {
                 username,
                 currentPassword,
                 newPassword,
@@ -55,6 +57,9 @@ const Header = () => {
             if (response.data.success) {
                 alert("Password changed successfully");
                 setChangePasswordOpen(false); // Close the form upon successful password change
+                setCurrentPassword('');
+                setNewPassword('');
+                setConfirmNewPassword('');
             } else {
                 alert("Error changing password: " + response.data.message);
             }
