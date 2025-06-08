@@ -211,8 +211,8 @@ const PartnerMaster = () => {
                     <p className='text-2xl font-bold text-gray-700'>Partner Master</p>
                     <div className="flex items-center gap-8">
                         <div className="flex items-center gap-3">
-                            <input
-                                type="text"
+                <input
+                    type="text"
                                 value={filterText}
                                 onChange={e => setFilterText(e.target.value)}
                                 placeholder="Search Partner..."
@@ -229,48 +229,48 @@ const PartnerMaster = () => {
                         </div>
                         <div className="flex items-center gap-6">
                             <label className="flex items-center gap-2 cursor-pointer">
-                                <input
-                                    type="radio"
-                                    name="status"
-                                    value="all"
-                                    checked={statusFilter === 'all'}
-                                    onChange={() => setStatusFilter('all')}
+                    <input
+                        type="radio"
+                        name="status"
+                        value="all"
+                        checked={statusFilter === 'all'}
+                        onChange={() => setStatusFilter('all')}
                                     className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                                />
+                    />
                                 <span className="text-gray-700 text-base">All</span>
                             </label>
                             <label className="flex items-center gap-2 cursor-pointer">
-                                <input
-                                    type="radio"
-                                    name="status"
-                                    value="active"
-                                    checked={statusFilter === 'active'}
-                                    onChange={() => setStatusFilter('active')}
+                    <input
+                        type="radio"
+                        name="status"
+                        value="active"
+                        checked={statusFilter === 'active'}
+                        onChange={() => setStatusFilter('active')}
                                     className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                                />
+                    />
                                 <span className="text-gray-700 text-base">Active</span>
                             </label>
                             <label className="flex items-center gap-2 cursor-pointer">
-                                <input
-                                    type="radio"
-                                    name="status"
-                                    value="inactive"
-                                    checked={statusFilter === 'inactive'}
-                                    onChange={() => setStatusFilter('inactive')}
+                    <input
+                        type="radio"
+                        name="status"
+                        value="inactive"
+                        checked={statusFilter === 'inactive'}
+                        onChange={() => setStatusFilter('inactive')}
                                     className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                                />
+                    />
                                 <span className="text-gray-700 text-base">Inactive</span>
                             </label>
-                        </div>
-                        <button
-                            onClick={handleAddClick}
-                            type="button"
+                </div>
+                <button
+                    onClick={handleAddClick}
+                    type="button"
                             className="px-6 py-2 mx-2 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-base"
                         >
                             Add Partner
-                        </button>
+                                            </button>
                     </div>
-                </div>
+                </div>        
                 
                 <DataTable
                     columns={columns}

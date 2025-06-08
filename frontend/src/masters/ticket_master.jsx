@@ -75,16 +75,16 @@ const TicketMaster = () => {
         }
         try {
             const response = await axios.get(apiUrl, {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
             });
-            setTickets(response.data);
-            setLoading(false);
+                setTickets(response.data);
+                setLoading(false);
         } catch (error) {
-            console.error('Error fetching Tickets', error);
+                console.error('Error fetching Tickets', error);
             setLoading(false);
-        }
+    }
     };
 
     const handleAddClick = () => {
@@ -347,8 +347,8 @@ const TicketMaster = () => {
                     <p className='text-2xl font-bold text-gray-700'>Ticket Management</p>
                     <div className="flex items-center gap-8">
                         <div className="flex items-center gap-3">
-                            <input
-                                type="text"
+                <input
+                    type="text"
                                 value={filterText}
                                 onChange={e => setFilterText(e.target.value)}
                                 placeholder="Search Ticket..."
@@ -365,68 +365,68 @@ const TicketMaster = () => {
                         </div>
                         <div className="flex items-center gap-6">
                             <label className="flex items-center gap-2 cursor-pointer">
-                                <input
-                                    type="radio"
-                                    name="status"
-                                    value="all"
-                                    checked={statusFilter === 'all'}
-                                    onChange={() => setStatusFilter('all')}
+                    <input
+                        type="radio"
+                        name="status"
+                        value="all"
+                        checked={statusFilter === 'all'}
+                        onChange={() => setStatusFilter('all')}
                                     className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                                />
+                    />
                                 <span className="text-gray-700 text-base">All</span>
                             </label>
                             <label className="flex items-center gap-2 cursor-pointer">
-                                <input
-                                    type="radio"
-                                    name="status"
-                                    value="critical"
-                                    checked={statusFilter === 'critical'}
-                                    onChange={() => setStatusFilter('critical')}
+                    <input
+                        type="radio"
+                        name="status"
+                        value="critical"
+                        checked={statusFilter === 'critical'}
+                        onChange={() => setStatusFilter('critical')}
                                     className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                                />
+                    />
                                 <span className="text-gray-700 text-base">Critical</span>
                             </label>
                             <label className="flex items-center gap-2 cursor-pointer">
-                                <input
-                                    type="radio"
-                                    name="status"
-                                    value="high"
-                                    checked={statusFilter === 'high'}
-                                    onChange={() => setStatusFilter('high')}
+                    <input
+                        type="radio"
+                        name="status"
+                        value="high"
+                        checked={statusFilter === 'high'}
+                        onChange={() => setStatusFilter('high')}
                                     className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                                />
+                    />
                                 <span className="text-gray-700 text-base">High</span>
                             </label>
                             <label className="flex items-center gap-2 cursor-pointer">
-                                <input
-                                    type="radio"
-                                    name="status"
-                                    value="medium"
-                                    checked={statusFilter === 'medium'}
-                                    onChange={() => setStatusFilter('medium')}
+                    <input
+                        type="radio"
+                        name="status"
+                        value="medium"
+                        checked={statusFilter === 'medium'}
+                        onChange={() => setStatusFilter('medium')}
                                     className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                                />
+                    />
                                 <span className="text-gray-700 text-base">Medium</span>
                             </label>
                             <label className="flex items-center gap-2 cursor-pointer">
-                                <input
-                                    type="radio"
-                                    name="status"
-                                    value="low"
-                                    checked={statusFilter === 'low'}
-                                    onChange={() => setStatusFilter('low')}
+                    <input
+                        type="radio"
+                        name="status"
+                        value="low"
+                        checked={statusFilter === 'low'}
+                        onChange={() => setStatusFilter('low')}
                                     className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                                />
+                    />
                                 <span className="text-gray-700 text-base">Low</span>
                             </label>
-                        </div>
-                        <button
-                            onClick={handleAddClick}
-                            type="button"
+                </div>
+                <button
+                    onClick={handleAddClick}
+                    type="button"
                             className="px-6 py-2 mx-2 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-base"
                         >
                             Add Ticket
-                        </button>
+                                                </button>
                     </div>
                 </div>
                 
@@ -481,26 +481,26 @@ const TicketMaster = () => {
 
                 {selectedTicket && (
                     role === 'Admin' ? (
-                        <AdminTicketInfo 
-                            isOpen={true} 
-                            ticket={selectedTicket} 
-                            onClose={handleCloseUpdatePopup}
-                            dropdownValues={dropdownValues}
-                        />
+                    <AdminTicketInfo
+                        isOpen={true}
+                        ticket={selectedTicket}
+                        onClose={handleCloseUpdatePopup}
+                        dropdownValues={dropdownValues}
+                    />
                     ) : role === 'Helpdesk' ? (
                         <HelpdeskTicketInfo 
-                            isOpen={true} 
-                            ticket={selectedTicket} 
-                            onClose={handleCloseUpdatePopup}
-                            dropdownValues={dropdownValues}
-                        />
+                        isOpen={true}
+                        ticket={selectedTicket}
+                        onClose={handleCloseUpdatePopup}
+                        dropdownValues={dropdownValues}
+                    />
                     ) : (
-                        <UserTicketInfo 
-                            isOpen={true} 
-                            ticket={selectedTicket} 
-                            onClose={handleCloseUpdatePopup}
-                            dropdownValues={dropdownValues}
-                        />
+                    <UserTicketInfo
+                        isOpen={true}
+                        ticket={selectedTicket}
+                        onClose={handleCloseUpdatePopup}
+                        dropdownValues={dropdownValues}
+                    />
                     )
                 )}
 

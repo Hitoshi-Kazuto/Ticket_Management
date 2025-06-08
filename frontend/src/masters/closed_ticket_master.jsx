@@ -73,16 +73,16 @@ const TicketMaster = () => {
         }
         try {
             const response = await axios.get(apiUrl, {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
             });
-            setTickets(response.data);
-            setLoading(false);
+                setTickets(response.data);
+                setLoading(false);
         } catch (error) {
-            console.error('Error fetching Tickets', error);
+                console.error('Error fetching Tickets', error);
             setLoading(false);
-        }
+    }
     };
 
     const handleUpdateClick = (e, Ticket) => {
@@ -155,18 +155,18 @@ const TicketMaster = () => {
         fetchUpdates(ticket_id);
     };
 
-    const fetchDropdownValues = async () => {
-        try {
+        const fetchDropdownValues = async () => {
+            try {
             const response = await axios.get(`${API_URL}api/dropdown-values`, {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        }
             });
-            setDropdownValues(response.data);
-        } catch (error) {
-            console.error('Error fetching dropdown values:', error);
-        }
-    };
+                setDropdownValues(response.data);
+            } catch (error) {
+                console.error('Error fetching dropdown values:', error);
+            }
+        };
 
     const columns = [
         {
@@ -276,8 +276,8 @@ const TicketMaster = () => {
                     <p className='text-2xl font-bold text-gray-700'>Closed Tickets</p>
                     <div className="flex items-center gap-8">
                         <div className="flex items-center gap-3">
-                            <input
-                                type="text"
+                <input
+                    type="text"
                                 value={filterText}
                                 onChange={e => setFilterText(e.target.value)}
                                 placeholder="Search Ticket..."
@@ -294,61 +294,61 @@ const TicketMaster = () => {
                         </div>
                         <div className="flex items-center gap-6">
                             <label className="flex items-center gap-2 cursor-pointer">
-                                <input
-                                    type="radio"
-                                    name="status"
-                                    value="all"
-                                    checked={statusFilter === 'all'}
-                                    onChange={() => setStatusFilter('all')}
+                    <input
+                        type="radio"
+                        name="status"
+                        value="all"
+                        checked={statusFilter === 'all'}
+                        onChange={() => setStatusFilter('all')}
                                     className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                                />
+                    />
                                 <span className="text-gray-700 text-base">All</span>
                             </label>
                             <label className="flex items-center gap-2 cursor-pointer">
-                                <input
-                                    type="radio"
-                                    name="status"
-                                    value="critical"
-                                    checked={statusFilter === 'critical'}
-                                    onChange={() => setStatusFilter('critical')}
+                    <input
+                        type="radio"
+                        name="status"
+                        value="critical"
+                        checked={statusFilter === 'critical'}
+                        onChange={() => setStatusFilter('critical')}
                                     className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                                />
+                    />
                                 <span className="text-gray-700 text-base">Critical</span>
                             </label>
                             <label className="flex items-center gap-2 cursor-pointer">
-                                <input
-                                    type="radio"
-                                    name="status"
-                                    value="high"
-                                    checked={statusFilter === 'high'}
-                                    onChange={() => setStatusFilter('high')}
+                    <input
+                        type="radio"
+                        name="status"
+                        value="high"
+                        checked={statusFilter === 'high'}
+                        onChange={() => setStatusFilter('high')}
                                     className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                                />
+                    />
                                 <span className="text-gray-700 text-base">High</span>
                             </label>
                             <label className="flex items-center gap-2 cursor-pointer">
-                                <input
-                                    type="radio"
-                                    name="status"
-                                    value="medium"
-                                    checked={statusFilter === 'medium'}
-                                    onChange={() => setStatusFilter('medium')}
+                    <input
+                        type="radio"
+                        name="status"
+                        value="medium"
+                        checked={statusFilter === 'medium'}
+                        onChange={() => setStatusFilter('medium')}
                                     className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                                />
+                    />
                                 <span className="text-gray-700 text-base">Medium</span>
                             </label>
                             <label className="flex items-center gap-2 cursor-pointer">
-                                <input
-                                    type="radio"
-                                    name="status"
-                                    value="low"
-                                    checked={statusFilter === 'low'}
-                                    onChange={() => setStatusFilter('low')}
+                    <input
+                        type="radio"
+                        name="status"
+                        value="low"
+                        checked={statusFilter === 'low'}
+                        onChange={() => setStatusFilter('low')}
                                     className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                                />
+                    />
                                 <span className="text-gray-700 text-base">Low</span>
                             </label>
-                        </div>
+                </div>
                     </div>
                 </div>
                 
@@ -427,7 +427,7 @@ const TicketMaster = () => {
                 )}
 
                 {role === 'Admin' && showUpdatesPopup && (
-                    <UpdateInfoPopup
+                    <UpdateInfoPopup 
                         show={true}
                         updates={updates || []}
                         onClose={() => {
@@ -438,7 +438,7 @@ const TicketMaster = () => {
                     />
                 )}
                 {role === 'Helpdesk' && showUpdatesPopup && (
-                    <UpdateInfoPopup
+                    <UpdateInfoPopup 
                         show={true}
                         updates={updates || []}
                         onClose={() => {
