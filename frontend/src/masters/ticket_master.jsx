@@ -179,7 +179,9 @@ const TicketMaster = () => {
         }
     };
 
-    const handleShowUpdates = (e,ticket_id) => {
+    const handleShowUpdates = (e, ticket_id) => {
+        e.preventDefault();
+        e.stopPropagation();
         setSelectedTicketId(ticket_id);
         fetchUpdates(ticket_id);
     };
@@ -474,43 +476,47 @@ const TicketMaster = () => {
                     )
                 )}
 
-                {role === 'Admin' && (
+                {role === 'Admin' && showUpdatesPopup && !updatesLoading && (
                     <UpdateInfoPopup
-                        show={showUpdatesPopup && !updatesLoading}
+                        show={true}
                         updates={updates}
                         onClose={() => {
                             setShowUpdatesPopup(false);
                             setSelectedTicketId(null);
+                            setUpdates([]);
                         }}
                     />
                 )}
-                {role === 'Helpdesk' && (
+                {role === 'Helpdesk' && showUpdatesPopup && !updatesLoading && (
                     <UpdateInfoPopup
-                        show={showUpdatesPopup && !updatesLoading}
+                        show={true}
                         updates={updates}
                         onClose={() => {
                             setShowUpdatesPopup(false);
                             setSelectedTicketId(null);
+                            setUpdates([]);
                         }}
                     />
                 )}
-                {role === 'Orbis' && (
+                {role === 'Orbis' && showUpdatesPopup && !updatesLoading && (
                     <UpdateInfoUserPopup
-                        show={showUpdatesPopup && !updatesLoading}
+                        show={true}
                         updates={updates}
                         onClose={() => {
                             setShowUpdatesPopup(false);
                             setSelectedTicketId(null);
+                            setUpdates([]);
                         }}
                     />
                 )}
-                {role === 'Partner' && (
+                {role === 'Partner' && showUpdatesPopup && !updatesLoading && (
                     <UpdateInfoUserPopup
-                        show={showUpdatesPopup && !updatesLoading}
+                        show={true}
                         updates={updates}
                         onClose={() => {
                             setShowUpdatesPopup(false);
                             setSelectedTicketId(null);
+                            setUpdates([]);
                         }}
                     />
                 )}
