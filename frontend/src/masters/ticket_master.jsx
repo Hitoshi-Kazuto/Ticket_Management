@@ -202,11 +202,12 @@ const TicketMaster = () => {
             
             if (response.data.success) {
                 fetchDataBasedOnRoles();
+                console.log('Ticket withdrawn successfully');
             } else {
-                console.error('Failed to withdraw ticket');
+                console.error('Failed to withdraw ticket:', response.data.message);
             }
         } catch (error) {
-            console.error('Error withdrawing ticket:', error);
+            console.error('Error withdrawing ticket:', error.response?.data?.message || error.message);
         }
     };
 
@@ -253,7 +254,7 @@ const TicketMaster = () => {
             name: 'Updates',
             cell: row => (
                 <button
-                    onClick={(e) => handleUpdateClick(e, row)}
+                    onClick={(e) => handleShowUpdates(e, row.ticket_id)}
                     className="text-white px-4 py-2 rounded-md bg-green-700 hover:bg-green-800"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="25" height="25" viewBox="0 0 50 50"
@@ -277,8 +278,9 @@ const TicketMaster = () => {
                     <button
                         onClick={(e) => handleWithdraw(e, row.ticket_id)}
                         className="text-white px-4 py-2 rounded-md bg-red-700 hover:bg-red-800"
+                        disabled={row.status === 'Withdrawn'}
                     >
-                        Withdraw
+                        {row.status === 'Withdrawn' ? 'Withdrawn' : 'Withdraw'}
                     </button>
                 );
             },
@@ -437,6 +439,7 @@ const TicketMaster = () => {
                             },
                         },
                     }}
+                    onRowClicked={(row) => handleUpdateClick(null, row)}
                 />
 
                 {role === 'Admin' ? (
@@ -475,17 +478,15 @@ const TicketMaster = () => {
                 {showUpdatesPopup && (
                     role === 'Admin' ? (
                         <UpdateInfoPopup 
-                            isOpen={true} 
+                            show={true} 
                             updates={updates} 
                             onClose={() => setShowUpdatesPopup(false)} 
-                            loading={updatesLoading} 
                         />
                     ) : (
                         <UpdateInfoUserPopup 
-                            isOpen={true} 
+                            show={true} 
                             updates={updates} 
                             onClose={() => setShowUpdatesPopup(false)} 
-                            loading={updatesLoading} 
                         />
                     )
                 )}
