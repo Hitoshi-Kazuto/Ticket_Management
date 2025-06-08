@@ -114,9 +114,11 @@ const TicketMaster = () => {
                 setShowUpdatesPopup(true);
             } else {
                 console.error('Failed to fetch updates');
+                setUpdates([]);
             }
         } catch (error) {
             console.error('Error fetching updates:', error);
+            setUpdates([]);
         } finally {
             setUpdatesLoading(false);
         }
@@ -400,7 +402,7 @@ const TicketMaster = () => {
                     />
                 )}
 
-                {role === 'Admin' && showUpdatesPopup && !updatesLoading && updates && updates.length > 0 && (
+                {role === 'Admin' && showUpdatesPopup && (
                     <UpdateInfoPopup
                         show={true}
                         updates={updates}
@@ -411,7 +413,7 @@ const TicketMaster = () => {
                         }}
                     />
                 )}
-                {role === 'Helpdesk' && showUpdatesPopup && !updatesLoading && updates && updates.length > 0 && (
+                {role === 'Helpdesk' && showUpdatesPopup && (
                     <UpdateInfoPopup
                         show={true}
                         updates={updates}
@@ -422,7 +424,7 @@ const TicketMaster = () => {
                         }}
                     />
                 )}
-                {role === 'Orbis' && showUpdatesPopup && !updatesLoading && updates && updates.length > 0 && (
+                {role === 'Orbis' && showUpdatesPopup && (
                     <UpdateInfoUserPopup
                         show={true}
                         updates={updates}
@@ -433,7 +435,7 @@ const TicketMaster = () => {
                         }}
                     />
                 )}
-                {role === 'Partner' && showUpdatesPopup && !updatesLoading && updates && updates.length > 0 && (
+                {role === 'Partner' && showUpdatesPopup && (
                     <UpdateInfoUserPopup
                         show={true}
                         updates={updates}
