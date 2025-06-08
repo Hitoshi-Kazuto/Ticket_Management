@@ -179,7 +179,7 @@ const TicketMaster = () => {
         }
     };
 
-    const handleShowUpdates = (ticket_id) => {
+    const handleShowUpdates = (e,ticket_id) => {
         setSelectedTicketId(ticket_id);
         fetchUpdates(ticket_id);
     };
@@ -475,7 +475,7 @@ const TicketMaster = () => {
                 )}
 
                 {role === 'Admin' && (
-                    <UpdateInfoUserPopup
+                    <UpdateInfoPopup
                         show={showUpdatesPopup && !updatesLoading}
                         updates={updates}
                         onClose={() => {
@@ -485,7 +485,7 @@ const TicketMaster = () => {
                     />
                 )}
                 {role === 'Helpdesk' && (
-                    <UpdateInfoUserPopup
+                    <UpdateInfoPopup
                         show={showUpdatesPopup && !updatesLoading}
                         updates={updates}
                         onClose={() => {
