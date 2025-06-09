@@ -98,8 +98,8 @@ app.get('/api/dropdown-values', async (req, res) => {
         const softwares = await pool.query("SELECT * FROM Software_Master WHERE status = 'True'");
         const categories = await pool.query("SELECT * FROM Category_Master WHERE status = 'True'");
         const statuses = await pool.query("SELECT * FROM Status_Master WHERE status_activity = 'True'");
-        const usernames = await pool.query("SELECT * FROM User_Master WHERE role = 'Helpdesk' ");
-        const requested_by = await pool.query("SELECT * FROM User_Master WHERE role != 'Helpdesk' ")
+        const usernames = await pool.query("SELECT * FROM User_Master WHERE role IN ('Helpdesk', 'Helpdesk-Vendor')");
+        const requested_by = await pool.query("SELECT * FROM User_Master WHERE role NOT IN ('Helpdesk', 'Helpdesk-Vendor')")
         res.json({
             partners: partners.rows,
             softwares: softwares.rows,
