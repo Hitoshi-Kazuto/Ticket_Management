@@ -12,10 +12,9 @@ const dashboard = () => {
     }, [navigate]);
 
     return (
-        <div>
-            <Home />
-            <div className='overflow-x-auto shadow-md absolute right-0 w-5/6 bg-gray-200 border border-gray-200 p-4 m-0 text-2xl font-bold text-gray-700'>Admin Dashboard</div>
-        </div>
+        <Home>
+            <div className='overflow-x-auto shadow-md bg-gray-200 border border-gray-200 p-4 m-0 text-2xl font-bold text-gray-700'>Admin Dashboard</div>
+        </Home>
     )
 }
 
