@@ -175,8 +175,9 @@ const userInfoPopup = ({ isOpen, user, onClose }) => {
                                 <option value="">Select Role</option>
                                 <option value="Admin">Admin</option>
                                 <option value="Orbis">Orbis</option>
-                                <option value="Helpdesk">Helpdesk</option>
+                                <option value="Helpdesk">Helpdesk Internal</option>
                                 <option value="Partner">Partner</option>
+                                <option value="Helpdesk-Vendor">Helpdesk Vendor</option>
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
