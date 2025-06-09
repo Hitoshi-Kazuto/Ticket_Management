@@ -166,6 +166,7 @@ const AdminTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =
                                 <option value="Admin">Admin</option>
                                 <option value="Orbis">Orbis</option>
                                 <option value="Partner">Partner</option>
+                                <option value="Helpdesk-Vendor">Helpdesk Vendor</option>
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
@@ -464,6 +465,7 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
                                 <option value="Admin">Admin</option>
                                 <option value="Orbis">Orbis</option>
                                 <option value="Partner">Partner</option>
+                                <option value="Helpdesk-Vendor">Helpdesk Vendor</option>
                             </select>
                         </div>
                     </div>
