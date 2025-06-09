@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import logo from '../../../resourses/logo.png'
+import logo from '../../../resourses/icon.png'
 
 const API_URL = 'https://ticket-management-ten.vercel.app/';
 
