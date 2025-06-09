@@ -74,7 +74,7 @@ const Header = () => {
         <nav className="bg-gray-200 h-16 relative my-0 z-50 flex items-center">
             <div className="flex justify-between items-center w-full mx-4 my-0 max-w">
                 <a href="#" className="flex items-center">
-                    <img src={logo} className="mr-3 h-6 sm:h-9" alt="Logo" />
+                    <img src={logo} className="mr-3 h-7 sm:h-9" alt="Logo" />
                     <span className="self-right text-2xl font-bold whitespace-nowrap text-gray-700">Helpdesk Management</span>
                 </a>
                 <div className="relative flex items-center" ref={dropdownRef}>
