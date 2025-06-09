@@ -71,7 +71,7 @@ const Header = () => {
     };
 
     return (
-        <nav className="bg-gray-200 h-16 relative my-0 z-50 flex items-center">
+        <nav className="bg-gray-200 h-16 sticky top-0 my-0 z-50 flex items-center">
             <div className="flex justify-between items-center w-full mx-4 my-0 max-w">
                 <a href="#" className="flex items-center">
                     <img src={logo} className="mr-3 h-7 sm:h-9" alt="Logo" />
