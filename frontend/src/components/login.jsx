@@ -45,37 +45,37 @@ const Login = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
-            <div className="flex bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden w-full max-w-4xl">
+        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+            <div className="flex bg-white rounded-lg shadow-lg overflow-hidden w-full max-w-6xl">
                 {/* Image Section */}
-                <div className="w-7/12 flex items-center justify-center p-6">
+                <div className="w-8/12 flex items-center justify-center p-6">
                     <img src={image} alt="illustration" className="max-w-full h-auto" />
                 </div>
                 {/* Login Form Section */}
-                <div className="w-5/12 p-8">
-                    <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white text-center">Ticket Management</h2>
+                <div className="w-4/12 p-8">
+                    <h2 className="text-2xl font-bold mb-6 text-gray-900 text-center">Ticket Management</h2>
                     {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
                     <form onSubmit={handleLogin} className="space-y-6">
                         <div>
-                            <label htmlFor="username" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Username</label>
+                            <label htmlFor="username" className="block mb-2 text-sm font-medium text-gray-900">Username</label>
                             <input
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                                 type="text"
                                 id="username"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                 placeholder="Username"
                                 required
                             />
                         </div>
                         <div>
-                            <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Password</label>
+                            <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900">Password</label>
                             <input
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 type="password"
                                 id="password"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                 placeholder="Password"
                                 required
                             />
@@ -83,7 +83,7 @@ const Login = () => {
                         <button 
                             type="submit" 
                             disabled={isLoading}
-                            className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center dark:bg-blue-700 dark:hover:bg-blue-800 dark:focus:ring-blue-800"
+                            className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                         >
                             {isLoading ? (
                                 <>
