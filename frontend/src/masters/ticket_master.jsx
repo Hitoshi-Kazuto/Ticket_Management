@@ -474,12 +474,50 @@ const TicketMaster = () => {
                     onRowClicked={(row) => handleUpdateClick(null, row)}
                 />
 
-                {role === 'Admin' ? (
-                    <AdminTicketForm isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleFormSubmit} error={error} dropdownValues={dropdownValues} />
-                ) : role === 'Helpdesk' ? (
-                    <HelpdeskTicketForm isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleFormSubmit} error={error} dropdownValues={dropdownValues} />
-                ) : (
-                    <UserTicketForm isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleFormSubmit} error={error} dropdownValues={dropdownValues} />
+                {role === 'Admin' && isPopupOpen && (
+                    <AdminTicketForm
+                        isOpen={true}
+                        onClose={handleClosePopup}
+                        onSubmit={handleFormSubmit}
+                        error={error}
+                        dropdownValues={dropdownValues}
+                    />
+                )}
+                {role === 'Helpdesk' && isPopupOpen && (
+                    <HelpdeskTicketForm
+                        isOpen={true}
+                        onClose={handleClosePopup}
+                        onSubmit={handleFormSubmit}
+                        error={error}
+                        dropdownValues={dropdownValues}
+                    />
+                )}
+                {role === 'Helpdesk-Vendor' && isPopupOpen && (
+                    <HelpdeskTicketForm
+                        isOpen={true}
+                        onClose={handleClosePopup}
+                        onSubmit={handleFormSubmit}
+                        error={error}
+                        dropdownValues={dropdownValues}
+                    />
+                )}
+                {role === 'Partner' && isPopupOpen && (
+                    <UserTicketForm
+                        isOpen={true}
+                        onClose={handleClosePopup}
+                        onSubmit={handleFormSubmit}
+                        error={error}
+                        dropdownValues={dropdownValues}
+                    />
+                )}
+                {role === 'Orbis' && isPopupOpen && (
+                    <UserTicketForm
+                        isOpen={true}
+                        onClose={handleClosePopup}
+                        onSubmit={handleFormSubmit}
+                        error={error}
+                        dropdownValues={dropdownValues}
+                    />
                 )}
 
                 {role === 'Admin' && selectedTicket && (
