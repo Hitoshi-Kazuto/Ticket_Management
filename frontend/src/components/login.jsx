@@ -30,7 +30,7 @@ const Login = () => {
                     navigate('/dashboard');
                 } else if (response.data.user.role === 'Partner' || response.data.user.role === 'Orbis') {
                     navigate('/user-dashboard');
-                } else if (response.data.user.role === 'Helpdesk') {
+                } else if (response.data.user.role === 'Helpdesk' || response.data.user.role === 'Helpdesk-Vendor') {
                     navigate('/helpdesk-dashboard');
                 }
             } else {
