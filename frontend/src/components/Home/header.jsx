@@ -77,11 +77,11 @@ const Header = () => {
                     <span className="self-right text-2xl font-bold whitespace-nowrap text-gray-700">Helpdesk Management</span>
                 </a>
                 <div className="relative flex items-center" ref={dropdownRef}>
-                    <button onClick={toggleDropdown} className="text-right text-gray-900 flex items-center mx-auto">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 mr-2"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier">
-                            <circle cx="12" cy="6" r="4" stroke="currentColor" strokeWidth="0.9600000000000002"></circle>
-                            <path d="M15 20.6151C14.0907 20.8619 13.0736 21 12 21C8.13401 21 5 19.2091 5 17C5 14.7909 8.13401 13 12 13C15.866 13 19 14.7909 19 17C19 17.3453 18.9234 17.6804 18.7795 18" stroke="currentColor" strokeWidth="0.9600000000000002" strokeLinecap="round"></path> </g></svg>
-                        {username}
+                    <button onClick={toggleDropdown} className="text-right text-gray-900 flex items-center mx-auto hover:text-blue-700 transition-colors duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-7 h-7 mr-2">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                        </svg>
+                        <span className="text-lg font-semibold">{username}</span>
                     </button>
                     {dropdownOpen && (
                         <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
