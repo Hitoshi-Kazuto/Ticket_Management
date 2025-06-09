@@ -87,8 +87,8 @@ const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
         if (name === 'role') {
             newFormData.partner_code = setPartnerName(value);
 
-            // Filter partners only when organization is 'Partner'
-            if (value === 'Partner') {
+            // Filter partners for both Partner and Helpdesk-Vendor roles
+            if (value === 'Partner' || value === 'Helpdesk-Vendor') {
                 setFilteredPartners(dropdownValues.partners.filter(partner =>
                     partner.partner_code !== 'ADMIN' && partner.partner_code !== 'ORBIS' && partner.partner_code !== 'HELPDESK'
                 ));
@@ -137,7 +137,7 @@ const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
         setIsLoading(false);
     };
 
-    const isUserEditable = formData.role === 'Partner';
+    const isUserEditable = formData.role === 'Partner' || formData.role === 'Helpdesk-Vendor';
 
 
     if (!isOpen) {

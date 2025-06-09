@@ -619,7 +619,26 @@ export { UserTicketInfo };
 
 const HelpdeskTicketInfo = ({ isOpen, ticket, onClose, dropdownValues }) => {
     const username = localStorage.getItem('username');
+    const userRole = localStorage.getItem('role');
+    const userPartner = localStorage.getItem('partner_code');
     const API_URL = 'https://ticket-management-ten.vercel.app/';
+    const [isLoading, setIsLoading] = useState(false);
+
+    // Check if user has access to this ticket
+    const hasAccess = () => {
+        if (userRole === 'Helpdesk-Orbis') {
+            return true; // Orbis users can see all tickets
+        } else if (userRole === 'Helpdesk-Vendor') {
+            return ticket.partner_code === userPartner; // Vendor users can only see their partner's tickets
+        }
+        return false;
+    };
+
+    // If user doesn't have access, don't show the popup
+    if (!isOpen || !hasAccess()) {
+        return null;
+    }
+
     const [formData, setFormData] = useState({
         Ticket_Id: '',
         Requested_by: '',
@@ -640,7 +659,6 @@ const HelpdeskTicketInfo = ({ isOpen, ticket, onClose, dropdownValues }) => {
         Update_Description: '',
         Technical_Description: ''
     });
-    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if (ticket) {
