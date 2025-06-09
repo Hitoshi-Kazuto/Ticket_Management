@@ -592,12 +592,13 @@ export { UserTicketForm };
 const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
     const username = localStorage.getItem('username');
     const role = localStorage.getItem('role');
+    const partnerCode = localStorage.getItem('partner_code');
     const [isLoading, setIsLoading] = useState(false);
 
     const [formData, setFormData] = useState({
-        Requested_by: '',
-        Organization: '',
-        Partner_code: '',
+        Requested_by: username || '',
+        Organization: role === 'Helpdesk-Vendor' ? 'Helpdesk-Vendor' : '',
+        Partner_code: role === 'Helpdesk-Vendor' ? partnerCode : '',
         Software_Name: '',
         Title: '',
         Description: '',
@@ -676,9 +677,9 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
         // Only clear the form if submission was successful
         if (success) {
             setFormData({
-                Requested_by: '',
-                Organization: '',
-                Partner_code: '',
+                Requested_by: username || '',
+                Organization: role === 'Helpdesk-Vendor' ? 'Helpdesk-Vendor' : '',
+                Partner_code: role === 'Helpdesk-Vendor' ? partnerCode : '',
                 Software_Name: '',
                 Title: '',
                 Description: '',
@@ -699,12 +700,11 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
         return null;
     }
 
-
     return (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center overflow-y-auto">
             <div className="bg-white p-8 rounded-lg shadow-lg relative w-2/4 my-8 max-h-[90vh] overflow-y-auto">
-            <span className="self-right text-xl mb-8 font-bold whitespace-nowrap text-gray-900">CREATE TICKET</span>
-            <hr className='px-3 mb-4 my-4'></hr>
+                <span className="self-right text-xl mb-8 font-bold whitespace-nowrap text-gray-900">CREATE TICKET</span>
+                <hr className='px-3 mb-4 my-4'></hr>
                 <button
                     onClick={onClose}
                     className="absolute top-0 right-0 mt-2 mr-2 uppercase tracking-wide text-gray-700 text-sm font-bold mb-2 hover:text-gray-900"
@@ -721,6 +721,7 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
                                 onChange={handleChange}
                                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 required
+                                disabled={role === 'Helpdesk-Vendor'}
                             >
                                 <option value="">---- Select Organization ----</option>
                                 <option value="Admin">Admin</option>
@@ -729,32 +730,35 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
                                 <option value="Helpdesk-Vendor">Helpdesk Vendor</option>
                             </select>
                         </div>
-                        <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Partner</label>
+                        <div className="w-full md:w-1/2 px-3">
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Partner Name</label>
                             <select
                                 name="Partner_code"
                                 value={formData.Partner_code}
                                 onChange={handleChange}
                                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                required={isPartnerEditable}
-                                disabled={!isPartnerEditable}
+                                required
+                                disabled={role === 'Helpdesk-Vendor'}
                             >
                                 <option value="">---- Select Partner ----</option>
                                 {filteredPartners.map((partner) => (
-                                    <option key={partner.partner_id} value={partner.partner_code}>{partner.partner_name}</option>
+                                    <option key={partner.partner_code} value={partner.partner_code}>
+                                        {partner.partner_name}
+                                    </option>
                                 ))}
                             </select>
                         </div>
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
-                        <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
+                        <div className="w-full md:w-1/2 px-3">
                             <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Requested By</label>
                             <select
-                                name="Requested_by" q
+                                name="Requested_by"
                                 value={formData.Requested_by}
                                 onChange={handleChange}
                                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 required
+                                disabled={role === 'Helpdesk-Vendor'}
                             >
                                 <option value="">---- Select User ----</option>
                                 {filteredUsers.map((user) => (
@@ -763,7 +767,7 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Software</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Software Name</label>
                             <select
                                 name="Software_Name"
                                 value={formData.Software_Name}
@@ -773,12 +777,25 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
                             >
                                 <option value="">---- Select Software ----</option>
                                 {dropdownValues.softwares.map((software) => (
-                                    <option key={software.sw_id} value={software.software_name}>{software.software_name}</option>
+                                    <option key={software.software_id} value={software.software_name}>
+                                        {software.software_name}
+                                    </option>
                                 ))}
                             </select>
                         </div>
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
+                        <div className="w-full md:w-1/2 px-3">
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Title</label>
+                            <input
+                                type="text"
+                                name="Title"
+                                value={formData.Title}
+                                onChange={handleChange}
+                                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                required
+                            />
+                        </div>
                         <div className="w-full md:w-1/2 px-3">
                             <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Priority</label>
                             <select
@@ -792,19 +809,41 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
                                 <option value="Low">Low</option>
                                 <option value="Medium">Medium</option>
                                 <option value="High">High</option>
-                                <option value="Critical">Critical</option>
                             </select>
                         </div>
+                    </div>
+                    <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Title</label>
-                            <input
-                                type="text"
-                                name="Title"
-                                value={formData.Title}
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Category</label>
+                            <select
+                                name="Category"
+                                value={formData.Category}
                                 onChange={handleChange}
                                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 required
-                            />
+                            >
+                                <option value="">---- Select Category ----</option>
+                                {dropdownValues.categories.map((category) => (
+                                    <option key={category.category_id} value={category.category}>
+                                        {category.category}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="w-full md:w-1/2 px-3">
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Assigned Staff</label>
+                            <select
+                                name="Assigned_Staff"
+                                value={formData.Assigned_Staff}
+                                onChange={handleChange}
+                                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                required
+                            >
+                                <option value="">---- Select Staff ----</option>
+                                {dropdownValues.usernames.map((user) => (
+                                    <option key={user.user_id} value={user.username}>{user.name}</option>
+                                ))}
+                            </select>
                         </div>
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
@@ -818,7 +857,6 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
                                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 required
                             />
-
                         </div>
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
@@ -832,44 +870,10 @@ const HelpdeskTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }
                                 className="text-black px-4 py-2 rounded-md"
                                 multiple
                             />
-
                         </div>
                     </div>
 
                     <hr className='px-3 mb-4 my-4'></hr>
-
-                    <div className="flex flex-wrap -mx-3 mb-4">
-                        <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Category</label>
-                            <select
-                                name="Category"
-                                value={formData.Category}
-                                onChange={handleChange}
-                                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                required
-                            >
-                                <option value="">---- Select Category ----</option>
-                                {dropdownValues.categories.map((category) => (
-                                    <option key={category.cat_id} value={category.category}>{category.category}</option>
-                                ))}
-                            </select>
-                        </div>
-                        <div className="w-full md:w-1/2 px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Assign To</label>
-                            <select
-                                name="Assigned_Staff"
-                                value={formData.Assigned_Staff}
-                                onChange={handleChange}
-                                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                required
-                            >
-                                <option value="">---- Select Staff ----</option>
-                                {dropdownValues.usernames.map((username) => (
-                                    <option key={username.user_id} value={username.username}>{username.username}</option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
 
                     <div className="flex justify-end">
                         <button
