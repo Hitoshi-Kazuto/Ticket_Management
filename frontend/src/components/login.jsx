@@ -46,13 +46,13 @@ const Login = () => {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
-            <div className="flex bg-white rounded-lg shadow-lg overflow-hidden w-full max-w-6xl">
+            <div className="flex bg-white rounded-lg shadow-lg overflow-hidden w-full max-w-screen-xl">
                 {/* Image Section */}
                 <div className="w-8/12 flex items-center justify-center p-6">
                     <img src={image} alt="illustration" className="max-w-full h-auto" />
                 </div>
                 {/* Login Form Section */}
-                <div className="w-4/12 p-8">
+                <div className="w-4/12 p-8 flex flex-col justify-center">
                     <h2 className="text-2xl font-bold mb-6 text-gray-900 text-center">Ticket Management</h2>
                     {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
                     <form onSubmit={handleLogin} className="space-y-6">
