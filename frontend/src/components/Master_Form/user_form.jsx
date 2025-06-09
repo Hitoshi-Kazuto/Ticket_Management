@@ -16,7 +16,7 @@ const setPartnerName = (role) => {
             partnerName = 'HELPDESK';
             break;
         case 'Helpdesk-Vendor':
-            partnerName = 'HELPDESK-VENDOR';
+            partnerName = 'VENDOR-H';
             break;
         default:
             partnerName = '';
