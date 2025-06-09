@@ -15,6 +15,9 @@ const setPartnerName = (role) => {
         case 'Helpdesk':
             partnerName = 'HELPDESK';
             break;
+        case 'Helpdesk-Vendor':
+            partnerName = 'HELPDESK-VENDOR';
+            break;
         default:
             partnerName = '';
     }
@@ -251,8 +254,9 @@ const UserForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) => {
                                 <option value="">Select Role</option>
                                 <option value="Admin">Admin</option>
                                 <option value="Orbis">Orbis User</option>
-                                <option value="Helpdesk">Helpdesk</option>
+                                <option value="Helpdesk">Helpdesk Internal</option>
                                 <option value="Partner">Partner User</option>
+                                <option value="Helpdesk-Vendor">Helpdesk Vendor</option>
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
