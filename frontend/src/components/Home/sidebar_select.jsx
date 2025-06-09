@@ -21,6 +21,7 @@ const Sidebar = () => {
             case 'Orbis':
                 return <InternalSidebar />;
             case 'Helpdesk':
+            case 'Helpdesk-Vendor':
                 return <HelpdeskSidebar />;
             default:
                 return null;
