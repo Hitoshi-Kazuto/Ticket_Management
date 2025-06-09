@@ -58,6 +58,7 @@ const TicketMaster = () => {
     const fetchDataBasedOnRoles = async () => {
         const role = getUserRole();
         const username = getUsername();
+        const partnerCode = localStorage.getItem('partner_code');
         let apiUrl;
         switch (role) {
             case 'Admin':
@@ -70,21 +71,24 @@ const TicketMaster = () => {
                 apiUrl = `${API_URL}api/ticket/user-access/${username}`;
                 break;
             case 'Helpdesk':
-                apiUrl = `${API_URL}api/ticket/helpdesk-access/all`
+                apiUrl = `${API_URL}api/ticket/helpdesk-access/all`;
+                break;
+            case 'Helpdesk-Vendor':
+                apiUrl = `${API_URL}api/ticket/helpdesk-access/partner/${partnerCode}`;
                 break;
         }
         try {
             const response = await axios.get(apiUrl, {
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
             });
-                setTickets(response.data);
-                setLoading(false);
-        } catch (error) {
-                console.error('Error fetching Tickets', error);
+            setTickets(response.data);
             setLoading(false);
-    }
+        } catch (error) {
+            console.error('Error fetching Tickets', error);
+            setLoading(false);
+        }
     };
 
     const handleAddClick = () => {
@@ -108,6 +112,7 @@ const TicketMaster = () => {
                 apiUrl = `${API_URL}api/ticket/user-access/ticket-form`;
                 break;
             case 'Helpdesk':
+            case 'Helpdesk-Vendor':
                 apiUrl = `${API_URL}api/ticket/helpdesk-access/ticket-form`;
                 break;
             default:
@@ -477,29 +482,45 @@ const TicketMaster = () => {
                     <UserTicketForm isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleFormSubmit} error={error} dropdownValues={dropdownValues} />
                 )}
 
-                {selectedTicket && (
-                    role === 'Admin' ? (
+                {role === 'Admin' && selectedTicket && (
                     <AdminTicketInfo
                         isOpen={true}
                         ticket={selectedTicket}
                         onClose={handleCloseUpdatePopup}
                         dropdownValues={dropdownValues}
                     />
-                    ) : role === 'Helpdesk' ? (
-                        <HelpdeskTicketInfo 
+                )}
+                {role === 'Helpdesk' && selectedTicket && (
+                    <HelpdeskTicketInfo 
                         isOpen={true}
                         ticket={selectedTicket}
                         onClose={handleCloseUpdatePopup}
                         dropdownValues={dropdownValues}
                     />
-                    ) : (
+                )}
+                {role === 'Helpdesk-Vendor' && selectedTicket && (
+                    <HelpdeskTicketInfo 
+                        isOpen={true}
+                        ticket={selectedTicket}
+                        onClose={handleCloseUpdatePopup}
+                        dropdownValues={dropdownValues}
+                    />
+                )}
+                {role === 'Partner' && selectedTicket && (
                     <UserTicketInfo
                         isOpen={true}
                         ticket={selectedTicket}
                         onClose={handleCloseUpdatePopup}
                         dropdownValues={dropdownValues}
                     />
-                    )
+                )}
+                {role === 'Orbis' && selectedTicket && (
+                    <UserTicketInfo
+                        isOpen={true}
+                        ticket={selectedTicket}
+                        onClose={handleCloseUpdatePopup}
+                        dropdownValues={dropdownValues}
+                    />
                 )}
 
                 {role === 'Admin' && showUpdatesPopup && !updatesLoading && updates && updates.length > 0 && (
@@ -514,6 +535,17 @@ const TicketMaster = () => {
                     />
                 )}
                 {role === 'Helpdesk' && showUpdatesPopup && !updatesLoading && updates && updates.length > 0 && (
+                    <UpdateInfoPopup
+                        show={true}
+                        updates={updates}
+                        onClose={() => {
+                            setShowUpdatesPopup(false);
+                            setSelectedTicketId(null);
+                            setUpdates([]);
+                        }}
+                    />
+                )}
+                {role === 'Helpdesk-Vendor' && showUpdatesPopup && !updatesLoading && updates && updates.length > 0 && (
                     <UpdateInfoPopup
                         show={true}
                         updates={updates}

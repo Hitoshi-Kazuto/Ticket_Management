@@ -56,6 +56,7 @@ const TicketMaster = () => {
     const fetchDataBasedOnRoles = async () => {
         const role = getUserRole();
         const username = getUsername();
+        const partnerCode = localStorage.getItem('partner_code');
         let apiUrl;
         switch (role) {
             case 'Admin':
@@ -70,19 +71,22 @@ const TicketMaster = () => {
             case 'Helpdesk':
                 apiUrl = `${API_URL}api/ticket/closed-ticket/helpdesk-access`;
                 break;
+            case 'Helpdesk-Vendor':
+                apiUrl = `${API_URL}api/ticket/closed-ticket/helpdesk-access/partner/${partnerCode}`;
+                break;
         }
         try {
             const response = await axios.get(apiUrl, {
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
             });
-                setTickets(response.data);
-                setLoading(false);
-        } catch (error) {
-                console.error('Error fetching Tickets', error);
+            setTickets(response.data);
             setLoading(false);
-    }
+        } catch (error) {
+            console.error('Error fetching Tickets', error);
+            setLoading(false);
+        }
     };
 
     const handleUpdateClick = (e, Ticket) => {
@@ -405,6 +409,14 @@ const TicketMaster = () => {
                         dropdownValues={dropdownValues}
                     />
                 )}
+                {role === 'Helpdesk-Vendor' && selectedTicket && (
+                    <TicketUpdatePopup
+                        isOpen={true}
+                        ticket={selectedTicket}
+                        onClose={handleCloseUpdatePopup}
+                        dropdownValues={dropdownValues}
+                    />
+                )}
                 {role === 'Partner' && selectedTicket && (
                     <UserTicketInfo
                         isOpen={true}
@@ -434,6 +446,17 @@ const TicketMaster = () => {
                     />
                 )}
                 {role === 'Helpdesk' && showUpdatesPopup && (
+                    <UpdateInfoPopup 
+                        show={true}
+                        updates={updates || []}
+                        onClose={() => {
+                            setShowUpdatesPopup(false);
+                            setSelectedTicketId(null);
+                            setUpdates([]);
+                        }}
+                    />
+                )}
+                {role === 'Helpdesk-Vendor' && showUpdatesPopup && (
                     <UpdateInfoPopup 
                         show={true}
                         updates={updates || []}

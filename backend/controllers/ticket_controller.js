@@ -237,6 +237,18 @@ app.get('/closed-ticket/helpdesk-access', async (req, res) => {
     }
 });
 
+app.get('/closed-ticket/helpdesk-access/partner/:partnerCode', async (req, res) => {
+    const { partnerCode } = req.params;
+    try {
+        const query = "SELECT * FROM Ticket WHERE partner_code = $1 AND status = 'Closed' ORDER BY created_time DESC";
+        const values = [partnerCode];
+        const result = await pool.query(query, values);
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error fetching closed tickets:', error);
+        res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+});
 
 app.get('/assign-staff', async (req, res) => {
     try {
@@ -449,6 +461,19 @@ app.put('/withdraw/:ticket_id', async (req, res) => {
         res.status(500).json({ success: false, message: 'Internal server error' });
     } finally {
         client.release();
+    }
+});
+
+app.get('/helpdesk-access/partner/:partnerCode', async (req, res) => {
+    const { partnerCode } = req.params;
+    try {
+        const query = "SELECT * FROM Ticket WHERE partner_code = $1 AND status != 'Closed' ORDER BY created_time DESC";
+        const values = [partnerCode];
+        const result = await pool.query(query, values);
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error fetching tickets:', error);
+        res.status(500).json({ success: false, error: 'Internal Server Error' });
     }
 });
 

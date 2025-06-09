@@ -20,10 +20,11 @@ const Login = () => {
             const response = await axios.post(`${API_URL}api/login`, { username, password });
 
             if (response.data.success) {
-                // Save the token to localStorage (or context/state)
+                // Save the token and user data to localStorage
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('username', response.data.user.username);
                 localStorage.setItem('role', response.data.user.role);
+                localStorage.setItem('partner_code', response.data.user.partner_code);
 
                 // Redirect based on user role
                 if (response.data.user.role === 'Admin') {
