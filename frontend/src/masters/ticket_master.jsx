@@ -304,10 +304,10 @@ const TicketMaster = () => {
                     {(getUserRole() === 'Partner' || getUserRole() === 'Orbis') && (row.status !== 'Closed' && row.status !== 'Resolved' && row.status !== 'Withdrawn') && (
                         <button
                             title='Withdraw'
-                            onClick={() => handleWithdraw(row.ticket_id)}
-                            className="text-gray-700 hover:text-orange-700 transition-colors duration-200 ml-2"
+                            onClick={(e) => handleWithdraw(e, row.ticket_id)}
+                            className="text-gray-700 hover:text-gray-900 transition-colors duration-200 ml-2"
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-7 h-7">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-10 h-10">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
                             </svg>
                         </button>
