@@ -53,33 +53,33 @@ const Login = () => {
                 </div>
                 {/* Login Form Section */}
                 <div className="w-4/12 p-8 flex flex-col justify-center">
-                    <h2 className="text-2xl font-bold mb-6 text-gray-900 text-center">Ticket Management</h2>
+                <h2 className="text-2xl font-bold mb-6 text-gray-900 text-center">Ticket Management</h2>
                     {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
-                    <form onSubmit={handleLogin} className="space-y-6">
-                        <div>
-                            <label htmlFor="username" className="block mb-2 text-sm font-medium text-gray-900">Username</label>
-                            <input
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                type="text"
-                                id="username"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                placeholder="Username"
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900">Password</label>
-                            <input
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                type="password"
-                                id="password"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                placeholder="Password"
-                                required
-                            />
-                        </div>
+                <form onSubmit={handleLogin} className="space-y-6">
+                    <div>
+                        <label htmlFor="username" className="block mb-2 text-sm font-medium text-gray-900">Username</label>
+                        <input
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            type="text"
+                            id="username"
+                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            placeholder="Username"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900">Password</label>
+                        <input
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            type="password"
+                            id="password"
+                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            placeholder="Password"
+                            required
+                        />
+                    </div>
                         <button 
                             type="submit" 
                             disabled={isLoading}
@@ -96,8 +96,8 @@ const Login = () => {
                             ) : (
                                 'Login'
                             )}
-                        </button>
-                    </form>
+                    </button>
+                </form>
                 </div>
             </div>
         </div>
