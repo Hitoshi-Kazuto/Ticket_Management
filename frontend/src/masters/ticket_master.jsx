@@ -153,6 +153,7 @@ const TicketMaster = () => {
             e.stopPropagation();
         }
         setSelectedTicket(Ticket);
+        console.log('Update button clicked. Selected Ticket:', Ticket);
     };
 
     const handleCloseUpdatePopup = () => {
@@ -203,6 +204,7 @@ const TicketMaster = () => {
     const handleWithdraw = async (e, ticketId) => {
         e.preventDefault();
         e.stopPropagation();
+        console.log('Withdraw button clicked. Ticket ID:', ticketId);
         try {
             const response = await axios.put(
                 `${API_URL}api/ticket/withdraw/${ticketId}`,
@@ -222,7 +224,7 @@ const TicketMaster = () => {
             }
         } catch (error) {
             console.error('Error withdrawing ticket:', error);
-            alert(error.response?.data?.message || 'Error withdrawing ticket');
+            alert(error.response && error.response.data && error.response.data.message ? error.response.data.message : 'Error withdrawing ticket');
         }
     };
 
@@ -301,17 +303,27 @@ const TicketMaster = () => {
         {
             name: 'Actions',
             cell: row => (
-                <div className="flex space-x-2">
+                <div className="flex">
+                    <button
+                        title='Update'
+                        onClick={(e) => handleUpdateClick(e, row)}
+                        className="text-gray-700 hover:text-blue-700 transition-colors duration-200"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10">
+                            <path fillRule="evenodd" d="M16.5 4.478a.75.75 0 01.424.032l2.047.547a.75.75 0 01.52.92L18.491 19.602a.75.75 0 01-.916.574l-9.155-2.222a.75.75 0 01-.582-.918l1.094-6.425a.75.75 0 01.424-.032l5.068-.707a.75.75 0 00.424-.032z" clipRule="evenodd" />
+                            <path fillRule="evenodd" d="M14.505 5.733a.75.75 0 01.378-.813l1.83-1.045a.75.75 0 01.89.52l.547 2.047a.75.75 0 01-.032.424l-5.068.707a.75.75 0 01-.424-.032l-1.83-1.045a.75.75 0 01-.378-.813L14.505 5.733z" clipRule="evenodd" />
+                        </svg>
+                    </button>
                     {(getUserRole() === 'Partner' || getUserRole() === 'Orbis') && (row.status !== 'Closed' && row.status !== 'Resolved' && row.status !== 'Withdrawn') && (
-                        <button
-                            title='Withdraw'
-                            onClick={(e) => handleWithdraw(e, row.ticket_id)}
-                            className="text-gray-700 hover:text-gray-900 transition-colors duration-200 ml-2"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-10 h-10">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
-                            </svg>
-                        </button>
+                          <button
+                              title='Withdraw'
+                              onClick={(e) => handleWithdraw(e, row.ticket_id)}
+                              className="text-gray-700 hover:text-gray-900 transition-colors duration-200 ml-2"
+                          >
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-10 h-10">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
+                              </svg>
+                          </button>
                     )}
                 </div>
             ),
