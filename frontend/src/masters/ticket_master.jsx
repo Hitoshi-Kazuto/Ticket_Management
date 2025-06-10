@@ -287,6 +287,7 @@ const TicketMaster = () => {
             name: 'Updates',
             cell: row => (
                 <button
+                    title='Updates'
                     onClick={(e) => handleShowUpdates(e, row.ticket_id)}
                     className="text-gray-700 hover:text-blue-700 transition-colors duration-200"
                 >

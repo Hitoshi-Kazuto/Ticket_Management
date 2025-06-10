@@ -139,6 +139,7 @@ const SoftwareMaster = () => {
             name: 'Info',
             cell: row => (
                 <button
+                    title='Info'
                     onClick={() => handleInfoClick(row)}
                     className="text-gray-700 hover:text-blue-700 transition-colors duration-200"
                 >
