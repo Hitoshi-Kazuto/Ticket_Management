@@ -274,38 +274,42 @@ const TicketMaster = () => {
                                 />
                                 <label htmlFor="low" className="mr-3">Low</label>
                             </div>
+                            <button 
+                                onClick={handleAddClick} 
+                                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 whitespace-nowrap"
+                            >
+                                <FaPlus className="inline-block mr-2" />
+                                Add Ticket
+                            </button>
                         </div>
                     </div>
+                    <div className="mt-6">
+                        {loading ? (
+                            <LoadingSpinner />
+                        ) : (
+                            <DataTable
+                                columns={columns}
+                                data={filteredTickets}
+                                pagination
+                                highlightOnHover
+                                pointerOnHover
+                                customStyles={customStyles}
+                                noDataComponent="No tickets to display."
+                            />
+                        )}
+                    </div>
                 </div>
-
-                <div className="bg-white rounded-lg shadow-md overflow-hidden">
-                    <DataTable
-                        columns={columns}
-                        data={filteredTickets}
-                        pagination
-                        paginationPerPage={10}
-                        paginationRowsPerPageOptions={[10, 20, 30, 40, 50]}
-                        highlightOnHover
-                        pointerOnHover
-                        customStyles={customStyles}
-                        noDataComponent={
-                            <div className="p-4 text-center text-gray-500">
-                                No tickets found
-                            </div>
-                        }
-                    />
-                </div>
-
-                {selectedTicket && (
-                    <AssignPopup
-                        isOpen={true}
-                        ticket={selectedTicket}
-                        onClose={handleCloseAssignPopup}
-                        onSubmit={handleFormSubmit}
-                        dropdownValues={dropdownValues}
-                    />
-                )}
             </div>
+
+            {selectedTicket && (
+                <AssignPopup
+                    isOpen={true}
+                    onClose={handleCloseAssignPopup}
+                    onSubmit={handleFormSubmit}
+                    ticketData={selectedTicket}
+                    dropdownValues={dropdownValues}
+                />
+            )}
         </div>
     );
 };

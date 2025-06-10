@@ -199,8 +199,9 @@ const UserMaster = () => {
                     onClick={() => handleDelete(row.user_id)}
                     className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700"
                 >
-                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="25" height="25" viewBox="0 0 24 24" className="fill-white">
-                        <path d="M 10 2 L 9 3 L 3 3 L 3 5 L 21 5 L 21 3 L 15 3 L 14 2 L 10 2 z M 4.3652344 7 L 5.8925781 20.263672 C 6.0245781 21.253672 6.877 22 7.875 22 L 16.123047 22 C 17.121047 22 17.974422 21.254859 18.107422 20.255859 L 19.634766 7 L 4.3652344 7 z"></path>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7">
+                        <path fillRule="evenodd" d="M16.5 4.478a.75.75 0 01.424.032l2.047.547a.75.75 0 01.52.92L18.491 19.602a.75.75 0 01-.916.574l-9.155-2.222a.75.75 0 01-.582-.918l1.094-6.425a.75.75 0 01.424-.032l5.068-.707a.75.75 0 00.424-.032z" clipRule="evenodd" />
+                        <path fillRule="evenodd" d="M14.505 5.733a.75.75 0 01.378-.813l1.83-1.045a.75.75 0 01.89.52l.547 2.047a.75.75 0 01-.032.424l-5.068.707a.75.75 0 01-.424-.032l-1.83-1.045a.75.75 0 01-.378-.813L14.505 5.733z" clipRule="evenodd" />
                     </svg>
                 </button> :
                 <button
