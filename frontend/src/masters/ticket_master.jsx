@@ -301,34 +301,20 @@ const TicketMaster = () => {
             name: 'Actions',
             cell: row => (
                 <div className="flex space-x-2">
-                    {((getUserRole() === 'Admin' || getUserRole() === 'Helpdesk' || getUserRole() === 'Helpdesk-Vendor') && (row.status !== 'Closed' && row.status !== 'Resolved' && row.status !== 'Withdrawn')) && (
-                        <button
-                            title='Delete'
-                            onClick={(e) => handleDelete(e, row.ticket_id)}
-                            className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-700 text-sm"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                                <path fillRule="evenodd" d="M16.5 4.478a.75.75 0 01.424.032l2.047.547a.75.75 0 01.52.92L18.491 19.602a.75.75 0 01-.916.574l-9.155-2.222a.75.75 0 01-.582-.918l1.094-6.425a.75.75 0 01.424-.032l5.068-.707a.75.75 0 00.424-.032z" clipRule="evenodd" />
-                                <path fillRule="evenodd" d="M14.505 5.733a.75.75 0 01.378-.813l1.83-1.045a.75.75 0 01.89.52l.547 2.047a.75.75 0 01-.032.424l-5.068.707a.75.75 0 01-.424-.032l-1.83-1.045a.75.75 0 01-.378-.813L14.505 5.733z" clipRule="evenodd" />
-                            </svg>
-                        </button>
-                    )}
                     {(getUserRole() === 'Partner' || getUserRole() === 'Orbis') && (row.status !== 'Closed' && row.status !== 'Resolved' && row.status !== 'Withdrawn') && (
                         <button
                             title='Withdraw'
-                            onClick={(e) => handleWithdraw(e, row.ticket_id)}
-                            className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-700 text-sm"
+                            onClick={() => handleWithdraw(row.ticket_id)}
+                            className="text-gray-700 hover:text-orange-700 transition-colors duration-200 ml-2"
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                                <path d="M.5 12a11.1 11.1 0 019.825-9.825 11.1 11.1 0 0111.1 0A11.1 11.1 0 0123.5 12a11.1 11.1 0 01-9.825 9.825 11.1 11.1 0 01-11.1 0A11.1 11.1 0 01.5 12z"/>
-                                <path fillRule="evenodd" d="M16.5 4.478a.75.75 0 01.424.032l2.047.547a.75.75 0 01.52.92L18.491 19.602a.75.75 0 01-.916.574l-9.155-2.222a.75.75 0 01-.582-.918l1.094-6.425a.75.75 0 01.424-.032l5.068-.707a.75.75 0 00.424-.032z" clipRule="evenodd" />
-                                <path fillRule="evenodd" d="M14.505 5.733a.75.75 0 01.378-.813l1.83-1.045a.75.75 0 01.89.52l.547 2.047a.75.75 0 01-.032.424l-5.068.707a.75.75 0 01-.424-.032l-1.83-1.045a.75.75 0 01-.378-.813L14.505 5.733z" clipRule="evenodd" />
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-7 h-7">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
                             </svg>
                         </button>
                     )}
                 </div>
             ),
-            width: '120px',
+            width: '150px',
         },
     ];
 
