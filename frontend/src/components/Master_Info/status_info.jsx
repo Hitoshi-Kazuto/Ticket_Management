@@ -97,6 +97,7 @@ const StatusInfoPopup = ({ isOpen, Status, onClose }) => {
                             name="Status_Name"
                             value={formData.Status_Name}
                             onChange={handleChange}
+                            readOnly
                             className="appearance-none w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                         />
                     </div>

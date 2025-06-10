@@ -97,6 +97,7 @@ const SoftwareInfoPopup = ({ isOpen, software, onClose }) => {
                             name="Software_Name"
                             value={formData.Software_Name}
                             onChange={handleChange}
+                            readOnly
                             className="appearance-none w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                         />
                     </div>
