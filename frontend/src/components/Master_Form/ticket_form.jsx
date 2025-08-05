@@ -350,36 +350,66 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
         partner_code = decoded.partner_code;
     }
     const [isLoading, setIsLoading] = useState(false);
+
     const [formData, setFormData] = useState({
         Requested_by: username || '',
         Organization: role || '',
-        Partner_code: partner_code || '',
+        Partner_code: setPartnerName(role) || '',
         Software_Name: '',
         Title: '',
         Description: '',
         Priority: '',
         Category: '',
         Status: 'Submitted',
-        Assigned_Staff: '',
         created_by: username || ''
     });
 
-    const [selectedFile, setSelectedFile] = useState(null);
+    const [selectedFile, setSelectedFile] = useState([]);
     const [filteredPartners, setFilteredPartners] = useState(dropdownValues.partners);
+    const [filteredUsers, setFilteredUsers] = useState(dropdownValues.requested_by);
 
+    useEffect(() => {
+        const filterUsersByOrganization = () => {
+            let filtered = dropdownValues.requested_by;
+
+            if (formData.Organization === 'Admin') {
+                filtered = dropdownValues.requested_by.filter(user => user.role === 'Admin');
+            } else if (formData.Organization === 'Orbis') {
+                filtered = dropdownValues.requested_by.filter(user => user.role === 'Orbis');
+            } else if (formData.Organization === 'Partner') {
+                filtered = dropdownValues.requested_by.filter(user => user.partner_code === formData.Partner_code);
+            }
+
+            setFilteredUsers(filtered);
+        };
+
+        filterUsersByOrganization();
+    }, [formData.Organization, formData.Partner_code, dropdownValues.requested_by]);
 
     const handleChange = (e) => {
         const { name, value, type, files } = e.target;
 
         if (type === 'file') {
-            setSelectedFile(files[0]);
+            setSelectedFile(Array.from(files)); // Convert FileList to Array
         } else {
             let newFormData = {
                 ...formData,
                 [name]: value
             };
 
+            // If Organization field changes directly
+            if (name === 'Organization') {
+                newFormData.Partner_code = setPartnerName(value);
 
+                // Filter partners only when organization is 'Partner'
+                if (value === 'Partner') {
+                    setFilteredPartners(dropdownValues.partners.filter(partner =>
+                        partner.partner_code !== 'ADMIN' && partner.partner_code !== 'ORBIS' && partner.partner_code !== 'HELPDESK'
+                    ));
+                } else {
+                    setFilteredPartners(dropdownValues.partners);
+                }
+            }
 
             setFormData(newFormData);
         }
@@ -392,8 +422,10 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
         Object.keys(formData).forEach(key => {
             formDataToSubmit.append(key, formData[key]);
         });
-        if (selectedFile) {
-            formDataToSubmit.append('file', selectedFile);
+        if (selectedFile.length > 0) {
+            selectedFile.forEach((file, index) => {
+                formDataToSubmit.append(`File_Path`, file);
+            });
         }
 
         // Wait for the response from parent component
@@ -402,23 +434,23 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
         // Only clear the form if submission was successful
         if (success) {
             setFormData({
-                Requested_by: '',
-                Organization: '',
-                Partner_code: '',
+                Requested_by: username || '',
+                Organization: role || '',
+                Partner_code: setPartnerName(role) || '',
                 Software_Name: '',
                 Title: '',
                 Description: '',
                 Priority: '',
                 Category: '',
                 Status: 'Submitted',
-                Assigned_Staff: '',
                 created_by: username || ''
             });
-            setSelectedFile(null);
+            setSelectedFile([]); // Clear selected files after successful submission
         }
         setIsLoading(false);
     };
 
+    const isPartnerEditable = formData.Organization === 'Partner';
 
     if (!isOpen) {
         return null;
@@ -427,8 +459,8 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
     return (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
             <div className="bg-white p-8 rounded-lg shadow-lg relative w-2/4">
-            <span className="self-right text-xl mb-8 font-bold whitespace-nowrap text-gray-900">CREATE TICKET</span>
-            <hr className='px-3 mb-4 my-4'></hr>
+                <span className="self-right text-xl mb-8 font-bold whitespace-nowrap text-gray-900">ADD TICKET</span>
+                <hr className='px-3 mb-4 my-4'></hr>
                 <button
                     onClick={onClose}
                     className="absolute top-0 right-0 mt-2 mr-2 uppercase tracking-wide text-gray-700 text-sm font-bold mb-2 hover:text-gray-900"
@@ -437,21 +469,6 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
                 </button>
                 <form onSubmit={handleSubmit}>
                     <div className="flex flex-wrap -mx-3 mb-4">
-                        <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Requested By</label>
-                            <select
-                                name="Requested_by"
-                                value={formData.Requested_by}
-                                onChange={handleChange}
-                                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                disabled
-                            >
-                                <option value="">---- Select User ----</option>
-                                {dropdownValues.requested_by.map((user) => (
-                                    <option key={user.user_id} value={user.username}>{user.name}</option>
-                                ))}
-                            </select>
-                        </div>
                         <div className="w-full md:w-1/2 px-3">
                             <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Organization</label>
                             <select
@@ -459,29 +476,47 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
                                 value={formData.Organization}
                                 onChange={handleChange}
                                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                disabled
+                                required
+                                disabled={role === 'Helpdesk' || role === 'Partner' || role === 'Orbis'}
                             >
                                 <option value="">---- Select Organization ----</option>
-                                <option value="Admin">Admin</option>
-                                <option value="Orbis">Orbis</option>
+                                {role !== 'Helpdesk' && role !== 'Partner' && role !== 'Orbis' && <option value="Admin">Admin</option>}
+                                {role !== 'Helpdesk' && role !== 'Partner' && <option value="Orbis">Orbis</option>}
                                 <option value="Partner">Partner</option>
                                 <option value="Helpdesk-Vendor">Helpdesk Vendor</option>
                             </select>
                         </div>
-                    </div>
-                    <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Partner Name</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Partner</label>
                             <select
                                 name="Partner_code"
                                 value={formData.Partner_code}
                                 onChange={handleChange}
                                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                required={isPartnerEditable}
+                                disabled={!isPartnerEditable}
+                            >
+                                <option value="">---- Select Partner ----</option>
+                                {filteredPartners.map((partner) => (
+                                    <option key={partner.partner_id} value={partner.partner_code}>{partner.partner_name}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                    <div className="flex flex-wrap -mx-3 mb-4">
+                        <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Requested By</label>
+                            <select
+                                name="Requested_by"
+                                value={formData.Requested_by}
+                                onChange={handleChange}
+                                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                required
                                 disabled
                             >
-                                <option value=" ">---- Select Partner ----</option>
-                                {dropdownValues.partners.map((partner) => (
-                                    <option key={partner.partner_id} value={partner.partner_code}>{partner.partner_name}</option>
+                                <option value="">---- Select User ----</option>
+                                {filteredUsers.map((user) => (
+                                    <option key={user.user_id} value={user.username}>{user.name}</option>
                                 ))}
                             </select>
                         </div>
@@ -518,16 +553,16 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
                                 <option value="Critical">Critical</option>
                             </select>
                         </div>
-                        <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Title</label>
-                        <input
-                            type="text"
-                            name="Title"
-                            value={formData.Title}
-                            onChange={handleChange}
-                            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            required
-                        />
+                        <div className="w-full md:w-1/2 px-3">
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Title</label>
+                            <input
+                                type="text"
+                                name="Title"
+                                value={formData.Title}
+                                onChange={handleChange}
+                                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                required
+                            />
                         </div>
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
@@ -546,16 +581,57 @@ const UserTicketForm = ({ isOpen, onClose, onSubmit, error, dropdownValues }) =>
                     </div>
                     <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Upload File</label>
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Attachment</label>
+                            <label htmlFor="file-upload-user" className="flex items-center space-x-2 appearance-none block w-full bg-gray-200 text-gray-700 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 cursor-pointer">
+                                <svg class="w-6 h-6 text-gray-900" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" strokeLinejoin="round" strokeWidth="2" d="M10 3v4a1 1 0 0 1-1 1H5m14-4v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Z"/>
+                                </svg>
+                                <span className="truncate">{selectedFile.length > 0 ? `${selectedFile.length} file(s) selected` : 'Choose File(s)'}</span>
+                            </label>
                             <input
+                                id="file-upload-user"
                                 type="file"
                                 name="File_Path"
-                                accept='.jpg, .jpeg, .png, .pdf, .doc .numbers'
                                 onChange={handleChange}
-                                className="text-black px-4 py-2 rounded-md"
+                                className="hidden"
                                 multiple
                             />
+                        </div>
+                    </div>
 
+                    <hr className='px-3 mb-4 my-4'></hr>
+
+                    <div className="flex flex-wrap -mx-3 mb-4">
+                        <div className="w-full md:w-1/2 px-3 mb-4 md:mb-0">
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Category</label>
+                            <select
+                                name="Category"
+                                value={formData.Category}
+                                onChange={handleChange}
+                                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                required
+                            >
+                                <option value="">---- Select Category ----</option>
+                                {dropdownValues.categories.map((category) => (
+                                    <option key={category.cat_id} value={category.category}>{category.category}</option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="w-full md:w-1/2 px-3">
+                            <label className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2">Status</label>
+                            <select
+                                name="Status"
+                                value={formData.Status}
+                                onChange={handleChange}
+                                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                required
+                                disabled
+                            >
+                                <option value="Submitted">Submitted</option>
+                                <option value="Open">Open</option>
+                                <option value="Closed">Closed</option>
+                                <option value="Withdrawn">Withdrawn</option>
+                            </select>
                         </div>
                     </div>
 

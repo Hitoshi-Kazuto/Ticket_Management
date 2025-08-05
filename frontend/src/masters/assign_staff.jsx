@@ -23,7 +23,7 @@ const TicketMaster = () => {
         usernames: [],
         requested_by: [],
     });
-    const API_URL = 'https://ticket-management-ten.vercel.app/';
+    const API_URL = 'http://52.187.70.171:8443/proxy/3001/';
 
     useEffect(() => {
         fetchData();
@@ -89,13 +89,32 @@ const TicketMaster = () => {
         fetchDropdownValues();
     }, []);
 
-    const filteredTickets = Tickets.filter(Ticket =>
-        Ticket.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
-        (statusFilter === 'all' || (statusFilter === 'critical' && Ticket.priority === 'Critical') || 
-        (statusFilter === 'high' && Ticket.priority === 'High') || 
-        (statusFilter === 'medium' && Ticket.priority === 'Medium') || 
-        (statusFilter === 'low' && Ticket.priority === 'Low'))
-    );
+    const filteredTickets = useMemo(() => {
+        return Tickets.filter(Ticket => {
+            const searchText = filterText.toLowerCase();
+            
+            // List all fields you want to search
+            const fieldsToSearch = [
+                Ticket.title,
+                Ticket.requested_by,
+                Ticket.organization,
+                Ticket.priority,
+                Ticket.status
+            ];
+            
+            // Check if any field contains the search text
+            const matchesFilter = fieldsToSearch.some(field =>
+                field && field.toString().toLowerCase().includes(searchText)
+            );
+            
+            const matchesStatus = statusFilter === 'all' || 
+                                (statusFilter === 'critical' && Ticket.priority === 'Critical') || 
+                                (statusFilter === 'high' && Ticket.priority === 'High') || 
+                                (statusFilter === 'medium' && Ticket.priority === 'Medium') || 
+                                (statusFilter === 'low' && Ticket.priority === 'Low');
+            return matchesFilter && matchesStatus;
+        });
+    }, [Tickets, filterText, statusFilter]);
 
     const columns = [
         {
@@ -117,42 +136,11 @@ const TicketMaster = () => {
             name: 'Priority',
             selector: row => row.priority,
             sortable: true,
-            cell: row => (
-                <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                    row.priority === 'Critical' ? 'bg-red-100 text-red-800' :
-                    row.priority === 'High' ? 'bg-orange-100 text-orange-800' :
-                    row.priority === 'Medium' ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-green-100 text-green-800'
-                }`}>
-                    {row.priority}
-                </span>
-            ),
         },
         {
             name: 'Status',
             selector: row => row.status,
             sortable: true,
-        },
-        {
-            name: 'Actions',
-            cell: row => (
-                <button
-                    title='Assign'
-                    onClick={() => handleAssignClick(row)}
-                    className="text-white px-4 py-2 rounded-md bg-blue-700 hover:bg-blue-800"
-                >
-                    <svg 
-                        xmlns="http://www.w3.org/2000/svg" 
-                        width="24" 
-                        height="24" 
-                        viewBox="0 0 24 24" 
-                        className="fill-white"
-                    >
-                        <path d="M12 3c-4.962 0-9 4.038-9 9 0 4.963 4.038 9 9 9 4.963 0 9-4.037 9-9 0-4.962-4.037-9-9-9zm0 16c-3.859 0-7-3.14-7-7 0-3.859 3.141-7 7-7 3.859 0 7 3.141 7 7 0 3.86-3.141 7-7 7z"/>
-                        <path d="M13 7h-2v5H6v2h5v5h2v-5h5v-2h-5z"/>
-                    </svg>
-                </button>
-            ),
         },
     ];
 
@@ -160,6 +148,7 @@ const TicketMaster = () => {
         headRow: {
             style: {
                 backgroundColor: '#f3f4f6',
+                color: '#374151',
                 borderBottom: '2px solid #e5e7eb',
             },
         },
@@ -170,6 +159,12 @@ const TicketMaster = () => {
                 fontWeight: 'bold',
                 fontSize: '0.875rem',
                 color: '#374151',
+            },
+        },
+        rows: {
+            style: {
+                minHeight: '72px',
+                cursor: 'pointer',
             },
         },
         cells: {
@@ -207,106 +202,147 @@ const TicketMaster = () => {
     return (
         <div>
             <Home />
-            <div className="overflow-x-auto shadow-md absolute right-0 w-5/6">
-                <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                        <h1 className="text-2xl font-bold text-gray-800">Assign Ticket</h1>
-                        <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
-                            <div className="relative flex-grow md:flex-grow-0">
-                                <input
-                                    type="text"
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="w-full px-4 py-2 border rounded-lg pl-10"
-                                    placeholder="Search Ticket Name"
-                                />
-                                <FaSearch className="absolute left-3 top-3 text-gray-400" />
-                            </div>
-                            <div className="inline-flex items-center gap-2">
+            <div className="overflow-x-auto shadow-md absolute right-0 w-5/6 px-6 py-3">
+                <div className="flex justify-between items-center mb-4">
+                    <p className='text-2xl font-bold text-gray-700'>Assign Staff</p>
+                    <div className="flex items-center gap-8">
+                        <div className="flex items-center gap-3">
+                            <input
+                                type="text"
+                                value={filterText}
+                                onChange={(e) => setFilterText(e.target.value)}
+                                placeholder="Search Tickets..."
+                                className="px-5 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 w-72 text-base"
+                            />
+                            {filterText && (
+                                <button
+                                    onClick={() => {
+                                        setResetPaginationToggle(!resetPaginationToggle);
+                                        setFilterText('');
+                                    }}
+                                    className="px-5 py-2 text-white bg-red-600 hover:bg-red-700 rounded-lg text-base"
+                                >
+                                    Clear
+                                </button>
+                            )}
+                        </div>
+                        <div className="flex items-center gap-6">
+                            <label className="flex items-center gap-2 cursor-pointer">
                                 <input
                                     type="radio"
-                                    id="all"
                                     name="status"
                                     value="all"
                                     checked={statusFilter === 'all'}
                                     onChange={() => setStatusFilter('all')}
-                                    className="mr-1.5"
+                                    className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
                                 />
-                                <label htmlFor="all" className="mr-3">All</label>
+                                <span className="text-gray-700 text-base">All</span>
+                            </label>
+                            <label className="flex items-center gap-2 cursor-pointer">
                                 <input
                                     type="radio"
-                                    id="critical"
                                     name="status"
                                     value="critical"
                                     checked={statusFilter === 'critical'}
                                     onChange={() => setStatusFilter('critical')}
-                                    className="mr-1.5"
+                                    className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
                                 />
-                                <label htmlFor="critical" className="mr-3">Critical</label>
+                                <span className="text-gray-700 text-base">Critical</span>
+                            </label>
+                            <label className="flex items-center gap-2 cursor-pointer">
                                 <input
                                     type="radio"
-                                    id="high"
                                     name="status"
                                     value="high"
                                     checked={statusFilter === 'high'}
                                     onChange={() => setStatusFilter('high')}
-                                    className="mr-1.5"
+                                    className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
                                 />
-                                <label htmlFor="high" className="mr-3">High</label>
+                                <span className="text-gray-700 text-base">High</span>
+                            </label>
+                            <label className="flex items-center gap-2 cursor-pointer">
                                 <input
                                     type="radio"
-                                    id="medium"
                                     name="status"
                                     value="medium"
                                     checked={statusFilter === 'medium'}
                                     onChange={() => setStatusFilter('medium')}
-                                    className="mr-1.5"
+                                    className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
                                 />
-                                <label htmlFor="medium" className="mr-3">Medium</label>
+                                <span className="text-gray-700 text-base">Medium</span>
+                            </label>
+                            <label className="flex items-center gap-2 cursor-pointer">
                                 <input
                                     type="radio"
-                                    id="low"
                                     name="status"
                                     value="low"
                                     checked={statusFilter === 'low'}
                                     onChange={() => setStatusFilter('low')}
-                                    className="mr-1.5"
+                                    className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
                                 />
-                                <label htmlFor="low" className="mr-3">Low</label>
-                            </div>
-                            <button 
-                                onClick={handleAddClick} 
-                                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 whitespace-nowrap"
-                            >
-                                <FaPlus className="inline-block mr-2" />
-                                Add Ticket
-                            </button>
+                                <span className="text-gray-700 text-base">Low</span>
+                            </label>
                         </div>
+                        <button
+                            onClick={handleFormSubmit}
+                            type="button"
+                            className="px-6 py-2 mx-2 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-base"
+                        >
+                            Add Ticket
+                        </button>
                     </div>
-                    <div className="mt-6">
-                        {loading ? (
-                            <LoadingSpinner />
-                        ) : (
-                            <DataTable
-                                columns={columns}
-                                data={filteredTickets}
-                                pagination
-                                highlightOnHover
-                                pointerOnHover
-                                customStyles={customStyles}
-                                noDataComponent="No tickets to display."
-                            />
-                        )}
-                    </div>
+                </div>
+                
+                <div className="overflow-y-auto max-h-[calc(100vh-250px)]">
+                    <DataTable
+                        columns={columns}
+                        data={filteredTickets}
+                        pagination
+                        paginationPerPage={10}
+                        paginationRowsPerPageOptions={[10, 20, 30, 40, 50]}
+                        paginationResetDefaultPage={resetPaginationToggle}
+                        subHeader={false}
+                        persistTableHead
+                        highlightOnHover
+                        pointerOnHover
+                        responsive
+                        striped
+                        progressPending={loading}
+                        progressComponent={
+                            <div className="flex justify-center items-center h-64">
+                                <LoadingSpinner />
+                            </div>
+                        }
+                        noDataComponent={
+                            <div className="flex justify-center items-center h-64 text-gray-500">
+                                No records to display
+                            </div>
+                        }
+                        customStyles={{
+                            headRow: {
+                                style: {
+                                    backgroundColor: '#f3f4f6',
+                                    color: '#374151',
+                                },
+                            },
+                            rows: {
+                                style: {
+                                    minHeight: '72px',
+                                    cursor: 'pointer',
+                                },
+                            },
+                        }}
+                        onRowClicked={(row) => handleAssignClick(row)}
+                    />
                 </div>
             </div>
 
             {selectedTicket && (
                 <AssignPopup
                     isOpen={true}
+                    ticket={selectedTicket}
                     onClose={handleCloseAssignPopup}
                     onSubmit={handleFormSubmit}
-                    ticketData={selectedTicket}
                     dropdownValues={dropdownValues}
                 />
             )}

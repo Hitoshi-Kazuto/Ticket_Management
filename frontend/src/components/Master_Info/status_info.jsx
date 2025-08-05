@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const StatusInfoPopup = ({ isOpen, Status, onClose }) => {
 
-    const API_URL = 'https://ticket-management-ten.vercel.app/';
+    const API_URL = 'http://52.187.70.171:8443/proxy/3001/';
     const username = localStorage.getItem('username');
     const [formData, setFormData] = useState({
         Status_Id: '',

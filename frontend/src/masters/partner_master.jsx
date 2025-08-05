@@ -16,9 +16,9 @@ const PartnerMaster = () => {
     const [loading, setLoading] = useState(true);
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
     const username = localStorage.getItem('username');
-    const API_URL = 'https://ticket-management-ten.vercel.app/';
+    const API_URL = 'http://52.187.70.171:8443/proxy/3001/';
 
-    useEffect(() => {
+   useEffect(() => {
         fetchPartnerData();
     }, []);
 
@@ -164,9 +164,8 @@ const PartnerMaster = () => {
                     onClick={() => handleDelete(row.partner_id)}
                     className="text-gray-700 hover:text-red-700 transition-colors duration-200"
                 >
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10">
-                        <path fillRule="evenodd" d="M16.5 4.478a.75.75 0 01.424.032l2.047.547a.75.75 0 01.52.92L18.491 19.602a.75.75 0 01-.916.574l-9.155-2.222a.75.75 0 01-.582-.918l1.094-6.425a.75.75 0 01.424-.032l5.068-.707a.75.75 0 00.424-.032z" clipRule="evenodd" />
-                        <path fillRule="evenodd" d="M14.505 5.733a.75.75 0 01.378-.813l1.83-1.045a.75.75 0 01.89.52l.547 2.047a.75.75 0 01-.032.424l-5.068.707a.75.75 0 01-.424-.032l-1.83-1.045a.75.75 0 01-.378-.813L14.505 5.733z" clipRule="evenodd" />
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-10 h-10">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
                     </svg>
                 </button> :
                 <button
@@ -269,44 +268,46 @@ const PartnerMaster = () => {
                     </div>
                 </div>        
                 
-                <DataTable
-                    columns={columns}
-                    data={filteredItems}
-                    pagination
-                    paginationPerPage={10}
-                    paginationRowsPerPageOptions={[10, 20, 30, 40, 50]}
-                    paginationResetDefaultPage={resetPaginationToggle}
-                    subHeader={false}
-                    persistTableHead
-                    highlightOnHover
-                    pointerOnHover
-                    responsive
-                    striped
-                    progressPending={loading}
-                    progressComponent={
-                        <div className="flex justify-center items-center h-64">
-                            <LoadingSpinner />
-                        </div>
-                    }
-                    noDataComponent={
-                        <div className="flex justify-center items-center h-64 text-gray-500">
-                            No records to display
-                        </div>
-                    }
-                    customStyles={{
-                        headRow: {
-                            style: {
-                                backgroundColor: '#f3f4f6',
-                                color: '#374151',
+                <div className="overflow-y-auto max-h-[calc(100vh-250px)]">
+                    <DataTable
+                        columns={columns}
+                        data={filteredItems}
+                        pagination
+                        paginationPerPage={10}
+                        paginationRowsPerPageOptions={[10, 20, 30, 40, 50]}
+                        paginationResetDefaultPage={resetPaginationToggle}
+                        subHeader={false}
+                        persistTableHead
+                        highlightOnHover
+                        pointerOnHover
+                        responsive
+                        striped
+                        progressPending={loading}
+                        progressComponent={
+                            <div className="flex justify-center items-center h-64">
+                                <LoadingSpinner />
+                            </div>
+                        }
+                        noDataComponent={
+                            <div className="flex justify-center items-center h-64 text-gray-500">
+                                No records to display
+                            </div>
+                        }
+                        customStyles={{
+                            headRow: {
+                                style: {
+                                    backgroundColor: '#f3f4f6',
+                                    color: '#374151',
+                                },
                             },
-                        },
-                        rows: {
-                            style: {
-                                minHeight: '72px',
+                            rows: {
+                                style: {
+                                    minHeight: '72px',
+                                },
                             },
-                        },
-                    }}
-                />
+                        }}
+                    />
+                </div>
 
                 <PartnerForm isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleFormSubmit} error={error} />
                 

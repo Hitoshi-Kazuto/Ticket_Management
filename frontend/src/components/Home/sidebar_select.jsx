@@ -17,11 +17,11 @@ const Sidebar = () => {
             case 'Admin':
                 return <AdminSidebar />;
             case 'Partner':
+            case 'Helpdesk-Vendor':
                 return <PartnerSidebar />;
             case 'Orbis':
                 return <InternalSidebar />;
             case 'Helpdesk':
-            case 'Helpdesk-Vendor':
                 return <HelpdeskSidebar />;
             default:
                 return null;

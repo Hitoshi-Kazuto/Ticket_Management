@@ -4,7 +4,7 @@ import axios from 'axios';
 const categoryInfoPopup = ({ isOpen, category, onClose }) => {
 
     const username = localStorage.getItem('username');
-    const API_URL = 'https://ticket-management-ten.vercel.app/';
+    const API_URL = 'http://52.187.70.171:8443/proxy/3001/';
     const [formData, setFormData] = useState({
         Category_Id: '',
         Category_Name: '',

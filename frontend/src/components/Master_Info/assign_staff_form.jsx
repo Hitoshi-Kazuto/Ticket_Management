@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const AssignStaffPopup = ({ isOpen, ticket, onClose, onSubmit, dropdownValues }) => {
     const username = localStorage.getItem('username');
-    const API_URL = 'https://ticket-management-ten.vercel.app/';
+    const API_URL = 'http://52.187.70.171:8443/proxy/3001/';
     const [formData, setFormData] = useState({
         Ticket_Id: '',
         Requested_by: '',

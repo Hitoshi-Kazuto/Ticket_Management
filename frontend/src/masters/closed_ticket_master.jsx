@@ -25,7 +25,7 @@ const TicketMaster = () => {
         usernames: [],
         requested_by: [],
     });
-    const API_URL = 'https://ticket-management-ten.vercel.app/';
+    const API_URL = 'http://52.187.70.171:8443/proxy/3001/';
     const [updatesLoading, setUpdatesLoading] = useState(false);
     const [statusDropdownFilter, setStatusDropdownFilter] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
@@ -60,19 +60,19 @@ const TicketMaster = () => {
         let apiUrl;
         switch (role) {
             case 'Admin':
-                apiUrl = `${API_URL}api/ticket/closed-ticket/admin-access`;
+                apiUrl = `${API_URL}api/ticket/closed-and-withdrawn-ticket/admin-access`;
                 break;
             case 'Partner':
-                apiUrl = `${API_URL}api/ticket/closed-ticket/user-access/${username}`;
+                apiUrl = `${API_URL}api/ticket/closed-and-withdrawn-ticket/user-access/${username}`;
                 break;
             case 'Orbis':
-                apiUrl = `${API_URL}api/ticket/closed-ticket/user-access/${username}`;
+                apiUrl = `${API_URL}api/ticket/closed-and-withdrawn-ticket/user-access/${username}`;
                 break;
             case 'Helpdesk':
-                apiUrl = `${API_URL}api/ticket/closed-ticket/helpdesk-access`;
+                apiUrl = `${API_URL}api/ticket/closed-and-withdrawn-ticket/helpdesk-access`;
                 break;
             case 'Helpdesk-Vendor':
-                apiUrl = `${API_URL}api/ticket/closed-ticket/helpdesk-access/partner/${partnerCode}`;
+                apiUrl = `${API_URL}api/ticket/closed-and-withdrawn-ticket/helpdesk-access/partner/${partnerCode}`;
                 break;
         }
         try {
@@ -89,7 +89,7 @@ const TicketMaster = () => {
         }
     };
 
-    const handleUpdateClick = (e, Ticket) => {
+    const handleUpdateClick = (e, Ticket) => {  
         if (e) {
             e.preventDefault();
             e.stopPropagation();
@@ -105,7 +105,6 @@ const TicketMaster = () => {
     const fetchUpdates = async (ticket_id) => {
         setUpdatesLoading(true);
         try {
-            console.log('Making request for ticket:', ticket_id);
             const response = await axios.get(
                 `${API_URL}api/ticket/admin-access/ticket-updates/${ticket_id}`,
                 {
@@ -115,10 +114,7 @@ const TicketMaster = () => {
                 }
             );
             
-            console.log('Raw response:', response);
-            console.log('Response data:', response.data);
-            
-            // Check if response.data exists and has the expected structure
+
             if (!response.data) {
                 console.error('No data in response');
                 setUpdates([]);
@@ -134,8 +130,7 @@ const TicketMaster = () => {
                 return;
             }
 
-            // If we have updates, set them
-            console.log('Setting updates:', response.data.updates);
+
             setUpdates(response.data.updates);
             setShowUpdatesPopup(true);
         } catch (error) {
@@ -154,7 +149,6 @@ const TicketMaster = () => {
     const handleShowUpdates = (e, ticket_id) => {
         e.preventDefault();
         e.stopPropagation();
-        console.log('Show updates clicked for ticket:', ticket_id);
         setSelectedTicketId(ticket_id);
         fetchUpdates(ticket_id);
     };
@@ -235,16 +229,40 @@ const TicketMaster = () => {
 
     const filteredItems = useMemo(() => {
         return Tickets.filter(item => {
-            const matchesFilter = item.title.toLowerCase().includes(filterText.toLowerCase());
+            const matchesFilter = item.title.toLowerCase().includes(filterText.toLowerCase()) ||
+                                  item.organization.toLowerCase().includes(filterText.toLowerCase()) ||
+                                  item.requested_by.toLowerCase().includes(filterText.toLowerCase()) ||
+                                  item.assigned_staff?.toLowerCase().includes(filterText.toLowerCase()) ||
+                                  item.priority.toLowerCase().includes(filterText.toLowerCase());
             const matchesStatus = statusFilter === 'all' || 
-                                (statusFilter === 'critical' && item.priority === 'Critical') || 
-                                (statusFilter === 'high' && item.priority === 'High') || 
-                                (statusFilter === 'medium' && item.priority === 'Medium') || 
-                                (statusFilter === 'low' && item.priority === 'Low');
+                                  (statusFilter === 'Closed' && item.status === 'Closed') || 
+                                  (statusFilter === 'Withdraw' && item.status === 'Withdraw');
             const matchesDropdown = statusDropdownFilter === '' || item.status === statusDropdownFilter;
-            return matchesFilter && matchesStatus && matchesDropdown;
+            
+            const userRole = getUserRole();
+            const username = getUsername();
+            const partnerCode = localStorage.getItem('partner_code');
+
+            let meetsRoleCriteria = false;
+            switch (userRole) {
+                case 'Admin':
+                case 'Helpdesk':
+                    meetsRoleCriteria = true; // Admins and Helpdesk see all closed/withdrawn tickets
+                    break;
+                case 'Helpdesk-Vendor':
+                    meetsRoleCriteria = item.partner_code === partnerCode; // Helpdesk-Vendor sees tickets with their partner code
+                    break;
+                case 'Partner':
+                case 'Orbis':
+                    meetsRoleCriteria = item.requested_by === username; // Other users only see tickets created by them
+                    break;
+                default:
+                    meetsRoleCriteria = false;
+            }
+            
+            return matchesFilter && matchesStatus && matchesDropdown && meetsRoleCriteria;
         });
-    }, [Tickets, filterText, statusFilter, statusDropdownFilter]);
+    }, [Tickets, filterText, statusFilter, statusDropdownFilter, getUserRole, getUsername]);
 
     const handleClear = () => {
         if (filterText) {
@@ -281,104 +299,84 @@ const TicketMaster = () => {
                         </div>
                         <div className="flex items-center gap-6">
                             <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                        type="radio"
-                        name="status"
-                        value="all"
-                        checked={statusFilter === 'all'}
-                        onChange={() => setStatusFilter('all')}
+                                <input
+                                    type="radio"
+                                    name="statusFilter"
+                                    value="all"
+                                    checked={statusFilter === 'all'}
+                                    onChange={() => setStatusFilter('all')}
                                     className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                    />
+                                />
                                 <span className="text-gray-700 text-base">All</span>
                             </label>
                             <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                        type="radio"
-                        name="status"
-                        value="critical"
-                        checked={statusFilter === 'critical'}
-                        onChange={() => setStatusFilter('critical')}
+                                <input
+                                    type="radio"
+                                    name="statusFilter"
+                                    value="Closed"
+                                    checked={statusFilter === 'Closed'}
+                                    onChange={() => setStatusFilter('Closed')}
                                     className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                    />
-                                <span className="text-gray-700 text-base">Critical</span>
+                                />
+                                <span className="text-gray-700 text-base">Closed</span>
                             </label>
                             <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                        type="radio"
-                        name="status"
-                        value="high"
-                        checked={statusFilter === 'high'}
-                        onChange={() => setStatusFilter('high')}
+                                <input
+                                    type="radio"
+                                    name="statusFilter"
+                                    value="Withdraw"
+                                    checked={statusFilter === 'Withdraw'}
+                                    onChange={() => setStatusFilter('Withdraw')}
                                     className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                    />
-                                <span className="text-gray-700 text-base">High</span>
+                                />
+                                <span className="text-gray-700 text-base">Withdrawn</span>
                             </label>
-                            <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                        type="radio"
-                        name="status"
-                        value="medium"
-                        checked={statusFilter === 'medium'}
-                        onChange={() => setStatusFilter('medium')}
-                                    className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                    />
-                                <span className="text-gray-700 text-base">Medium</span>
-                            </label>
-                            <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                        type="radio"
-                        name="status"
-                        value="low"
-                        checked={statusFilter === 'low'}
-                        onChange={() => setStatusFilter('low')}
-                                    className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                    />
-                                <span className="text-gray-700 text-base">Low</span>
-                            </label>
-                </div>
+                        </div>
                     </div>
                 </div>
                 
-                <DataTable
-                    columns={columns}
-                    data={filteredItems}
-                    pagination
-                    paginationPerPage={10}
-                    paginationRowsPerPageOptions={[10, 20, 30, 40, 50]}
-                    paginationResetDefaultPage={resetPaginationToggle}
-                    subHeader={false}
-                    persistTableHead
-                    highlightOnHover
-                    pointerOnHover
-                    responsive
-                    striped
-                    progressPending={loading}
-                    progressComponent={
-                        <div className="flex justify-center items-center h-64">
-                            <LoadingSpinner />
-                        </div>
-                    }
-                    noDataComponent={
-                        <div className="flex justify-center items-center h-64 text-gray-500">
-                            No records to display
-                        </div>
-                    }
-                    customStyles={{
-                        headRow: {
-                            style: {
-                                backgroundColor: '#f3f4f6',
-                                color: '#374151',
+                <div className="overflow-y-auto max-h-[calc(100vh-250px)]">
+                    <DataTable
+                        columns={columns}
+                        data={filteredItems}
+                        pagination
+                        paginationPerPage={10}
+                        paginationRowsPerPageOptions={[10, 20, 30, 40, 50]}
+                        paginationResetDefaultPage={resetPaginationToggle}
+                        subHeader={false}
+                        persistTableHead
+                        highlightOnHover
+                        pointerOnHover
+                        responsive
+                        striped
+                        progressPending={loading}
+                        progressComponent={
+                            <div className="flex justify-center items-center h-64">
+                                <LoadingSpinner />
+                            </div>
+                        }
+                        noDataComponent={
+                            <div className="flex justify-center items-center h-64 text-gray-500">
+                                No records to display
+                            </div>
+                        }
+                        customStyles={{
+                            headRow: {
+                                style: {
+                                    backgroundColor: '#f3f4f6',
+                                    color: '#374151',
+                                },
                             },
-                        },
-                        rows: {
-                            style: {
-                                minHeight: '72px',
-                                cursor: 'pointer',
+                            rows: {
+                                style: {
+                                    minHeight: '72px',
+                                    cursor: 'pointer',
+                                },
                             },
-                        },
-                    }}
-                    onRowClicked={(row) => handleUpdateClick(null, row)}
-                />
+                        }}
+                        onRowClicked={(row) => handleUpdateClick(null, row)}
+                    />
+                </div>
 
                 {role === 'Admin' && selectedTicket && (
                     <TicketUpdatePopup

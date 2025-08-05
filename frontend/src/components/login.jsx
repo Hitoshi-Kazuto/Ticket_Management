@@ -9,7 +9,7 @@ const Login = () => {
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
-    const API_URL = 'https://ticket-management-ten.vercel.app/';
+    const API_URL = 'http://52.187.70.171:8443/proxy/3001/';
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -29,9 +29,9 @@ const Login = () => {
                 // Redirect based on user role
                 if (response.data.user.role === 'Admin') {
                     navigate('/dashboard');
-                } else if (response.data.user.role === 'Partner' || response.data.user.role === 'Orbis') {
+                } else if (response.data.user.role === 'Partner' || response.data.user.role === 'Orbis' || response.data.user.role === 'Helpdesk-Vendor') {
                     navigate('/user-dashboard');
-                } else if (response.data.user.role === 'Helpdesk' || response.data.user.role === 'Helpdesk-Vendor') {
+                } else if (response.data.user.role === 'Helpdesk') {
                     navigate('/helpdesk-dashboard');
                 }
             } else {

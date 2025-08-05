@@ -6,7 +6,7 @@ import './index.css'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <Router>
+    <Router basename="/proxy/5173/absproxy/5173">
             <App />
     </Router>
 );

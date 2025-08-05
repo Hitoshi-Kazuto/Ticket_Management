@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import logo from '../../../resourses/icon.png'
 
-const API_URL = 'https://ticket-management-ten.vercel.app/';
+const API_URL = 'http://52.187.70.171:8443/proxy/3001/';
 
 const Header = () => {
     const username = localStorage.getItem('username');

@@ -27,7 +27,7 @@ const TicketMaster = () => {
         usernames: [],
         requested_by: [],
     });
-    const API_URL = 'https://ticket-management-ten.vercel.app/';
+    const API_URL = 'http://52.187.70.171:8443/proxy/3001/';
     const [updatesLoading, setUpdatesLoading] = useState(false);
     const [statusDropdownFilter, setStatusDropdownFilter] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
@@ -74,7 +74,7 @@ const TicketMaster = () => {
                 apiUrl = `${API_URL}api/ticket/helpdesk-access/all`;
                 break;
             case 'Helpdesk-Vendor':
-                apiUrl = `${API_URL}api/ticket/helpdesk-access/partner/${partnerCode}`;
+                apiUrl = `${API_URL}api/ticket/helpdesk-access/assigned/${username}`;
                 break;
         }
         try {
@@ -153,7 +153,6 @@ const TicketMaster = () => {
             e.stopPropagation();
         }
         setSelectedTicket(Ticket);
-        console.log('Update button clicked. Selected Ticket:', Ticket);
     };
 
     const handleCloseUpdatePopup = () => {
@@ -175,18 +174,16 @@ const TicketMaster = () => {
             
             if (updatesResponse.data && updatesResponse.data.success && Array.isArray(updatesResponse.data.updates)) {
                 setUpdates(updatesResponse.data.updates);
-                setShowUpdatesPopup(true);
             } else {
-                console.error('Invalid response format:', updatesResponse.data);
+                console.error('Invalid response format or no updates:', updatesResponse.data);
                 setUpdates([]);
-                setShowUpdatesPopup(false);
             }
         } catch (error) {
             console.error('Error fetching updates:', error);
             setUpdates([]);
-            setShowUpdatesPopup(false);
         } finally {
             setUpdatesLoading(false);
+            setShowUpdatesPopup(true);
         }
     };
 
@@ -204,7 +201,6 @@ const TicketMaster = () => {
     const handleWithdraw = async (e, ticketId) => {
         e.preventDefault();
         e.stopPropagation();
-        console.log('Withdraw button clicked. Ticket ID:', ticketId);
         try {
             const response = await axios.put(
                 `${API_URL}api/ticket/withdraw/${ticketId}`,
@@ -242,19 +238,19 @@ const TicketMaster = () => {
     };
 
     const columns = [
-        {
-            name: 'Creation Date',
-            selector: row => new Date(row.created_time).toLocaleString('en-GB', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false
-            }).replace(',', ' -'),
-            sortable: true,
-        },
+        // {
+        //     name: 'Creation Date',
+        //     selector: row => new Date(row.created_time).toLocaleString('en-GB', {
+        //         year: 'numeric',
+        //         month: '2-digit',
+        //         day: '2-digit',
+        //         hour: '2-digit',
+        //         minute: '2-digit',
+        //         second: '2-digit',
+        //         hour12: false
+        //     }).replace(',', ' -'),
+        //     sortable: true,
+        // },
         {
             name: 'Title',
             selector: row => row.title,
@@ -323,12 +319,30 @@ const TicketMaster = () => {
 
     const filteredItems = useMemo(() => {
         return Tickets.filter(item => {
-            const matchesFilter = item.title.toLowerCase().includes(filterText.toLowerCase());
+            const searchText = filterText.toLowerCase();
+    
+            // List all fields you want to search
+            const fieldsToSearch = [
+                item.title,
+                item.requested_by,
+                item.organization,
+                item.assigned_staff,
+                item.priority,
+                item.status,
+                item.category, // add/remove fields as needed
+                item.software_name
+            ];
+    
+            // Check if any field contains the search text
+            const matchesFilter = fieldsToSearch.some(field =>
+                field && field.toString().toLowerCase().includes(searchText)
+            );
+    
             const matchesStatus = statusFilter === 'all' || 
-                                (statusFilter === 'critical' && item.priority === 'Critical') || 
-                                (statusFilter === 'high' && item.priority === 'High') || 
-                                (statusFilter === 'medium' && item.priority === 'Medium') || 
-                                (statusFilter === 'low' && item.priority === 'Low');
+                (statusFilter === 'critical' && item.priority === 'Critical') || 
+                (statusFilter === 'high' && item.priority === 'High') || 
+                (statusFilter === 'medium' && item.priority === 'Medium') || 
+                (statusFilter === 'low' && item.priority === 'Low');
             const matchesDropdown = statusDropdownFilter === '' || item.status === statusDropdownFilter;
             const isNotWithdrawn = item.status !== 'Withdraw';
             return matchesFilter && matchesStatus && matchesDropdown && isNotWithdrawn;
@@ -435,46 +449,48 @@ const TicketMaster = () => {
                     </div>
                 </div>
                 
-                <DataTable
-                    columns={columns}
-                    data={filteredItems}
-                    pagination
-                    paginationPerPage={10}
-                    paginationRowsPerPageOptions={[10, 20, 30, 40, 50]}
-                    paginationResetDefaultPage={resetPaginationToggle}
-                    subHeader={false}
-                    persistTableHead
-                    highlightOnHover
-                    pointerOnHover
-                    responsive
-                    striped
-                    progressPending={loading}
-                    progressComponent={
-                        <div className="flex justify-center items-center h-64">
-                            <LoadingSpinner />
-                        </div>
-                    }
-                    noDataComponent={
-                        <div className="flex justify-center items-center h-64 text-gray-500">
-                            No records to display
-                        </div>
-                    }
-                    customStyles={{
-                        headRow: {
-                            style: {
-                                backgroundColor: '#f3f4f6',
-                                color: '#374151',
+                <div className="overflow-y-auto max-h-[calc(100vh-250px)]">
+                    <DataTable
+                        columns={columns}
+                        data={filteredItems}
+                        pagination
+                        paginationPerPage={10}
+                        paginationRowsPerPageOptions={[10, 20, 30, 40, 50]}
+                        paginationResetDefaultPage={resetPaginationToggle}
+                        subHeader={false}
+                        persistTableHead
+                        highlightOnHover
+                        pointerOnHover
+                        responsive
+                        striped
+                        progressPending={loading}
+                        progressComponent={
+                            <div className="flex justify-center items-center h-64">
+                                <LoadingSpinner />
+                            </div>
+                        }
+                        noDataComponent={
+                            <div className="flex justify-center items-center h-64 text-gray-500">
+                                No records to display
+                            </div>
+                        }
+                        customStyles={{
+                            headRow: {
+                                style: {
+                                    backgroundColor: '#f3f4f6',
+                                    color: '#374151',
+                                },
                             },
-                        },
-                        rows: {
-                            style: {
-                                minHeight: '72px',
-                                cursor: 'pointer',
+                            rows: {
+                                style: {
+                                    minHeight: '72px',
+                                    cursor: 'pointer',
+                                },
                             },
-                        },
-                    }}
-                    onRowClicked={(row) => handleUpdateClick(null, row)}
-                />
+                        }}
+                        onRowClicked={(row) => handleUpdateClick(null, row)}
+                    />
+                </div>
 
                 {role === 'Admin' && isPopupOpen && (
                     <AdminTicketForm
@@ -563,10 +579,10 @@ const TicketMaster = () => {
                     />
                 )}
 
-                {role === 'Admin' && showUpdatesPopup && !updatesLoading && updates && updates.length > 0 && (
-                    <UpdateInfoPopup
-                        show={true}
-                        updates={updates}
+                {role === 'Admin' && (
+                    <UpdateInfoPopup 
+                        show={showUpdatesPopup}
+                        updates={updates || []}
                         onClose={() => {
                             setShowUpdatesPopup(false);
                             setSelectedTicketId(null);
@@ -574,10 +590,10 @@ const TicketMaster = () => {
                         }}
                     />
                 )}
-                {role === 'Helpdesk' && showUpdatesPopup && !updatesLoading && updates && updates.length > 0 && (
-                    <UpdateInfoPopup
-                        show={true}
-                        updates={updates}
+                {role === 'Helpdesk' && (
+                    <UpdateInfoPopup 
+                        show={showUpdatesPopup}
+                        updates={updates || []}
                         onClose={() => {
                             setShowUpdatesPopup(false);
                             setSelectedTicketId(null);
@@ -585,10 +601,10 @@ const TicketMaster = () => {
                         }}
                     />
                 )}
-                {role === 'Helpdesk-Vendor' && showUpdatesPopup && !updatesLoading && updates && updates.length > 0 && (
-                    <UpdateInfoPopup
-                        show={true}
-                        updates={updates}
+                {role === 'Helpdesk-Vendor' && (
+                    <UpdateInfoPopup 
+                        show={showUpdatesPopup}
+                        updates={updates || []}
                         onClose={() => {
                             setShowUpdatesPopup(false);
                             setSelectedTicketId(null);
@@ -596,10 +612,10 @@ const TicketMaster = () => {
                         }}
                     />
                 )}
-                {role === 'Orbis' && showUpdatesPopup && !updatesLoading && updates && updates.length > 0 && (
+                {role === 'Orbis' && (
                     <UpdateInfoUserPopup
-                        show={true}
-                        updates={updates}
+                        show={showUpdatesPopup}
+                        updates={updates || []}
                         onClose={() => {
                             setShowUpdatesPopup(false);
                             setSelectedTicketId(null);
@@ -607,10 +623,10 @@ const TicketMaster = () => {
                         }}
                     />
                 )}
-                {role === 'Partner' && showUpdatesPopup && !updatesLoading && updates && updates.length > 0 && (
+                {role === 'Partner' && (
                     <UpdateInfoUserPopup
-                        show={true}
-                        updates={updates}
+                        show={showUpdatesPopup}
+                        updates={updates || []}
                         onClose={() => {
                             setShowUpdatesPopup(false);
                             setSelectedTicketId(null);

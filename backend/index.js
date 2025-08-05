@@ -9,9 +9,11 @@ import session from "express-session";
 import pool from "./config.js";
 import passport from "passport";
 import verifyToken from "./middlewares/authenticate.js";
+import path from 'path'; // Import path module
+import fs from 'fs'; // Import fs module
 
 import login from "./routes/login_route.js";
-import ticket from "./controllers/ticket_controller.js";
+import ticket from './routes/ticket_route.js';
 import user from "./routes/user_route.js";
 import partner from "./routes/partner_route.js";
 import software from "./routes/software_route.js";
@@ -32,6 +34,13 @@ app.use(cors({
 // Initialize passport
 app.use(passport.initialize());
 
+// Ensure uploads directory exists and serve static files
+const __dirname = path.resolve();
+const uploadDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
+app.use('/uploads', express.static(uploadDir));
 
 
 app.use('/api/login', login);
